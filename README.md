@@ -10,37 +10,37 @@ rewrite from scratch than try to update older code.
 
 To Do
 -----
-*Army Medals
++Army Medals
 
-*Army Ranks (Squaddie/Officer/HC already implimented)
++Army Ranks (Squaddie/Officer/HC already implimented)
 
-*Army Divisions
++Army Divisions
 
-*Battleday Signup
++Battleday Signup
 
 Partially Implimented
 ---------------------
-*Army Management
-	*Waiting on Medals, Ranks and Divisions
-	*Promote/demote army members `./core/abc_army`
++Army Management
+	+Waiting on Medals, Ranks and Divisions
+	+Promote/demote army members `./core/abc_army`
 
 Implimented
 -----------
-*Access to ABC (denied to the Anonymous user) `./event/main_listener.php`
++Access to ABC (denied to the Anonymous user) `./event/main_listener.php`
 
-*Start Campaign
-	*Create TA and Army Groups `./core/abc_start.php`
-	*Create Draft `./core/abc_start.php`
-	*Create Common Forums `./core/abc_forum.php`
++Start Campaign
+	+Create TA and Army Groups `./core/abc_start.php`
+	+Create Draft `./core/abc_start.php`
+	+Create Common Forums `./core/abc_forum.php`
 
-*Finish Campaign
-	*Delete TA and Army Groups `./core/abc_finish.php`
-	*Delete Draft `./core/abc_finish.php`
-	*Archive Forums `./core/abc_forum.php`
-	*Reset config `./core/abc_finish.php`
++Finish Campaign
+	+Delete TA and Army Groups `./core/abc_finish.php`
+	+Delete Draft `./core/abc_finish.php`
+	+Archive Forums `./core/abc_forum.php`
+	+Reset config `./core/abc_finish.php`
 
-*Draft  `./core/abc_draft.php`
++Draft  `./core/abc_draft.php`
 
-*Draft List `./core/abc_draft.php`
++Draft List `./core/abc_draft.php`
 
-*Forums `./core/abc_forum.php`
++Forums `./core/abc_forum.php`
