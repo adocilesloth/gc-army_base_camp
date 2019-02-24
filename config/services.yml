@@ -1,0 +1,78 @@
+services:
+    globalconflict.abc.abc_forum:
+        class: globalconflict\abc\core\abc_forum
+        arguments:
+            - '@config'
+            - '@template'
+            - '@request'
+            - '@user'
+            - '@dbal.conn'
+            - '@auth'
+            - '%core.root_path%'
+    globalconflict.abc.controller:
+        class: globalconflict\abc\controller\main
+        arguments:
+            - '@controller.helper'
+            - '@request'
+            - '@globalconflict.abc.abc_start'
+            - '@globalconflict.abc.abc_finish'
+            - '@globalconflict.abc.abc_draft'
+            - '@globalconflict.abc.abc_army'
+            - '@globalconflict.abc.abc_forum'
+            - '%core.root_path%'
+    globalconflict.abc.listener:
+        class: globalconflict\abc\event\main_listener
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@template'
+            - '@user'
+            - '@dbal.conn'
+            - '@globalconflict.abc.permissions'
+        tags:
+            - { name: event.listener }
+    globalconflict.abc.permissions:
+        class: globalconflict\abc\core\permissions
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+    globalconflict.abc.abc_forum:
+        class: globalconflict\abc\core\abc_forum
+        arguments:
+            - '@dbal.conn'
+    globalconflict.abc.abc_start:
+        class: globalconflict\abc\core\abc_start
+        arguments:
+            - '@config'
+            - '@template'
+            - '@request'
+            - '@dbal.conn'
+            - '%core.root_path%'
+    globalconflict.abc.abc_finish:
+        class: globalconflict\abc\core\abc_finish
+        arguments:
+            - '@config'
+            - '@template'
+            - '@dbal.conn'
+            - '%core.root_path%'
+    globalconflict.abc.abc_draft:
+        class: globalconflict\abc\core\abc_draft
+        arguments:
+            - '@config'
+            - '@template'
+            - '@user'
+            - '@request'
+            - '@dbal.conn'
+            - '%core.root_path%'
+            - '@globalconflict.abc.permissions'
+    globalconflict.abc.abc_army:
+        class: globalconflict\abc\core\abc_army
+        arguments:
+            - '@config'
+            - '@template'
+            - '@user'
+            - '@request'
+            - '@dbal.conn'
+            - '%core.root_path%'
+            - '@globalconflict.abc.permissions'
+    

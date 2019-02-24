@@ -1,0 +1,3 @@
+globalconflict_abc_controller:
+    path: /abc/{name}
+    defaults: { _controller: globalconflict.abc.controller:handle }

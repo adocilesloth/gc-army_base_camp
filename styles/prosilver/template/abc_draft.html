@@ -1,0 +1,65 @@
+<!-- INCLUDE overall_header.html -->
+
+<form method="post" id="appform" enctype="multipart/form-data">
+	<div class="panel">
+		<div class="inner">
+			<h2>{L_ABC_DRAFT_TITLE}</h2>
+			<!-- IF ABC_DRAFT_FUNNY -->
+			<p>{L_ABC_DRAFT_FUNNY}</p>
+			<!-- ELSE IF ABC_DRAFT_ARMY_JOIN -->
+			<p>{L_ABC_DRAFT_JOIN_ARMY}<span style="color:#{ABC_DRAFT_ARMY_COLOUR}; font-weight:bold">{ABC_DRAFT_ARMY_JOIN}</span>!</p>
+			<!-- ELSE IF ABC_DRAFT_IN -->
+			<p>{L_ABC_DRAFT_IN_DRAFT}</p>
+			<fieldset class="submit-buttons">
+				<input type="submit" name="draft_leave" id="draft_leave" value="{L_ABC_DRAFT_LEAVE}" class="button1"/>
+				{S_FORM_TOKEN}
+			</fieldset>
+			<!-- ELSE IF ABC_DRAFT_LEFT -->
+			<p>{L_ABC_DRAFT_LEFT}<p>
+			<!-- ELSE -->
+			<p>{L_ABC_DRAFT_EXPLAIN}</p>
+			<fieldset class="fields2" id="attach-panel-basic">
+				<dl>
+					<dt><label for="draft_division">{L_ABC_DRAFT_CHOOSE}</label><br>
+					<span></span></dt>
+					<dd><select name="draft_division" id="draft_division">{ABC_DRAFT_SELECT}</select></dd>
+				</dl>
+				<dl>
+					<dt><label for="draft_avail">{L_ABC_DRAFT_AVAIL}</label><br>
+					<span>{L_ABC_DRAFT_AVAIL_EXP}</span></dt>
+					<dd><input type="text" name="draft_avail" value="" maxlength="255" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="draft_notes">{L_ABC_DRAFT_NOTES}</label><br>
+					<span>{L_ABC_DRAFT_NOTES_EXP}</span></dt>
+					<dd><input type="text" name="draft_notes" value="" maxlength="255" /></dd>
+				</dl>
+				<br>
+				<p>{L_ABC_DRAFT_PW_EXPLAIN}
+				{L_ABC_DRAFT_PW_EXPL}</p>
+				<dl>
+					<dt><label for="draft_pw">{L_ABC_DRAFT_PW}</label><br>
+					<span></span></dt>
+					<dd><input type="text" name="draft_pw" value="" /></dd>
+				</dl>
+			</fieldset>
+			
+			<fieldset class="submit-buttons">
+				<input type="submit" name="draft_submit" id="draft_submit" value="{L_ABC_DRAFT_JOIN}" class="button1"/>
+				{S_FORM_TOKEN}
+			</fieldset>
+			<!-- ENDIF -->
+			
+		</div>
+	</div>
+	
+	<div class="panel">
+		<div class="inner">
+			<fieldset class="submit-buttons">
+			{ABC_NAV_BUTTONS}
+			{S_FORM_TOKEN}
+			</fieldset>
+		</div>
+	</div>
+
+<!-- INCLUDE overall_footer.html -->

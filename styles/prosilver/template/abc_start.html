@@ -1,0 +1,119 @@
+<!-- INCLUDE overall_header.html -->
+
+<form method="post" id="appform" enctype="multipart/form-data">
+	<div class="panel">
+		<div class="inner">
+			<!-- IF ACP_FAILED -->
+			<fieldset class="fields2" id="attach-panel-basic">
+				<h2>{L_ABC_START_FAILED}</h2>
+				<p>{L_ABC_START_FAILED_EXP}</p>
+			</fieldset>
+			<!-- ELSE IF ACP_SUCCESS -->
+			<fieldset class="fields2" id="attach-panel-basic">
+				<h2>{L_ABC_START_SUCCESS}</h2>
+				<p>{ACP_FORUM_FAILED}</p>
+			</fieldset>
+			<!-- ELSE -->
+			<fieldset class="fields2" id="attach-panel-basic">
+				<h2>{L_ABC_START_TITLE}</h2>
+				<dl>
+					<dt><label for="campaign_name">{L_ABC_START_NAME}</label><br>
+					<span></span></dt>
+					<dd><input type="text" name="campaign_name" value="{ABC_START_NAME}" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="campaign_divisions">{L_ABC_START_DIV}</label><br>
+					<span>{L_ABC_START_DIV_EXPL}</span></dt>
+					<dd><input type="text" name="campaign_divisions" value="{ABC_START_DIV}" /></dd>
+				</dl>
+				
+				<!-- Army 1 -->
+				<h2>{L_ABC_START_ARMY1_SEC}</h2>
+				<dl>
+					<dt><label for="army1_name">{L_ABC_START_ARMY1}</label><br>
+					<span></span></dt>
+					<dd><input type="text" name="army1_name" value="{ABC_START_ARMY1}" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="army1_colour">{L_ABC_START_COL1}</label><br>
+					<span></span></dt>
+					<dd><input type="text" name="army1_colour" value="{ABC_START_COL1}" size="6" maxlength="6" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="army1_general">{L_ABC_START_GEN1}</label><br>
+					<span></span></dt>
+					<dd><input type="text" name="army1_general" value="{ABC_START_GEN1}" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="army1_password">{L_ABC_START_PW1}</label><br>
+					<span></span></dt>
+					<dd><input type="text" name="army1_password" value="{ABC_START_PW1}" /></dd>
+				</dl>
+				
+				<!-- Army B -->
+				<h2>{L_ABC_START_ARMYB_SEC}</h2>
+				<dl>
+					<dt><label for="armyb_name">{L_ABC_START_ARMYB}</label><br>
+					<span></span></dt>
+					<dd><input type="text" name="armyb_name" value="{ABC_START_ARMYB}" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="armyb_colour">{L_ABC_START_COLB}</label><br>
+					<span></span></dt>
+					<dd><input type="text" name="armyb_colour" value="{ABC_START_COLB}" size="6" maxlength="6" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="armyb_general">{L_ABC_START_GENB}</label><br>
+					<span></span></dt>
+					<dd><input type="text" name="armyb_general" value="{ABC_START_GENB}" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="armyb_password">{L_ABC_START_PWB}</label><br>
+					<span></span></dt>
+					<dd><input type="text" name="armyb_password" value="{ABC_START_PWB}" /></dd>
+				</dl>
+				
+				<!-- TA -->
+				<h2>{L_ABC_START_TA_SEC}</h2>
+				<dl>
+					<dt><label for="ta_name">{L_ABC_START_TA}</label><br>
+					<span></span></dt>
+					<dd><input type="text" name="ta_name" value="{ABC_START_TA}" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="ta_colour">{L_ABC_START_COLTA}</label><br>
+					<span></span></dt>
+					<dd><input type="text" name="ta_colour" value="{ABC_START_COLTA}" size="6" maxlength="6" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="ta_general">{L_ABC_START_GENTA}</label><br>
+					<span></span></dt>
+					<dd><input type="text" name="ta_general" value="{ABC_START_GENTA}" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="ta_password">{L_ABC_START_PWTA}</label><br>
+					<span></span></dt>
+					<dd><input type="text" name="ta_password" value="{ABC_START_PWTA}" /></dd>
+				</dl>
+				
+			</fieldset>
+
+			<fieldset class="submit-buttons">
+				<input type="submit" name="start_submit" id="start_submit" value="{L_ABC_START_CREATE}" class="button1"/>
+				{S_FORM_TOKEN}
+			</fieldset>
+			<!-- ENDIF -->		
+		</div>
+	</div>
+	
+	<div class="panel">
+		<div class="inner">
+			<fieldset class="submit-buttons">
+			{ABC_NAV_BUTTONS}
+			{S_FORM_TOKEN}
+			</fieldset>
+		</div>
+	</div>
+</form>
+
+<!-- INCLUDE overall_footer.html -->

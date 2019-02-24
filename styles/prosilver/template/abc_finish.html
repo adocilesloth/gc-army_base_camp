@@ -1,0 +1,55 @@
+<!-- INCLUDE overall_header.html -->
+
+<form method="post" id="appform" enctype="multipart/form-data">
+	<div class="panel">
+		<div class="inner">
+			<!-- IF ACP_FINISHED_DONE -->
+			<h2>{L_ABC_FINISH}</h2>
+			<p>{L_ABC_FINISH_DONE}</p>
+			<p>{APC_FINISH_UNABLE}</p>
+			<br>
+			<!-- ELSE IF ACP_FINISHED_FAILED -->
+			<h2>{L_ABC_FINISH}</h2>
+			<p>{L_ABC_FINISH_FAILED}</p>
+			<p>{APC_FINISH_UNABLE}</p>
+			<!-- ELSE -->
+			<fieldset class="fields2" id="attach-panel-basic">
+				<h2>{L_ABC_FINISH}</h2>
+				<p>{L_ABC_FINISH_WARN}</p>
+				<br>
+				
+				<dl>
+					<dt><label for="campaign_archive">{L_ABC_FINISH_ARCH}</label><br>
+					<span>{L_ABC_FINISH_ARCH_EXPL}</span></dt>
+					<dd><input type="text" name="campaign_archive" value="{ABC_FINISH_ARCH}" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="campaign_hidden_archive">{L_ABC_FINISH_H_ARCH}</label><br>
+					<span>{L_ABC_FINISH_H_ARCH_EXPL}</span></dt>
+					<dd><input type="text" name="campaign_hidden_archive" value="{ABC_FINISH_H_ARCH}" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="archivist">{L_ABC_FINISH_ARCH_G}</label><br>
+					<span>{L_ABC_FINISH_ARCH_G_EXPL}</span></dt>
+					<dd><input type="text" name="archivist" value="{ABC_FINISH_ARCH_G}" /></dd>
+				</dl>
+				
+				<fieldset class="submit-buttons">
+					<input type="submit" name="finish_submit" id="finish_submit" value="{L_ABC_FINISH}" class="button1"/>
+					{S_FORM_TOKEN}
+				</fieldset>
+			</fieldset>
+			<!-- ENDIF -->	
+		</div>
+	</div>
+	<div class="panel">
+		<div class="inner">
+			<fieldset class="submit-buttons">
+			{ABC_NAV_BUTTONS}
+			{S_FORM_TOKEN}
+			</fieldset>
+		</div>
+	</div>
+</form>
+
+<!-- INCLUDE overall_footer.html -->

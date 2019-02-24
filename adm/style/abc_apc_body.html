@@ -1,0 +1,111 @@
+<!-- INCLUDE overall_header.html -->
+
+<h1>{L_SETTINGS}</h1>
+
+<form id="acp_board" method="post" action="{U_ACTION}">
+	<fieldset>
+		<dl>
+			<dt><label for="start_perm_groups">{L_ACP_ABC_START_PERM}</label><br>
+			<span>{L_ACP_ABC_START_EXPL}</span></dt>
+			<dd><input type="text" name="start_perm_groups" value="{APC_ABC_START_PERM}" /></dd>
+		</dl>
+		
+		<h2>{L_ACP_ABC_UNNEEDED}</h2>
+		<p>{L_ACP_ABC_UNNEEDED_EXPL}</p>
+		
+		<h2>{L_ABC_START_TITLE}</h2>
+		<dl>
+			<dt><label for="apc_campaign_state">{L_ACP_ABC_STATE}</label><br>
+			<span>{L_ACP_ABC_STATE_EXPL}</span></dt>
+			<dd><input type="text" name="apc_campaign_state" value="{APC_ABC_STATE}" size="1" maxlength="1" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="apc_campaign_name">{L_ABC_START_NAME}</label><br>
+			<span></span></dt>
+			<dd><input type="text" name="apc_campaign_name" value="{APC_ABC_START_NAME}" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="apc_campaign_divisions">{L_ABC_START_DIV}</label><br>
+			<span>{L_ABC_START_DIV_EXPL}</span></dt>
+			<dd><input type="text" name="apc_campaign_divisions" value="{APC_ABC_START_DIV}" /></dd>
+		</dl>
+		
+		<!-- Army 1 -->
+		<h2>{L_ABC_START_ARMY1_SEC}</h2>
+		<dl>
+			<dt><label for="apc_army1_name">{L_ABC_START_ARMY1}</label><br>
+			<span></span></dt>
+			<dd><input type="text" name="apc_army1_name" value="{APC_ABC_START_ARMY1}" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="apc_army1_colour">{L_ABC_START_COL1}</label><br>
+			<span></span></dt>
+			<dd><input type="text" name="apc_army1_colour" value="{APC_ABC_START_COL1}" size="6" maxlength="6" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="apc_army1_general">{L_ABC_START_GEN1}</label><br>
+			<span></span></dt>
+			<dd><input type="text" name="apc_army1_general" value="{APC_ABC_START_GEN1}" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="apc_army1_password">{L_ABC_START_PW1}</label><br>
+			<span></span></dt>
+			<dd><input type="text" name="apc_army1_password" value="{APC_ABC_START_PW1}" /></dd>
+		</dl>
+		
+		<!-- Army B -->
+		<h2>{L_ABC_START_ARMYB_SEC}</h2>
+		<dl>
+			<dt><label for="apc_armyb_name">{L_ABC_START_ARMYB}</label><br>
+			<span></span></dt>
+			<dd><input type="text" name="apc_armyb_name" value="{APC_ABC_START_ARMYB}" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="apc_armyb_colour">{L_ABC_START_COLB}</label><br>
+			<span></span></dt>
+			<dd><input type="text" name="apc_armyb_colour" value="{APC_ABC_START_COLB}" size="6" maxlength="6" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="apc_armyb_general">{L_ABC_START_GENB}</label><br>
+			<span></span></dt>
+			<dd><input type="text" name="apc_armyb_general" value="{APC_ABC_START_GENB}" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="apc_armyb_password">{L_ABC_START_PWB}</label><br>
+			<span></span></dt>
+			<dd><input type="text" name="apc_armyb_password" value="{APC_ABC_START_PWB}" /></dd>
+		</dl>
+		
+		<!-- TA -->
+		<h2>{L_ABC_START_TA_SEC}</h2>
+		<dl>
+			<dt><label for="apc_ta_name">{L_ABC_START_TA}</label><br>
+			<span></span></dt>
+			<dd><input type="text" name="apc_ta_name" value="{APC_ABC_START_TA}" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="apc_ta_colour">{L_ABC_START_COLTA}</label><br>
+			<span></span></dt>
+			<dd><input type="text" name="apc_ta_colour" value="{APC_ABC_START_COLTA}" size="6" maxlength="6" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="apc_ta_general">{L_ABC_START_GENTA}</label><br>
+			<span></span></dt>
+			<dd><input type="text" name="apc_ta_general" value="{APC_ABC_START_GENTA}" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="apc_ta_password">{L_ABC_START_PWTA}</label><br>
+			<span></span></dt>
+			<dd><input type="text" name="apc_ta_password" value="{APC_ABC_START_PWTA}" /></dd>
+		</dl>
+
+		<p class="submit-buttons">
+			<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+			<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		</p>
+
+		{S_FORM_TOKEN}
+	</fieldset>
+</form>
+
+<!-- INCLUDE overall_footer.html -->
