@@ -1,0 +1,1 @@
+Army Base Camp phpbb module for Global Conflict
