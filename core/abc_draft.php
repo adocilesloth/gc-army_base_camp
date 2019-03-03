@@ -82,6 +82,8 @@ class abc_draft
 			$default = false;
 			$group_name = '';
 			$colour = '000000';
+			$user_time_stamp = strtotime("now");
+			$other_nonsense = "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0";
 			/*If a correct army password is entered*/
 			if($password == $this->config['army1_password'] or
 				$password == $this->config['armyb_password'] or
@@ -119,8 +121,23 @@ class abc_draft
 				
 				include $this->root_path . 'includes/functions_user.php';
 				$user_id = $this->user->data['user_id'];
+				$username = $this->user->data['username'];
 				group_user_add($group_id, $user_id_ary = array($user_id,));
 				group_user_attributes('default', $group_id, $user_id_ary = array($user_id,));
+				
+				/*Add user to abc_users*/
+				$sql = "SELECT campaign_id, army_id FROM abc_armies WHERE army_name = '$group_name' AND campaign_id = (SELECT MAX(campaign_id) FROM abc_armies);";
+				$result = $this->db->sql_query($sql);
+				$rowset = $this->db->sql_fetchrowset();
+				$this->db->sql_freeresult($result);
+				
+				$campaign_id = $rowset[0]['campaign_id'];
+				$army_id = $rowset[0]['army_id'];
+				
+				$abc_user_id = 0;	//Nolonger care about abc_user_id
+				$sql = "INSERT INTO abc_users VALUES ($abc_user_id, $user_id, $campaign_id, $army_id, 0, 0, 'img', 0, '$username', '', '', '', '', $user_time_stamp, '', $other_nonsense)";
+				$result = $this->db->sql_query($sql);
+				$this->db->sql_freeresult($result);
 			}
 			/*If joining a division draft*/
 			else
@@ -128,10 +145,18 @@ class abc_draft
 				$user_id = $this->user->data['user_id'];
 				$username = $this->user->data['username'];
 				$division = $this->request->variable('draft_division', '');
-				$availability = $this->request->variable('draft_avail', '');
-				$notes = $this->request->variable('draft_notes', '');
+				$location = $this->request->variable('draft_local', '', true);
+				$availability = $this->request->variable('draft_avail', '', true);
+				$notes = $this->request->variable('draft_notes', '', true);
 				
-				$sql = "INSERT INTO abc_draft (user_id, username, division, availability, notes) VALUES ($user_id, '$username', '$division', '$availability', '$notes')";
+				//$sql = "INSERT INTO abc_draft (user_id, username, division, availability, notes) VALUES ($user_id, '$username', '$division', '$availability', '$notes')";
+				$sql = "SELECT MAX(campaign_id) FROM abc_campaigns";
+				$result = $this->db->sql_query($sql);
+				$campaign_id = $this->db->sql_fetchfield('MAX(campaign_id)');
+				$this->db->sql_freeresult($result);
+				
+				$abc_user_id = 0;	//Nolonger care about abc_user_id
+				$sql = "INSERT INTO abc_users VALUES ($abc_user_id, $user_id, $campaign_id, 0, 0, 0, 'img', 1, '$username', '$availability', '$location', '', '$notes', $user_time_stamp, '$division', $other_nonsense)";
 				$result = $this->db->sql_query($sql);
 				$this->db->sql_freeresult($result);
 				
@@ -150,7 +175,14 @@ class abc_draft
 	public function leave_draft()
 	{
 		$user_id = $this->user->data['user_id'];
-		$sql = "DELETE FROM abc_draft WHERE user_id = $user_id";
+		
+		$sql = "SELECT MAX(campaign_id) FROM abc_campaigns";
+		$result = $this->db->sql_query($sql);
+		$campaign_id = $this->db->sql_fetchfield('MAX(campaign_id)');
+		$this->db->sql_freeresult($result);
+		
+		//$sql = "DELETE FROM abc_draft WHERE user_id = $user_id";
+		$sql = "DELETE FROM abc_users WHERE user_id = $user_id AND campaign_id = $campaign_id";
 		$result = $this->db->sql_query($sql);
 		$this->db->sql_freeresult($result);
 		$this->template->assign_var('ABC_DRAFT_LEFT', true);
@@ -166,12 +198,17 @@ class abc_draft
 		$ta_army = $this->config['ta_name'];
 		$is_ta = $this->permissions->whitelist(array($ta_army,));
 		
+		$sql = "SELECT MAX(campaign_id) FROM abc_campaigns";
+		$result = $this->db->sql_query($sql);
+		$campaign_id = $this->db->sql_fetchfield('MAX(campaign_id)');
+		$this->db->sql_freeresult($result);
+		
 		$draft_list = '';
 		foreach($camp_div as $c_div)
 		{
 			$draft_list .= "<h2>".$c_div."</h2>";
 			
-			$sql = "SELECT username, availability, notes FROM abc_draft WHERE division = '$c_div'";
+			$sql = "SELECT user_bf3_name, user_availability, user_location, user_other_notes FROM abc_users WHERE Role = '$c_div' AND campaign_id = $campaign_id AND user_is_signed_up = 1";
 			$result = $this->db->sql_query($sql);
 			$rowset = $this->db->sql_fetchrowset();
 			$this->db->sql_freeresult($result);
@@ -185,14 +222,15 @@ class abc_draft
 				for($i=0; $i<count($rowset); $i++)
 				{
 					$draft_list .= "<p>";
-					$draft_list .= $this->user->lang['ABC_DRAFT_LIST_NAME']." <b>".$rowset[$i]['username']."</b><br>";
-					$draft_list .= $this->user->lang['ABC_DRAFT_AVAIL']." ".$rowset[$i]['availability']."<br>";
-					$draft_list .= $this->user->lang['ABC_DRAFT_NOTES']." ".$rowset[$i]['notes'];
+					$draft_list .= $this->user->lang['ABC_DRAFT_LIST_NAME']." <b>".$rowset[$i]['user_bf3_name']."</b><br>";
+					$draft_list .= $this->user->lang['ABC_DRAFT_AVAIL']." ".$rowset[$i]['user_availability']."<br>";
+					$draft_list .= $this->user->lang['ABC_DRAFT_LOCAL']." ".$rowset[$i]['user_location']."<br>";
+					$draft_list .= $this->user->lang['ABC_DRAFT_NOTES']." ".$rowset[$i]['user_other_notes'];
 					if($is_ta)
 					{
 						$draft_list .= "<br>";
 						$draft_list .= $this->user->lang['ABC_DRAFT_LIST_ARMY']." ";
-						$username = $rowset[$i]['username'];
+						$username = $rowset[$i]['user_bf3_name'];
 						$username = str_replace(" ", "_", $username);
 						$draft_list .= "<select name=\"$username\" id=\"$username\">";
 						$draft_list .= "<option value=\" \" selected=\"selected\"> </option>";
@@ -224,7 +262,13 @@ class abc_draft
 	public function run_draft()
 	{
 		/*Get all players in draft*/
-		$sql = "SELECT user_id, username FROM abc_draft";
+		$sql = "SELECT MAX(campaign_id) FROM abc_campaigns";
+		$result = $this->db->sql_query($sql);
+		$campaign_id = $this->db->sql_fetchfield('MAX(campaign_id)');
+		$this->db->sql_freeresult($result);
+		
+		//$sql = "SELECT user_id, username FROM abc_draft";
+		$sql = "SELECT user_id, user_bf3_name FROM abc_users WHERE campaign_id = $campaign_id AND user_is_signed_up = 1";
 		$result = $this->db->sql_query($sql);
 		$rowset = $this->db->sql_fetchrowset();
 		$this->db->sql_freeresult($result);
@@ -244,6 +288,7 @@ class abc_draft
 			$result = $this->db->sql_query($sql);
 			$group_rowset = $this->db->sql_fetchrowset();
 			$this->db->sql_freeresult($result);
+			
 			if(count($group_rowset) != 3)
 			{
 				$this->template->assign_vars(array(
@@ -275,7 +320,7 @@ class abc_draft
 			/*See if any players have been assigned an army*/
 			for($i=0; $i<count($rowset); $i++)
 			{
-				$username = $rowset[$i]['username'];
+				$username = $rowset[$i]['user_bf3_name'];
 				$username = str_replace(" ", "_", $username);
 				$selected = $this->request->variable($username, '');
 				
@@ -284,10 +329,7 @@ class abc_draft
 					/*If assigned an army, add user to army array*/
 					if($selected == $army)
 					{
-						$drafted_to[$army] = $rowset[$i]['user_id'];
-						$sql = "DELETE FROM abc_draft WHERE user_id = ".$rowset[$i]['user_id'];
-						$result = $this->db->sql_query($sql);
-						$this->db->sql_freeresult($result);
+						$drafted_to[$army][] = $rowset[$i]['user_id'];
 						break;
 					}
 				}
@@ -297,10 +339,23 @@ class abc_draft
 			include $this->root_path . 'includes/functions_user.php';
 			foreach($armies as $army)
 			{
+				$sql = "SELECT army_id FROM abc_armies WHERE campaign_id = $campaign_id AND army_name = '$army'";
+				$result = $this->db->sql_query($sql);
+				$army_id = $this->db->sql_fetchfield('army_id');
+				$this->db->sql_freeresult($result);
+				
 				if($drafted_to[$army])
 				{
 					group_user_add($group_ids[$army], $user_id_ary = $drafted_to[$army]);
 					group_user_attributes('default', $group_ids[$army], $user_id_ary = $drafted_to[$army]);
+					$sql = "UPDATE abc_users SET army_id = $army_id, user_is_signed_up = 0 WHERE";
+					foreach($drafted_to[$army] as $user_id)
+					{
+						$sql .= " user_id = $user_id OR";
+					}
+					$sql = substr($sql, 0, strlen($sql)-3);
+					$result = $this->db->sql_query($sql);
+					$this->db->sql_freeresult($result);
 				}
 			}
 		}

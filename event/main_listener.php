@@ -116,8 +116,13 @@ class main_listener implements EventSubscriberInterface
 			}
 			
 			/*get if in draft list - they can still enter page but get a special message*/
-			$in_draft = false;
-			$sql = 'SELECT user_id FROM abc_draft WHERE user_id = ';
+			//$in_draft = false;
+			$sql = "SELECT MAX(campaign_id) FROM abc_campaigns";
+			$result = $this->db->sql_query($sql);
+			$campaign_id = $this->db->sql_fetchfield('MAX(campaign_id)');
+			$this->db->sql_freeresult($result);
+			//$sql = 'SELECT user_id FROM abc_draft WHERE user_id = ';
+			$sql = "SELECT user_id FROM abc_users WHERE user_is_signed_up = 1 AND campaign_id = $campaign_id AND user_id = ";
 			$sql .= $this->user->data['user_id'];
 			$result = $this->db->sql_query($sql);
 			$user_id = $this->db->sql_fetchfield('user_id');

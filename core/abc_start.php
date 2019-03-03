@@ -211,10 +211,59 @@ class abc_start
 				$abc_admins .= $group_name.',';
 				$this->config->set('start_perm_groups', $abc_admins);
 				
-				/*Create Draft Table*/
-				$sql = 'CREATE TABLE abc_draft (user_id int, username varchar(255), division varchar(255), availability varchar(255), notes varchar(255))';
+				/*Update abc_campaigns table*/
+				/*This uses the old ABC database, some columns are nolonger used*/
+				$sql = "SELECT MAX(campaign_id) from abc_campaigns";
+				$result = $this->db->sql_query($sql);
+				$campaign_id = $this->db->sql_fetchfield('MAX(campaign_id)');
+				$this->db->sql_freeresult($result);
+				
+				$campaign_id++;
+				$campaign_name = $this->config['campaign_name'];
+				$campaign_draft_date = 0;
+				$campaign_time_stamp = strtotime("now");
+				$sql = "INSERT INTO abc_campaigns VALUES ($campaign_id, 7, '$campaign_name', 0, 0, $campaign_draft_date, 0, 0, 0, $campaign_time_stamp)";
 				$result = $this->db->sql_query($sql);
 				$this->db->sql_freeresult($result);
+				
+				/*Update abc_armies and abc_users tables*/
+				/*This uses the old ABC database, some columns are nolonger used*/
+				$sql = "SELECT MAX(army_id) from abc_armies";
+				$result = $this->db->sql_query($sql);
+				$army_id = $this->db->sql_fetchfield('MAX(army_id)');
+				$this->db->sql_freeresult($result);
+				
+				$armies = array('army1_', 'armyb_', 'ta_');
+				foreach($armies as $army)
+				{
+					$army_id++;
+					$army_name = $this->config[$army.'name'];
+					$army_general_name = $this->config[$army.'general'];
+					$sql = "SELECT user_id FROM ".USERS_TABLE." WHERE username = '$army_general_name'";
+					$result = $this->db->sql_query($sql);
+					$army_general = $this->db->sql_fetchfield('user_id');
+					$this->db->sql_freeresult($result);
+					$army_colour = $this->config[$army.'colour'];
+					$army_tag = 'NA';
+					$army_join_pw = $this->config[$army.'password'];
+					$army_ts_pw = 'gcfun';
+					$army_is_neutral = 0;
+					if($army == 'ta_')
+					{
+						$army_is_neutral = 1;
+					}
+					
+					$sql = "INSERT INTO abc_armies VALUES ($army_id, $campaign_id, '$army_name', $army_general, '$army_colour', 
+							'NANA', '$army_tag', '$army_join_pw', '$army_ts_pw', $army_is_neutral, 0, 0, 0, $campaign_time_stamp)";
+					$result = $this->db->sql_query($sql);
+					$this->db->sql_freeresult($result);
+					
+					$abc_user_id = 0;
+					$other_nonsense = "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0";
+					$sql = "INSERT INTO abc_users VALUES ($abc_user_id, $army_general, $campaign_id, $army_id, 0, 0, 'img', 0, '$army_general_name', '', '', '', '', $campaign_time_stamp, '', $other_nonsense)";
+					$result = $this->db->sql_query($sql);
+					$this->db->sql_freeresult($result);
+				}
 				
 				$this->template->assign_var('ACP_FAILED', false);
 				$this->template->assign_var('ACP_SUCCESS', true);

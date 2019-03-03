@@ -92,11 +92,6 @@ class abc_finish
 		}
 		$this->config->set('start_perm_groups', $abc_admins_string);
 		
-		/*Delete Draft Table*/
-		$sql = 'DROP TABLE abc_draft';
-		$result = $this->db->sql_query($sql);
-		$this->db->sql_freeresult($result);
-		
 		/*Reset Campaign Settings*/
 		$this->config->set('campaign_state', '0');
 		$this->config->set('campaign_name', '');

@@ -13,7 +13,20 @@ class release_0_1_0 extends \phpbb\db\migration\migration
 {
 	public function effectively_installed()
 	{
-		return isset($this->config['apc_campaign_state']);
+		$perm = $this->config['start_perm_groups'];
+		$stat = $this->config['campaign_state'];
+		$divs = $this->config['campaign_divisions'];
+		$a1cl = $this->config['army1_colour'];
+		$abcl = $this->config['armyb_colour'];
+		$tanm = $this->config['ta_name'];
+		$tacl = $this->config['ta_name'];
+		
+		if($perm && divs && $a1cl && $abcl && $tanm && $tacl)
+		{
+			return true;
+		}
+		
+		return false;
 	}
 
 	static public function depends_on()
@@ -23,33 +36,27 @@ class release_0_1_0 extends \phpbb\db\migration\migration
 
 	public function update_data()
 	{
-		return array(
-			array('config.add', array('permitted_groups', 'ADMINISTRATORS,', true)),
-			array('config.add', array('extension', 'png')),
-			array('config.add', array('use_bg', false)),
-			array('config.add', array('style', '', true)),
-			array('config.add', array('image_name', '', true)),
-			
-			array('config.add', array('start_perm_groups', 'ADMINISTRATORS,', true));
+		return array(		
+			array('config.add', array('start_perm_groups', 'ADMINISTRATORS,', true)),
 			/*Campaign Settings*/
-			array('config.add', array('campaign_state', '0'));
-			array('config.add', array('campaign_name', '', true));
-			array('config.add', array('campaign_divisions', 'Infantry,Armour,Air', true));
+			array('config.add', array('campaign_state', '0')),
+			array('config.add', array('campaign_name', '', true)),
+			array('config.add', array('campaign_divisions', 'Infantry,Armour,Air', true)),
 			/*Army 1 Settings*/
-			array('config.add', array('army1_name', '', true));
-			array('config.add', array('army1_colour', '084CA1'));
-			array('config.add', array('army1_general', '', true));
-			array('config.add', array('army1_password', '', true));
+			array('config.add', array('army1_name', '', true)),
+			array('config.add', array('army1_colour', '084CA1')),
+			array('config.add', array('army1_general', '', true)),
+			array('config.add', array('army1_password', '', true)),
 			/*Army B Settings*/
-			array('config.add', array('armyb_name', '', true));
-			array('config.add', array('armyb_colour', 'ED1C24'));
-			array('config.add', array('armyb_general', '', true));
-			array('config.add', array('armyb_password', '', true));
+			array('config.add', array('armyb_name', '', true)),
+			array('config.add', array('armyb_colour', 'ED1C24')),
+			array('config.add', array('armyb_general', '', true)),
+			array('config.add', array('armyb_password', '', true)),
 			/*TA Settings*/
-			array('config.add', array('ta_name', 'Tournament Administrators', true));
-			array('config.add', array('ta_colour', '0099FF'));
-			array('config.add', array('ta_general', '', true));
-			array('config.add', array('ta_password', '', true));
+			array('config.add', array('ta_name', 'Tournament Administrators', true)),
+			array('config.add', array('ta_colour', '0099FF')),
+			array('config.add', array('ta_general', '', true)),
+			array('config.add', array('ta_password', '', true)),
 
 			array('module.add', array(
 				'acp',
