@@ -43,6 +43,10 @@ $lang = array_merge($lang, array(
 	'ABC_DRAFT_LIST'	=> 'Draft List',
 	'ABC_ARMY'			=> 'Army Home',
 	'ABC_FORUM'			=> 'Army Forums',
+	'ABC_LOGISTICS'		=> 'Army Logistics',
+	'ABC_MEDAL'			=> 'Medals',
+	'ABC_RANK'			=> 'Ranks',
+	'ABC_DIVISION'		=> 'Divisions',
 	
 	//ABC Start Page
 	'ABC_START_TITLE' 		=> 'Campaign Setup',
@@ -178,4 +182,15 @@ $lang = array_merge($lang, array(
 	'ABC_FORUM_ERR_HCG'		=> 'Unable to find group_id for ',
 	'ABC_FORUM_ERR_MOVENEW'	=> 'Unable to move new forum!',
 	
+	//ABC Medals Page
+	'ABC_MEDAL_TITLE'		=> 'Army Medals',
+	'ABC_MEDAL_EXPLAIN'		=> 'Create and edit medals here.',
+	'ABC_MEDAL_NEW'			=> 'New Medal',
+	'ABC_MEDAL_NAME'		=> 'Medal Name:',
+	'ABC_MEDAL_DESC'		=> 'Medal Description:',
+	'ABC_MEDAL_IMAGE'		=> 'Medal Image:',
+	'ABC_MEDAL_RIBBON'		=> 'Ribbon Image:',
+	'ABC_MEDAL_CREATE'		=> 'Create',
+	'ABC_MEDAL_EDIT'		=> 'Edit',
+	'ABC_MEDAL_DELETE'		=> 'Delete',
 ));

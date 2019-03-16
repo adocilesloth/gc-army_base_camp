@@ -71,6 +71,10 @@ class abc_draft
 	
 	public function join_draft()
 	{
+		if(!function_exists('sql_abc_clean'))
+		{
+			include $this->root_path . '/ext/globalconflict/abc/include/abc_sql_clean.php';
+		}
 		/*If somene tries to be funny*/
 		$password = $this->request->variable('draft_pw', '', true);
 		if($password == "it" or $password == "it below")
@@ -85,17 +89,17 @@ class abc_draft
 			$user_time_stamp = strtotime("now");
 			$other_nonsense = "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0";
 			/*If a correct army password is entered*/
-			if($password == $this->config['army1_password'] or
-				$password == $this->config['armyb_password'] or
-				$password == $this->config['ta_password'])
+			if($password == sql_abc_unclean($this->config['army1_password']) or
+				$password == sql_abc_unclean($this->config['armyb_password']) or
+				$password == sql_abc_unclean($this->config['ta_password']))
 			{
 				$army = '';
-				if($password == $this->config['ta_password'])
+				if($password == sql_abc_unclean($this->config['ta_password']))
 				{
 					$army = 'ta_';
 					$default = true;
 				}
-				elseif($password == $this->config['army1_password'])
+				elseif($password == sql_abc_unclean($this->config['army1_password']))
 				{
 					$army = 'army1_';
 					$default = true;
@@ -144,10 +148,10 @@ class abc_draft
 			{
 				$user_id = $this->user->data['user_id'];
 				$username = $this->user->data['username'];
-				$division = $this->request->variable('draft_division', '');
-				$location = $this->request->variable('draft_local', '', true);
-				$availability = $this->request->variable('draft_avail', '', true);
-				$notes = $this->request->variable('draft_notes', '', true);
+				$division = sql_abc_clean($this->request->variable('draft_division', ''));
+				$location = sql_abc_clean($this->request->variable('draft_local', '', true));
+				$availability = sql_abc_clean($this->request->variable('draft_avail', '', true));
+				$notes = sql_abc_clean($this->request->variable('draft_notes', '', true));
 				
 				//$sql = "INSERT INTO abc_draft (user_id, username, division, availability, notes) VALUES ($user_id, '$username', '$division', '$availability', '$notes')";
 				$sql = "SELECT MAX(campaign_id) FROM abc_campaigns";
@@ -191,6 +195,10 @@ class abc_draft
 	
 	public function draft_list()
 	{
+		if(!function_exists('sql_abc_clean'))
+		{
+			include $this->root_path . '/ext/globalconflict/abc/include/abc_sql_clean.php';
+		}
 		$campaign_divisions = $this->config['campaign_divisions'];
 		$camp_div = explode(",", $campaign_divisions);
 		$army1 = $this->config['army1_name'];
@@ -223,9 +231,9 @@ class abc_draft
 				{
 					$draft_list .= "<p>";
 					$draft_list .= $this->user->lang['ABC_DRAFT_LIST_NAME']." <b>".$rowset[$i]['user_bf3_name']."</b><br>";
-					$draft_list .= $this->user->lang['ABC_DRAFT_AVAIL']." ".$rowset[$i]['user_availability']."<br>";
-					$draft_list .= $this->user->lang['ABC_DRAFT_LOCAL']." ".$rowset[$i]['user_location']."<br>";
-					$draft_list .= $this->user->lang['ABC_DRAFT_NOTES']." ".$rowset[$i]['user_other_notes'];
+					$draft_list .= $this->user->lang['ABC_DRAFT_AVAIL']." ".sql_abc_unclean($rowset[$i]['user_availability'])."<br>";
+					$draft_list .= $this->user->lang['ABC_DRAFT_LOCAL']." ".sql_abc_unclean($rowset[$i]['user_location'])."<br>";
+					$draft_list .= $this->user->lang['ABC_DRAFT_NOTES']." ".sql_abc_unclean($rowset[$i]['user_other_notes']);
 					if($is_ta)
 					{
 						$draft_list .= "<br>";
@@ -267,7 +275,7 @@ class abc_draft
 		$campaign_id = $this->db->sql_fetchfield('MAX(campaign_id)');
 		$this->db->sql_freeresult($result);
 		
-		//$sql = "SELECT user_id, username FROM abc_draft";
+		//$sql = "SELECT user_id, username FROM abc_users";
 		$sql = "SELECT user_id, user_bf3_name FROM abc_users WHERE campaign_id = $campaign_id AND user_is_signed_up = 1";
 		$result = $this->db->sql_query($sql);
 		$rowset = $this->db->sql_fetchrowset();

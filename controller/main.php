@@ -92,6 +92,27 @@ class main
 			$this->abc_forum->find_forums();
 			return $this->helper->render('abc_forum.html', $name);
 		}
+		/*Logistics*/
+		if($this->request->is_set_post('logistics_list'))
+		{
+			return $this->helper->render('abc_medal.html', $name);
+		}
+		/*Medal Edit*/
+		if($this->request->is_set_post('medal_edit'))
+		{
+			return $this->helper->render('abc_medal.html', $name);
+		}
+		/*Rank Edit*/
+		if($this->request->is_set_post('rank_edit'))
+		{
+			return $this->helper->render('abc_medal.html', $name);
+		}
+		/*Division Edit*/
+		if($this->request->is_set_post('division_edit'))
+		{
+			return $this->helper->render('abc_medal.html', $name);
+		}
+		
 		/*Start Campaign*/
 		if($this->request->is_set_post('start_submit'))
 		{

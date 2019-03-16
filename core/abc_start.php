@@ -8,7 +8,6 @@
 */
 
 namespace globalconflict\abc\core;
-
 class abc_start
 {
 	/* @var \phpbb\config\config */
@@ -43,20 +42,20 @@ class abc_start
 	/*Start Page*/
 	public function start_page()
 	{
-		$campaign_name = $this->config['campaign_name'];
-		$campaign_divisions = $this->config['campaign_divisions'];
-		$army1_name = $this->config['army1_name'];
-		$army1_colour = $this->config['army1_colour'];
-		$army1_general = $this->config['army1_general'];
-		$army1_password = $this->config['army1_password'];
-		$armyb_name = $this->config['armyb_name'];
-		$armyb_colour = $this->config['armyb_colour'];
-		$armyb_general = $this->config['armyb_general'];
-		$armyb_password = $this->config['armyb_password'];
-		$ta_name = $this->config['ta_name'];
-		$ta_colour = $this->config['ta_colour'];
-		$ta_general = $this->config['ta_general'];
-		$ta_password = $this->config['ta_password'];
+		$campaign_name = sql_abc_unclean($this->config['campaign_name']);
+		$campaign_divisions = sql_abc_unclean($this->config['campaign_divisions']);
+		$army1_name = sql_abc_unclean($this->config['army1_name']);
+		$army1_colour = sql_abc_unclean($this->config['army1_colour']);
+		$army1_general = sql_abc_unclean($this->config['army1_general']);
+		$army1_password = sql_abc_unclean($this->config['army1_password']);
+		$armyb_name = sql_abc_unclean($this->config['armyb_name']);
+		$armyb_colour = sql_abc_unclean($this->config['armyb_colour']);
+		$armyb_general = sql_abc_unclean($this->config['armyb_general']);
+		$armyb_password = sql_abc_unclean($this->config['armyb_password']);
+		$ta_name = sql_abc_unclean($this->config['ta_name']);
+		$ta_colour = sql_abc_unclean($this->config['ta_colour']);
+		$ta_general = sql_abc_unclean($this->config['ta_general']);
+		$ta_password = sql_abc_unclean($this->config['ta_password']);
 	
 		$this->template->assign_vars(array(
 			'ABC_START_NAME'		=> $campaign_name,
@@ -81,6 +80,11 @@ class abc_start
 	/*Start Campaign*/
 	public function start_campaign()
 	{
+		if(!function_exists('sql_abc_clean'))
+		{
+			include $this->root_path . '/ext/globalconflict/abc/include/abc_sql_clean.php';
+		}
+		
 		/*Reject incomplete submission*/
 		if($this->request->variable('campaign_name', '', true) == '' or
 			$this->request->variable('campaign_divisions', '', true) == '' or
@@ -103,9 +107,9 @@ class abc_start
 		}
 		else
 		{
-			$army1_general_name = $this->request->variable('army1_general', '', true);
-			$armyb_general_name = $this->request->variable('armyb_general', '', true);
-			$ta_general_name = $this->request->variable('ta_general', '', true);
+			$army1_general_name = sql_abc_clean($this->request->variable('army1_general', '', true));
+			$armyb_general_name = sql_abc_clean($this->request->variable('armyb_general', '', true));
+			$ta_general_name = sql_abc_clean($this->request->variable('ta_general', '', true));
 			
 			$sql = "SELECT user_id FROM ". USERS_TABLE ." WHERE username = '$army1_general_name' OR username = '$armyb_general_name' OR username = '$ta_general_name'";
 			$result = $this->db->sql_query($sql);
@@ -128,23 +132,23 @@ class abc_start
 				
 				/*Campaign Settings*/
 				$this->config->set('campaign_state', '1');
-				$this->config->set('campaign_name', $this->request->variable('campaign_name', '', true));
-				$this->config->set('campaign_divisions', $this->request->variable('campaign_divisions', 'Infantry,Armour,Air', true));
+				$this->config->set('campaign_name', sql_abc_clean($this->request->variable('campaign_name', '', true)));
+				$this->config->set('campaign_divisions', sql_abc_clean($this->request->variable('campaign_divisions', 'Infantry,Armour,Air', true)));
 				/*Army 1 Settings*/
-				$this->config->set('army1_name', $this->request->variable('army1_name', '', true));
-				$this->config->set('army1_colour', $this->request->variable('army1_colour', '084CA1'));
-				$this->config->set('army1_general', $this->request->variable('army1_general', '', true));
-				$this->config->set('army1_password', $this->request->variable('army1_password', '', true));
+				$this->config->set('army1_name', sql_abc_clean($this->request->variable('army1_name', '', true)));
+				$this->config->set('army1_colour', sql_abc_clean($this->request->variable('army1_colour', '084CA1')));
+				$this->config->set('army1_general', sql_abc_clean($this->request->variable('army1_general', '', true)));
+				$this->config->set('army1_password', sql_abc_clean($this->request->variable('army1_password', '', true)));
 				/*Army B Settings*/
-				$this->config->set('armyb_name', $this->request->variable('armyb_name', '', true));
-				$this->config->set('armyb_colour', $this->request->variable('armyb_colour', 'ED1C24'));
-				$this->config->set('armyb_general', $this->request->variable('armyb_general', '', true));
-				$this->config->set('armyb_password', $this->request->variable('armyb_password', '', true));
+				$this->config->set('armyb_name', sql_abc_clean($this->request->variable('armyb_name', '', true)));
+				$this->config->set('armyb_colour', sql_abc_clean($this->request->variable('armyb_colour', 'ED1C24')));
+				$this->config->set('armyb_general', sql_abc_clean($this->request->variable('armyb_general', '', true)));
+				$this->config->set('armyb_password', sql_abc_clean($this->request->variable('armyb_password', '', true)));
 				/*TA Settings*/
-				$this->config->set('ta_name', $this->request->variable('ta_name', 'Tournament Administrators', true));
-				$this->config->set('ta_colour', $this->request->variable('ta_colour', '0099FF'));
-				$this->config->set('ta_general', $this->request->variable('ta_general', '', true));
-				$this->config->set('ta_password', $this->request->variable('ta_password', '', true));
+				$this->config->set('ta_name', sql_abc_clean($this->request->variable('ta_name', 'Tournament Administrators', true)));
+				$this->config->set('ta_colour', sql_abc_clean($this->request->variable('ta_colour', '0099FF')));
+				$this->config->set('ta_general', sql_abc_clean($this->request->variable('ta_general', '', true)));
+				$this->config->set('ta_password', sql_abc_clean($this->request->variable('ta_password', '', true)));
 				
 				$this->template->assign_var('ACP_START', false);
 				

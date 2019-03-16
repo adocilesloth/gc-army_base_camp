@@ -162,7 +162,26 @@ class main_listener implements EventSubscriberInterface
 				$nav_buttons .= ' <input type="submit" name="army_list" id="army_list" value="'.$this->user->lang['ABC_ARMY'].'" class="button1"/>';
 			}
 		}
-		
+		/*If user can create medals/ranks/divisions - HC*/
+		$can_see_logistics = false;
+		if(!$start)
+		{
+			$logistics_nav_buttons = '';
+			$see_logistics = [];
+			$see_logistics[] = $this->config['army1_name'].' HC';
+			$see_logistics[] = $this->config['armyb_name'].' HC';
+			$can_see_logistics = $this->permissions->whitelist($see_logistics);
+			if($can_see_logistics)
+			{
+				$nav_buttons .= ' <input type="submit" name="logistics_list" id="logistics_list" value="'.$this->user->lang['ABC_LOGISTICS'].'" class="button1"/>';
+				$logistics_nav_buttons .= '<div class="panel"><div class="inner"><fieldset class="submit-buttons">';
+				$logistics_nav_buttons .= ' <input type="submit" name="medal_edit" id="medal_edit" value="'.$this->user->lang['ABC_MEDAL'].'" class="button1"/>';
+				$logistics_nav_buttons .= ' <input type="submit" name="rank_edit" id="rank_edit" value="'.$this->user->lang['ABC_RANK'].'" class="button1"/>';
+				$logistics_nav_buttons .= ' <input type="submit" name="division_edit" id="division_edit" value="'.$this->user->lang['ABC_DIVISION'].'" class="button1"/>';
+				$logistics_nav_buttons .= '</fieldset></div></div>';
+			}
+			$this->template->assign_var('ABC_LOGISTICS_NAV_BUTTONS', $logistics_nav_buttons);
+		}
 		/*If user can create forums - Generals*/
 		$can_create_forum = false;
 		if(!$start)

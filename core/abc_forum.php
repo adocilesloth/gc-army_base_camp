@@ -156,10 +156,14 @@ class abc_forum
 	
 	public function finish_forum()
 	{
+		if(!function_exists('sql_abc_clean'))
+		{
+			include $this->root_path . '/ext/globalconflict/abc/include/abc_sql_clean.php';
+		}
 		/*Check inputs*/
-		$campaign_archive = $this->request->variable('campaign_archive', '', true);
-		$campaign_hidden_archive = $this->request->variable('campaign_hidden_archive', '', true);
-		$archivist_string = $this->request->variable('archivist', '', true);
+		$campaign_archive = sql_abc_clean($this->request->variable('campaign_archive', '', true));
+		$campaign_hidden_archive = sql_abc_clean($this->request->variable('campaign_hidden_archive', '', true));
+		$archivist_string = sql_abc_clean($this->request->variable('archivist', '', true));
 		if($campaign_archive == '' or $campaign_hidden_archive == '')
 		{
 			$this->template->assign_var('ACP_FINISHED_FAILED', true);
@@ -417,7 +421,7 @@ class abc_forum
 			}
 		}
 		/*Get archivist groups*/
-		$archivist_string = $this->request->variable('archivist', '', true);
+		$archivist_string = sql_abc_clean($this->request->variable('archivist', '', true));
 		if($archivist_string != '')
 		{
 			$archivist = explode(",", $archivist_string);
@@ -524,14 +528,6 @@ class abc_forum
 		$rowset = $this->db->sql_fetchrowset();
 		$this->db->sql_freeresult($result);
 		
-		/*$sql = "SELECT ft.fourm_name FROM ".FORUMS_TABLE." AS ft 
-						INNER JOIN ".ACL_GROUPS_TABLE." as agt ON ft.forum_id = agt.forum_id
-						INNER JOIN ".GROUPS_TABLE." as gt ON agt.group_id = gt.group_id
-						WHERE gt.group_name = '".$army." HC' AND agt.auth_role_id = 14";
-		$result = $this->db->sql_query($sql);
-		$rowset = $this->db->sql_fetchrowset();
-		$this->db->sql_freeresult($result);*/
-		
 		if(!$rowset)
 		{
 			$this->template->assign_var('ABC_FORUMS_EXISTING', '');
@@ -566,7 +562,12 @@ class abc_forum
 	
 	public function add_forum()
 	{
-		$forum_name = $this->request->variable('forum_name', '', true);
+		if(!function_exists('sql_abc_clean'))
+		{
+			include $this->root_path . '/ext/globalconflict/abc/include/abc_sql_clean.php';
+		}
+		
+		$forum_name = sql_abc_clean($this->request->variable('forum_name', '', true));
 		if($forum_name == '')
 		{
 			$this->find_forums();
@@ -574,7 +575,7 @@ class abc_forum
 		}
 		$is_officer = $this->request->variable('forum_officer', false);
 		$is_subforum = $this->request->variable('subforum', false);
-		$parent = $this->request->variable('forum_parent', 'none', false);
+		$parent = sql_abc_clean($this->request->variable('forum_parent', 'none', false));
 		
 		/*Get army*/
 		$army = '';
