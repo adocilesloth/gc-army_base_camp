@@ -2,3 +2,20 @@
 textarea.abc_description {
 	width: 42ch;
 }
+
+div.abc_medal_edit{
+	padding-bottom: 0.8em;
+	margin-bottom: 0.8em;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.abc_medals {
+	display: grid;
+	grid-template-columns: 100px 100px auto;
+	grid-gap: 5px;
+}
+
+.abc_medals_line {
+	padding-bottom: 5px;
+	border-bottom: 1px solid #CCCCCC;
+}

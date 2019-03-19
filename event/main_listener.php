@@ -175,9 +175,9 @@ class main_listener implements EventSubscriberInterface
 			{
 				$nav_buttons .= ' <input type="submit" name="logistics_list" id="logistics_list" value="'.$this->user->lang['ABC_LOGISTICS'].'" class="button1"/>';
 				$logistics_nav_buttons .= '<div class="panel"><div class="inner"><fieldset class="submit-buttons">';
-				$logistics_nav_buttons .= ' <input type="submit" name="medal_edit" id="medal_edit" value="'.$this->user->lang['ABC_MEDAL'].'" class="button1"/>';
-				$logistics_nav_buttons .= ' <input type="submit" name="rank_edit" id="rank_edit" value="'.$this->user->lang['ABC_RANK'].'" class="button1"/>';
-				$logistics_nav_buttons .= ' <input type="submit" name="division_edit" id="division_edit" value="'.$this->user->lang['ABC_DIVISION'].'" class="button1"/>';
+				$logistics_nav_buttons .= ' <input type="submit" name="medal_list" id="medal_list" value="'.$this->user->lang['ABC_MEDAL'].'" class="button1"/>';
+				$logistics_nav_buttons .= ' <input type="submit" name="rank_list" id="rank_list" value="'.$this->user->lang['ABC_RANK'].'" class="button1"/>';
+				$logistics_nav_buttons .= ' <input type="submit" name="division_list" id="division_list" value="'.$this->user->lang['ABC_DIVISION'].'" class="button1"/>';
 				$logistics_nav_buttons .= '</fieldset></div></div>';
 			}
 			$this->template->assign_var('ABC_LOGISTICS_NAV_BUTTONS', $logistics_nav_buttons);

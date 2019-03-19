@@ -182,15 +182,48 @@ $lang = array_merge($lang, array(
 	'ABC_FORUM_ERR_HCG'		=> 'Unable to find group_id for ',
 	'ABC_FORUM_ERR_MOVENEW'	=> 'Unable to move new forum!',
 	
+	//ABC Logistics
+	'ABC_LOGISTICS_CREATE'	=> 'Create',
+	'ABC_LOGISTICS_EDIT'	=> 'Edit',
+	'ABC_LOGISTICS_DELETE'	=> 'Delete',
+	'ABC_LOGISTICS_NO_DEL'	=> 'Cannot Be Deleted',
+	
 	//ABC Medals Page
 	'ABC_MEDAL_TITLE'		=> 'Army Medals',
 	'ABC_MEDAL_EXPLAIN'		=> 'Create and edit medals here.',
 	'ABC_MEDAL_NEW'			=> 'New Medal',
+	'ABC_MEDAL_EXIST'		=> 'Edit Medal',
 	'ABC_MEDAL_NAME'		=> 'Medal Name:',
+	'ABC_MEDAL_NAME_EXIST'	=> 'Name',
 	'ABC_MEDAL_DESC'		=> 'Medal Description:',
+	'ABC_MEDAL_DESC_EXIST'	=> 'Description',
 	'ABC_MEDAL_IMAGE'		=> 'Medal Image:',
+	'ABC_MEDAL_IMAGE_EXIST'	=> 'Medal',
 	'ABC_MEDAL_RIBBON'		=> 'Ribbon Image:',
-	'ABC_MEDAL_CREATE'		=> 'Create',
-	'ABC_MEDAL_EDIT'		=> 'Edit',
-	'ABC_MEDAL_DELETE'		=> 'Delete',
+	'ABC_MEDIAL_EDIT_THIS'	=> 'Edit This Medal:',
+	
+	//ABC Divisions Page
+	'ABC_DIVISION_TITLE'		=> 'Army Divisions',
+	'ABC_DIVISION_EXPLAIN'		=> 'Create and edit divisions here.',
+	'ABC_DIVISION_NEW'			=> 'New Division',
+	'ABC_DIVISION_EXIST'		=> 'Edit Division',
+	'ABC_DIVISION_NAME'			=> 'Division Name:',
+	'ABC_DIVISION_IMAGE'		=> 'Division Image:',
+	'ABC_DIVISION_TAG'			=> 'Division Tag:',
+	'ABC_DIVISION_EDIT_THIS'	=> 'Edit This Division:',
+	
+	//ABC Ranks Page
+	'ABC_RANK_TITLE'		=> 'Army Ranks',
+	'ABC_RANK_EXPLAIN'		=> 'Create and edit ranks here.',
+	'ABC_RANK_NEW'			=> 'New Rank',
+	'ABC_RANK_EXIST'		=> 'Edit Rank',
+	'ABC_RANK_NAME'			=> 'Rank Name:',
+	'ABC_RANK_SHORT'		=> 'Rank Abreviation:',
+	'ABC_RANK_ORDER'		=> 'Rank Order:',
+	'ABC_RANK_ORDER_EXPL'	=> 'The lower the order, the lower the rank.<br>1 is reserved for New Recruits and 99 for General.',
+	'ABC_RANK_OFFICER'		=> 'Is Officer Rank:',
+	'ABC_RANK_IMAGE'		=> 'Rank Image:',
+	'ABC_RANK_TAG'			=> 'Rank Tag:',
+	'ABC_RANK_EDIT_THIS'	=> 'Edit This Rank:',
+	'ABC_RANK_NUMERIC'		=> 'Rank Order must be numeric and cannot be 1 or 99. Go back an try again.',
 ));

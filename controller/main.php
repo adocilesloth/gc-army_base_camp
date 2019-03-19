@@ -32,6 +32,15 @@ class main
 	/* @var \globalconflict\abc\core\abc_forum */
 	protected $abc_forum;
 	
+	/* @var \globalconflict\abc\core\abc_medal */
+	protected $abc_medal;
+	
+	/* @var \globalconflict\abc\core\abc_division */
+	protected $abc_division;
+	
+	/* @var \globalconflict\abc\core\abc_rank */
+	protected $abc_rank;
+	
 	protected $root_path;
 
 	public function __construct(
@@ -42,6 +51,9 @@ class main
 		\globalconflict\abc\core\abc_draft $abc_draft,
 		\globalconflict\abc\core\abc_army $abc_army,
 		\globalconflict\abc\core\abc_forum $abc_forum,
+		\globalconflict\abc\core\abc_medal $abc_medal,
+		\globalconflict\abc\core\abc_division $abc_division,
+		\globalconflict\abc\core\abc_rank $abc_rank,
 		$root_path)
 	{
 		$this->helper		= $helper;
@@ -51,6 +63,9 @@ class main
 		$this->abc_draft	= $abc_draft;
 		$this->abc_army		= $abc_army;
 		$this->abc_forum	= $abc_forum;
+		$this->abc_medal	= $abc_medal;
+		$this->abc_division	= $abc_division;
+		$this->abc_rank		= $abc_rank;
 		$this->root_path	= $root_path;
 	}
 	
@@ -95,22 +110,26 @@ class main
 		/*Logistics*/
 		if($this->request->is_set_post('logistics_list'))
 		{
-			return $this->helper->render('abc_medal.html', $name);
+			$this->abc_medal->medal_list();
+			return $this->helper->render('abc_logistics.html', $name);
 		}
-		/*Medal Edit*/
-		if($this->request->is_set_post('medal_edit'))
+		/*Medal List*/
+		if($this->request->is_set_post('medal_list'))
 		{
-			return $this->helper->render('abc_medal.html', $name);
+			$this->abc_medal->medal_list();
+			return $this->helper->render('abc_logistics.html', $name);
 		}
-		/*Rank Edit*/
-		if($this->request->is_set_post('rank_edit'))
+		/*Division List*/
+		if($this->request->is_set_post('division_list'))
 		{
-			return $this->helper->render('abc_medal.html', $name);
+			$this->abc_division->division_list();
+			return $this->helper->render('abc_logistics.html', $name);
 		}
-		/*Division Edit*/
-		if($this->request->is_set_post('division_edit'))
+		/*Rank List*/
+		if($this->request->is_set_post('rank_list'))
 		{
-			return $this->helper->render('abc_medal.html', $name);
+			$this->abc_rank->rank_list();
+			return $this->helper->render('abc_logistics.html', $name);
 		}
 		
 		/*Start Campaign*/
@@ -161,6 +180,60 @@ class main
 		{
 			$this->abc_forum->add_forum();
 			return $this->helper->render('abc_forum.html', $name);
+		}
+		/*Create Medal*/
+		if($this->request->is_set_post('create_medal'))
+		{
+			$this->abc_medal->add_medal();
+			return $this->helper->render('abc_logistics.html', $name);
+		}
+		/*Edit Medal*/
+		if($this->request->is_set_post('edit_medal'))
+		{
+			$this->abc_medal->edit_medal();
+			return $this->helper->render('abc_logistics.html', $name);
+		}
+		/*Delete Medal*/
+		if($this->request->is_set_post('delete_medal'))
+		{
+			$this->abc_medal->delete_medal();
+			return $this->helper->render('abc_logistics.html', $name);
+		}
+		/*Create Division*/
+		if($this->request->is_set_post('create_division'))
+		{
+			$this->abc_division->add_division();
+			return $this->helper->render('abc_logistics.html', $name);
+		}
+		/*Edit Division*/
+		if($this->request->is_set_post('edit_division'))
+		{
+			$this->abc_division->edit_division();
+			return $this->helper->render('abc_logistics.html', $name);
+		}
+		/*Delete Division*/
+		if($this->request->is_set_post('delete_division'))
+		{
+			$this->abc_division->delete_division();
+			return $this->helper->render('abc_logistics.html', $name);
+		}
+		/*Create Rank*/
+		if($this->request->is_set_post('create_rank'))
+		{
+			$this->abc_rank->add_rank();
+			return $this->helper->render('abc_logistics.html', $name);
+		}
+		/*Edit Rank*/
+		if($this->request->is_set_post('edit_rank'))
+		{
+			$this->abc_rank->edit_rank();
+			return $this->helper->render('abc_logistics.html', $name);
+		}
+		/*Delete Rank*/
+		if($this->request->is_set_post('delete_rank'))
+		{
+			$this->abc_rank->delete_rank();
+			return $this->helper->render('abc_logistics.html', $name);
 		}
 
 		return $this->helper->render('abc_home.html', $name);

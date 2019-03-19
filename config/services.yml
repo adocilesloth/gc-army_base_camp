@@ -9,6 +9,36 @@ services:
             - '@dbal.conn'
             - '@auth'
             - '%core.root_path%'
+    globalconflict.abc.abc_medal:
+        class: globalconflict\abc\core\abc_medal
+        arguments:
+            - '@config'
+            - '@template'
+            - '@request'
+            - '@files.factory'
+            - '@user'
+            - '@dbal.conn'
+            - '%core.root_path%'
+    globalconflict.abc.abc_division:
+        class: globalconflict\abc\core\abc_division
+        arguments:
+            - '@config'
+            - '@template'
+            - '@request'
+            - '@files.factory'
+            - '@user'
+            - '@dbal.conn'
+            - '%core.root_path%'
+    globalconflict.abc.abc_rank:
+        class: globalconflict\abc\core\abc_rank
+        arguments:
+            - '@config'
+            - '@template'
+            - '@request'
+            - '@files.factory'
+            - '@user'
+            - '@dbal.conn'
+            - '%core.root_path%'
     globalconflict.abc.controller:
         class: globalconflict\abc\controller\main
         arguments:
@@ -19,6 +49,9 @@ services:
             - '@globalconflict.abc.abc_draft'
             - '@globalconflict.abc.abc_army'
             - '@globalconflict.abc.abc_forum'
+            - '@globalconflict.abc.abc_medal'
+            - '@globalconflict.abc.abc_division'
+            - '@globalconflict.abc.abc_rank'
             - '%core.root_path%'
     globalconflict.abc.listener:
         class: globalconflict\abc\event\main_listener
