@@ -47,6 +47,30 @@ class abc_finish
 	
 	public function finish_campaign()
 	{
+		/*DO NOT DELETE RANKS!!! Deleting ranks breaks stuff and makes it a PITA to fix*/
+		
+		/*Return users to rank before campaign*/ /*Code needs testing*/
+		$sql = "SELECT user_id, user_soldierid FROM abc_users WHERE".$army_query;
+		$sql = substr($sql, 0, strlen($sql)-3);
+		$result = $this->db->sql_query($sql);
+		$rowset = $this->db->sql_fetchrowset();
+		$this->db->sql_freeresult($result);
+		if(!$rowset)
+		{
+			$this->template->assign_var('ACP_FINISHED_DONE', false);
+			$this->template->assign_var('ACP_START', false);
+			return;
+		}
+		
+		for($i=0; $i<count($rowset); $i++)
+		{
+			$user_id = $rowset[$i]['user_id'];
+			$rank_id = $rowset[$i]['user_soldierid'];
+			$sql = "UPDATE phpbb_users SET user_rank = $rank_id WHERE user_id = $user_id";
+			$result = $this->db->sql_query($sql);
+			$this->db->sql_freeresult($result);
+		}
+		
 		include $this->root_path . 'includes/functions_user.php';
 		/*Delete User Groups*/
 		$armies = array('army1_', 'armyb_');

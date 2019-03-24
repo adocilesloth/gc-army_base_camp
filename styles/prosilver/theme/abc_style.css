@@ -1,3 +1,59 @@
+div.abc {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 200px minmax(200px, auto);
+	grid-gap: 5px;
+}
+
+div.abc_menu {
+	width: 100%
+	display: grid;
+	grid-template-rows: minmax(min-content, max-content) minmax(min-content, max-content);
+	grid-gap: 5px;
+}
+
+.abc_button {
+	background: none!important;
+	border: none; 
+	padding: 0!important;
+	font: inherit;
+	/*optional*/
+	color:#069;
+	cursor:pointer;
+}
+
+.abc_button:hover{
+	text-decoration: underline;
+}
+
+.abc_army {
+	width: 100%;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.abc_army_division {
+	width: 200px;
+    min-height: 130px;
+    margin: 10px auto;
+    padding: 9px;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    box-shadow: 0 0 6px #999;
+    overflow: hidden;
+}
+
+.abc_division_name {
+	width: 100%;
+	height: 20px;
+	line-height: 16px;
+	margin-bottom: 10px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #06131E;
+	text-align: center;
+	border-bottom: 1px solid #CCCCCC;
+}
 
 textarea.abc_description {
 	width: 42ch;

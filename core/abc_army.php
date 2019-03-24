@@ -52,7 +52,13 @@ class abc_army
 	
 	public function army_list()
 	{
-		$complete_army_list = '';
+		$army_list = '';
+		/*Get campaign_id*/
+		$sql = "SELECT MAX(campaign_id) FROM abc_campaigns";
+		$result = $this->db->sql_query($sql);
+		$campaign_id = $this->db->sql_fetchfield('MAX(campaign_id)');
+		$this->db->sql_freeresult($result);
+		
 		/*Get user army*/
 		$army = '';
 		$army_name = '';
@@ -66,244 +72,456 @@ class abc_army
 				break;
 			}
 		}
-		if($army == 'army1' or $army == 'armyb')
+		
+		/*Get army_id*/
+		$sql = "SELECT army_id FROM abc_armies WHERE campaign_id = $campaign_id AND army_name = '$army_name'";
+		$result = $this->db->sql_query($sql);
+		$army_id = $this->db->sql_fetchfield('army_id');
+		$this->db->sql_freeresult($result);
+		
+		/*Get Divisions*/
+		$sql = "SELECT division_id, division_name, division_icon FROM abc_divisions WHERE army_id = $army_id ORDER BY division_id ASC";
+		$result = $this->db->sql_query($sql);
+		$divisions = $this->db->sql_fetchrowset();
+		$this->db->sql_freeresult($result);
+		
+		/*Get user Rank*/
+		$user_id = $this->user->data['user_id'];
+		$sql = "SELECT ar.rank_order FROM abc_users AS au
+				JOIN abc_ranks AS ar ON ar.rank_id = au.rank_id
+				WHERE au.campaign_id = $campaign_id AND au.army_id = $army_id AND au.user_id = $user_id";
+		$result = $this->db->sql_query($sql);
+		$user_rank_order = $this->db->sql_fetchfield('rank_order');
+		$this->db->sql_freeresult($result);
+		
+		/*User is Officer */
+		$user_is_officer = $this->permissions->whitelist(array($army_name." Officers"));
+		
+		/*Build Army list*/
+		$army_list .= "<div class=\"abc_army\">";
+		
+		/*HC Division*/
+		$army_list .= "<div></div>";
+		$army_list .= "<div class=\"abc_army_division\">";
+		$idx = 1;
+		if($army == 'ta')
 		{
-			$selector = '';
-			
-			/*General*/
-			/*We need to General user id but can get General name from config more easily*/
-			$sql = "SELECT ugt.user_id from ".USER_GROUP_TABLE." AS ugt
-						RIGHT JOIN ".GROUPS_TABLE." AS gt ON gt.group_id = ugt.group_id
-						WHERE gt.group_name = '".$army_name." General'";
-			$result = $this->db->sql_query($sql);
-			$general_user_id = $this->db->sql_fetchfield('user_id');
-			$this->db->sql_freeresult($result);
-			
-			if($general_user_id)
-			{
-				if(!is_array($general_user_id))
-				{
-					$general_user_id = array($general_user_id,);
-				}
-			}
-			else
-			{
-				$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_GEN_UID']);
-				return;
-			}
-			
-			$hc_army_list = "<h2>".$this->user->lang['ABC_ARMY_GENERAL']."</h2>";
-			$hc_army_list .= "<p>".$this->config[$army.'_general']."</p>";
-			$hc_army_list .= "<br>";
-			
-			/*HC*/
-			$high_rank = $this->permissions->whitelist(array($army_name." General",));
-			$hc_army_list .= "<h2>".$this->user->lang['ABC_ARMY_HC']."</h2>";
-			
-			$sql = "SELECT ugt.user_id from ".USER_GROUP_TABLE." AS ugt
-						RIGHT JOIN ".GROUPS_TABLE." AS gt ON gt.group_id = ugt.group_id
-						WHERE gt.group_name = '".$army_name." HC'";
-			$result = $this->db->sql_query($sql);
-			$rowset = $this->db->sql_fetchrowset();
-			$this->db->sql_freeresult($result);
-			
-			$HC_user_id = [];
-			if($rowset)
-			{
-				for($i=0; $i<count($rowset); $i++)
-				{
-					$HC_user_id[] = $rowset[$i]['user_id'];
-				}
-				$HC_user_id = array_diff($HC_user_id, $general_user_id);
-				
-				if(count($HC_user_id) > 0)
-				{
-					$sql_user_id = '';
-					foreach($HC_user_id as $user_id)
-					{
-						$sql_user_id .= "user_id = $user_id OR ";
-					}
-					$sql_user_id = substr($sql_user_id, 0, strlen($sql_user_id)-3);
-					
-					$sql = "SELECT username FROM ".USERS_TABLE." WHERE $sql_user_id";
-					$result = $this->db->sql_query($sql);
-					$username_rowset = $this->db->sql_fetchrowset();
-					$this->db->sql_freeresult($result);
-					if(!$username_rowset)
-					{
-						$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_HC_UN']."<br>$sql");
-						return;
-					}
-					
-					for($i=0; $i<count($username_rowset); $i++)
-					{
-						$username = $username_rowset[$i]['username'];
-						$hc_army_list .= "<p>$username";
-						if($high_rank)
-						{
-							$hc_army_list .= " <input type=\"checkbox\" id=\"$username\" name=\"$username\">";
-						}
-						$hc_army_list .= "</p>";
-					}
-				}
-			}
-			$hc_army_list .= "<br>";
-			
-			/*Officer*/
-			$high_rank = $this->permissions->whitelist(array($army_name." HC",));
-			if($high_rank && $selector == '')
-			{
-				$selector .= "<select name=\"army_mote\" id=\"army_mote\">";
-				$selector .= "<option value=\"none\" selected=\"selected\"> </option>";
-				$selector .= "<option value=\"set_HC\">".$this->user->lang['ABC_ARMY_SET_HC']."</option>";
-				$selector .= "<option value=\"set_officer\">".$this->user->lang['ABC_ARMY_SET_OFFICER']."</option>";
-				$selector .= "<option value=\"set_squaddie\">".$this->user->lang['ABC_ARMY_SET_SQUADDIE']."</option>";
-				$selector .= "</select><br>";
-				$selector .= "<input type=\"submit\" name=\"army_set\" id=\"army_set\" value=\"".$this->user->lang['ABC_ARMY_SET']."\" class=\"button1\"/>";
-			}
-			$officer_army_list = "<h2>".$this->user->lang['ABC_ARMY_OFFICER']."</h2>";
-			
-			$sql = "SELECT ugt.user_id from ".USER_GROUP_TABLE." AS ugt
-						RIGHT JOIN ".GROUPS_TABLE." AS gt ON gt.group_id = ugt.group_id
-						WHERE gt.group_name = '".$army_name." Officers'";
-			$result = $this->db->sql_query($sql);
-			$rowset = $this->db->sql_fetchrowset();
-			$this->db->sql_freeresult($result);
-			
-			$officer_user_id = [];
-			if($rowset)
-			{
-				for($i=0; $i<count($rowset); $i++)
-				{
-					$officer_user_id[] = $rowset[$i]['user_id'];
-				}
-				$officer_user_id = array_diff($officer_user_id, $HC_user_id, $general_user_id);
-				
-				if(count($officer_user_id) > 0)
-				{
-					$sql_user_id = '';
-					foreach($officer_user_id as $user_id)
-					{
-						$sql_user_id .= "user_id = $user_id OR ";
-					}
-					$sql_user_id = substr($sql_user_id, 0, strlen($sql_user_id)-3);
-					
-					$sql = "SELECT username FROM ".USERS_TABLE." WHERE $sql_user_id";
-					$result = $this->db->sql_query($sql);
-					$username_rowset = $this->db->sql_fetchrowset();
-					$this->db->sql_freeresult($result);
-					if(!$username_rowset)
-					{
-						$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_OFF_UN']);
-						return;
-					}
-					
-					for($i=0; $i<count($username_rowset); $i++)
-					{
-						$username = $username_rowset[$i]['username'];
-						$officer_army_list .= "<p>$username";
-						if($high_rank)
-						{
-							$officer_army_list .= " <input type=\"checkbox\" id=\"$username\" name=\"$username\">";
-						}
-						$officer_army_list .= "</p>";
-					}
-				}
-			}
-			$officer_army_list .= "<br>";
-			
-			/*Squaddie*/
-			$high_rank = $this->permissions->whitelist(array($army_name." Officers",));
-			if($high_rank && $selector == '')
-			{
-				$selector .= "<select name=\"army_mote\" id=\"army_mote\">";
-				$selector .= "<option value=\"none\" selected=\"selected\"> </option>";
-				$selector .= "<option value=\"set_officer\">".$this->user->lang['ABC_ARMY_SET_OFFICER']."</option>";
-				$selector .= "<option value=\"set_squaddie\">".$this->user->lang['ABC_ARMY_SET_SQUADDIE']."</option>";
-				$selector .= "</select><br>";
-				$selector .= "<input type=\"submit\" name=\"army_set\" id=\"army_set\" value=\"".$this->user->lang['ABC_ARMY_SET']."\" class=\"button1\"/>";
-			}
-			$squaddie_army_list = "<h2>".$this->user->lang['ABC_ARMY_SQUADDIE']."</h2>";
-			
-			$sql = "SELECT ugt.user_id from ".USER_GROUP_TABLE." AS ugt
-						RIGHT JOIN ".GROUPS_TABLE." AS gt ON gt.group_id = ugt.group_id
-						WHERE gt.group_name = '".$army_name."'";
-			$result = $this->db->sql_query($sql);
-			$rowset = $this->db->sql_fetchrowset();
-			$this->db->sql_freeresult($result);
-			
-			$squaddie_user_id = [];
-			if($rowset)
-			{
-				for($i=0; $i<count($rowset); $i++)
-				{
-					$squaddie_user_id[] = $rowset[$i]['user_id'];
-				}
-				$squaddie_user_id = array_diff($squaddie_user_id, $officer_user_id, $HC_user_id, $general_user_id);
-				
-				if(count($squaddie_user_id) > 0)
-				{
-					$sql_user_id = '';
-					foreach($squaddie_user_id as $user_id)
-					{
-						$sql_user_id .= "user_id = $user_id OR ";
-					}
-					$sql_user_id = substr($sql_user_id, 0, strlen($sql_user_id)-3);
-					
-					$sql = "SELECT username FROM ".USERS_TABLE." WHERE $sql_user_id";
-					$result = $this->db->sql_query($sql);
-					$username_rowset = $this->db->sql_fetchrowset();
-					$this->db->sql_freeresult($result);
-					if(!$username_rowset)
-					{
-						$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_SQD_UN']);
-						return;
-					}
-					
-					for($i=0; $i<count($username_rowset); $i++)
-					{
-						$username = $username_rowset[$i]['username'];
-						$squaddie_army_list .= "<p>$username";
-						if($high_rank)
-						{
-							$squaddie_army_list .= " <input type=\"checkbox\" id=\"$username\" name=\"$username\">";
-						}
-						$squaddie_army_list .= "</p>";
-					}
-				}
-			}
-			$squaddie_army_list .= "<br>";
-			$complete_army_list = $hc_army_list.$officer_army_list.$squaddie_army_list.$selector;
+			$idx = 0;
 		}
-		elseif($army == 'ta')
+		if($divisions[$idx]['division_icon'] != '')
 		{
-			/*TA*/
-			$complete_army_list .= "<h2>$army_name</h2>";
-			
-			$sql = "SELECT ut.username FROM ".USERS_TABLE." AS ut 
-						INNER JOIN ".USER_GROUP_TABLE." AS ugt ON ugt.user_id = ut.user_id
-						RIGHT JOIN ".GROUPS_TABLE." AS gt ON gt.group_id = ugt.group_id
-						WHERE gt.group_name = '$army_name'";
-			$result = $this->db->sql_query($sql);
-			$rowset = $this->db->sql_fetchrowset();
-			$this->db->sql_freeresult($result);
-			
-			for($i=0; $i<count($rowset); $i++)
+			$division_image = $divisions[$idx]['division_icon'];
+			$army_list .= "<div align=\"center\"><img src=\"/$division_image\" width=\"150\"></div><br>";
+		}
+		$division_name = $divisions[$idx]['division_name'];
+		$army_list .= "<div class=\"abc_division_name\">$division_name</div><br>";
+		$division_id = $divisions[$idx]['division_id'];
+		$sql = "SELECT au.user_bf3_name, au.rank_id, ar.rank_order, ar.rank_short, ar.rank_img FROM abc_users AS au
+				JOIN abc_ranks AS ar ON ar.rank_id = au.rank_id
+				WHERE au.campaign_id = $campaign_id AND au.army_id = $army_id AND au.division_id = $division_id
+				ORDER BY ar.rank_order DESC";
+		$result = $this->db->sql_query($sql);
+		$rowset = $this->db->sql_fetchrowset();
+		$this->db->sql_freeresult($result);
+		if($rowset)
+		{
+			foreach($rowset as $row)
 			{
-				$username = $rowset[$i]['username'];
-				$complete_army_list .= "<p>$username</p>";
+				$rank_img = $row['rank_img'];
+				$rank_short = $row['rank_short'];
+				$rank_order = $row['rank_order'];
+				$username = $row['user_bf3_name'];
+				if($rank_img != '')
+				{
+					$army_list .= "<img src=\"/$rank_img\" height=\"25\"> ";
+				}
+				$army_list .= "$rank_short $username";
+				if( ($user_is_officer && $user_rank_order > $rank_order) || $user_rank_order == 99 || $army == 'ta')
+				{
+					$username = str_replace(" ", "_", $username);
+					$army_list .= " <input type=\"checkbox\" id=\"$username\" name=\"$username\">";
+				}
+				$army_list .= "<br>";
+			}
+		}
+		$army_list .= "</div>";
+		$army_list .= "<div></div>";
+		
+		$min_div_num = 2;
+		if($army == 'ta')
+		{
+			$min_div_num = 1;
+		}
+		
+		/*Other Divisions*/
+		if(count($divisions) > $min_div_num)
+		{
+			for($i=$min_div_num; $i<count($divisions); $i++)
+			{
+				$army_list .= "<div class=\"abc_army_division\">";
+				if($divisions[$i]['division_icon'] != '')
+				{
+					$division_image = $divisions[$i]['division_icon'];
+					$army_list .= "<div align=\"center\"><img src=\"/$division_image\" width=\"150\"></div><br>";
+				}
+				$division_name = $divisions[$i]['division_name'];
+				$army_list .= "<div class=\"abc_division_name\">$division_name</div><br>";
+				$division_id = $divisions[$i]['division_id'];
+				$sql = "SELECT au.user_bf3_name, au.rank_id, ar.rank_order, ar.rank_short, ar.rank_img FROM abc_users AS au
+						JOIN abc_ranks AS ar ON ar.rank_id = au.rank_id
+						WHERE au.campaign_id = $campaign_id AND au.army_id = $army_id AND au.division_id = $division_id
+						ORDER BY ar.rank_order DESC";
+				$result = $this->db->sql_query($sql);
+				$rowset = $this->db->sql_fetchrowset();
+				$this->db->sql_freeresult($result);
+				if($rowset)
+				{
+					foreach($rowset as $row)
+					{
+						$rank_img = $row['rank_img'];
+						$rank_short = $row['rank_short'];
+						$rank_order = $row['rank_order'];
+						$username = $row['user_bf3_name'];
+						if($rank_img != '')
+						{
+							$army_list .= "<img src=\"/$rank_img\" height=\"25\"> ";
+						}
+						$army_list .= "$rank_short $username";
+						if( ($user_is_officer && $user_rank_order > $rank_order) || $user_rank_order == 99 || $army == 'ta')
+						{
+							$username = str_replace(" ", "_", $username);
+							$army_list .= " <input type=\"checkbox\" id=\"$username\" name=\"$username\">";
+						}
+						$army_list .= "<br>";
+					}
+				}
+				$army_list .= "</div>";
+			}
+			/*Add blanks*/
+			$buffer = (count($divisions)-$min_div_num) % 3;
+			if($buffer > 0)
+			{
+				$buffer = 3-$buffer;
+				for($i=0; $i<$buffer; $i++)
+				{
+					$army_list .= "<div></div>";
+				}
 			}
 		}
 		
+		/*New Recruits Division*/
+		if($army != 'ta')
+		{
+			$army_list .= "<div></div>";
+			$army_list .= "<div class=\"abc_army_division\">";
+			if($divisions[0]['division_icon'] != '')
+			{
+				$division_image = $divisions[0]['division_icon'];
+				$army_list .= "<div align=\"center\"><img src=\"/$division_image\" width=\"150\"></div><br>";
+			}
+			$division_name = $divisions[0]['division_name'];
+			$army_list .= "<div class=\"abc_division_name\">$division_name</div><br>";
+			$division_id = $divisions[0]['division_id'];
+			$sql = "SELECT au.user_bf3_name, au.rank_id, ar.rank_order, ar.rank_short, ar.rank_img FROM abc_users AS au
+					JOIN abc_ranks AS ar ON ar.rank_id = au.rank_id
+					WHERE au.campaign_id = $campaign_id AND au.army_id = $army_id AND au.division_id = $division_id
+					ORDER BY ar.rank_order DESC";
+			$result = $this->db->sql_query($sql);
+			$rowset = $this->db->sql_fetchrowset();
+			$this->db->sql_freeresult($result);
+			if($rowset)
+			{
+				foreach($rowset as $row)
+				{
+					$rank_img = $row['rank_img'];
+					$rank_short = $row['rank_short'];
+					$rank_order = $row['rank_order'];
+					$username = $row['user_bf3_name'];
+					if($rank_img != '')
+					{
+						$army_list .= "<img src=\"/$rank_img\" height=\"25\"> ";
+					}
+					$army_list .= "$rank_short $username";
+					if( ($user_is_officer && $user_rank_order > $rank_order) || $user_rank_order == 99)
+					{
+						$username = str_replace(" ", "_", $username);
+						$army_list .= " <input type=\"checkbox\" id=\"$username\" name=\"$username\">";
+					}
+					$army_list .= "<br>";
+				}
+			}
+			$army_list .= "</div>";
+			$army_list .= "<div></div>";
+		}
+		
+		/*Assign Medal/Rank/Division, Officer and up*/
+		if($user_is_officer || $army == 'ta')
+		{
+			/*Medal list*/
+			$sql = "SELECT medal_name, medal_id FROM abc_medals WHERE army_id = $army_id";
+			$result = $this->db->sql_query($sql);
+			$rowset = $this->db->sql_fetchrowset();
+			$this->db->sql_freeresult($result);
+			$army_list .= "<div>";
+			if($rowset)
+			{
+				$army_list .= "<select name=\"medal_choice\" id=\"medal_choice\">";
+				$army_list .= "<option value=\"none\" selected=\"selected\"> </option>";
+				for($i=0; $i<count($rowset); $i++)
+				{
+					$medal_name = $rowset[$i]['medal_name'];
+					$medal_id = $rowset[$i]['medal_id'];
+					$army_list .= "<option value=\"$medal_id\">$medal_name</option>";
+				}
+				$army_list .= "</select> ";
+				$army_list .= "<input type=\"submit\" name=\"award_medal\" id=\"award_medal\" value=\"".$this->user->lang['ABC_ARMY_MEDAL']."\" class=\"button1\"/>";
+				$army_list .= "<br>";
+				$army_list .= "<textarea class=\"abc_description\" name=\"medal_reason\" cols=\"40\" rows=\"5\" maxlength=\"309\" placeholder=\"".$this->user->lang['ABC_ARMY_MEDAL_REASON']."\"></textarea>";
+			}
+			$army_list .= "</div>";	
+			
+			/*Rank List*/
+			$sql = "SELECT rank_name, rank_id, rank_order FROM abc_ranks WHERE army_id = $army_id ORDER BY rank_order ASC";
+			$result = $this->db->sql_query($sql);
+			$rowset = $this->db->sql_fetchrowset();
+			$this->db->sql_freeresult($result);
+			$army_list .= "<div>";
+			if($rowset && count($rowset) > 1)
+			{
+				$army_list .= "<select name=\"rank_choice\" id=\"rank_choice\">";
+				$army_list .= "<option value=\"none\" selected=\"selected\"> </option>";
+				for($i=0; $i<count($rowset); $i++)
+				{
+					$rank_name = $rowset[$i]['rank_name'];
+					$rank_id = $rowset[$i]['rank_id'];
+					if($user_rank_order >= $rank_order || $user_rank_order == 99 || $army = 'ta')
+					{
+						$army_list .= "<option value=\"$rank_id\">$rank_name</option>";
+					}
+					else
+					{
+						break;
+					}
+				}
+				$army_list .= "</select> ";
+				$army_list .= "<input type=\"submit\" name=\"award_rank\" id=\"award_rank\" value=\"".$this->user->lang['ABC_ARMY_RANK']."\" class=\"button1\"/>";
+			}
+			$army_list .= "</div>";
+			
+			/*Division List*/
+			$sql = "SELECT division_name, division_id FROM abc_divisions WHERE army_id = $army_id";
+			$result = $this->db->sql_query($sql);
+			$rowset = $this->db->sql_fetchrowset();
+			$this->db->sql_freeresult($result);
+			$army_list .= "<div>";
+			if($rowset && count($rowset) > 1)
+			{
+				$army_list .= "<select name=\"division_choice\" id=\"division_choice\">";
+				$army_list .= "<option value=\"none\" selected=\"selected\"> </option>";
+				for($i=0; $i<count($rowset); $i++)
+				{
+					$division_name = $rowset[$i]['division_name'];
+					$division_id = $rowset[$i]['division_id'];
+					$army_list .= "<option value=\"$division_id\">$division_name</option>";
+				}
+				$army_list .= "</select> ";
+				$army_list .= "<input type=\"submit\" name=\"award_division\" id=\"award_division\" value=\"".$this->user->lang['ABC_ARMY_DIVISION']."\" class=\"button1\"/>";
+			}
+			$army_list .= "</div>";
+		}
+		
+		/*End army_list*/
+		$army_list .= "</div>";
+		
 		$this->template->assign_vars(array(
 			'ABC_ARMY_NAME'				=> $army_name,
-			'ABC_COMPLETE_ARMY_LIST'	=> $complete_army_list,
+			'ABC_COMPLETE_ARMY_LIST'	=> $army_list,
 		));
 		return;
 	}
 	
-	public function set_group()
+	public function award_medal()
+	{		
+		$medal_id = $this->request->variable('medal_choice', 'none');
+		if($medal_id == 'none')
+		{
+			$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_MEDAL_NONE']);
+			return;
+		}
+		
+		if(!function_exists('sql_abc_clean'))
+		{
+			include $this->root_path . '/ext/globalconflict/abc/include/abc_sql_clean.php';
+		}
+		$award_reason = sql_abc_clean($this->request->variable('medal_reason', ''));
+		
+		$user_ids = [];
+		$campaign_id = -1;
+		$army_name = '';
+		if(!$this->get_user_ids($user_ids, $campaign_id, $army_name))
+		{
+			$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_MEDAL_DATA']);
+			return;
+		}
+		
+		if(count($user_ids) > 0)
+		{
+			$award_time_stamp = strtotime("now");
+			
+			/*Get award_id*/
+			$sql = "SELECT MAX(award_id) FROM abc_medal_awards";
+			$result = $this->db->sql_query($sql);
+			$award_id = $this->db->sql_fetchfield('MAX(award_id)');
+			$this->db->sql_freeresult($result);
+						
+			foreach($user_ids as $user_id)
+			{
+				$award_id++;
+				$sql = "INSERT INTO abc_medal_awards VALUES ($award_id, $campaign_id, $user_id, $medal_id, $award_time_stamp, '$award_reason')";
+				$result = $this->db->sql_query($sql);
+				$this->db->sql_freeresult($result);
+			}
+		}
+		else
+		{
+			$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_MEDAL_USER']);
+			return;
+		}
+		
+		$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_MEDAL_SUCCESS']);
+		return;
+	}
+	
+	public function award_rank()
 	{
+		$rank_id = $this->request->variable('rank_choice', 'none');
+		if($rank_id == 'none')
+		{
+			$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_RANK_NONE']);
+			return;
+		}
+		
+		$user_ids = [];
+		$campaign_id = -1;
+		$army_name = '';
+		if(!$this->get_user_ids($user_ids, $campaign_id, $army_name))
+		{
+			$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_RANK_DATA']);
+			return;
+		}
+		
+		/*Get rank_phpbb_id and rank_is_officer*/
+		$sql = "SELECT rank_phpbb_id, rank_is_officer FROM abc_ranks WHERE rank_id = $rank_id";
+		$result = $this->db->sql_query($sql);
+		$row = $this->db->sql_fetchrow();
+		$this->db->sql_freeresult($result);
+		
+		$rank_phpbb_id = $row['rank_phpbb_id'];
+		$rank_is_officer = $row['rank_is_officer'];
+		
+		/*Award abc rank*/
+		$sql = "UPDATE abc_users SET rank_id = $rank_id WHERE";
+		$sql_users = "";
+		foreach($user_ids as $user_id)
+		{
+			$sql_users .= " user_id = $user_id  OR";
+		}
+		$sql .= $sql_users;
+		$sql = substr($sql, 0, strlen($sql)-3);
+		$result = $this->db->sql_query($sql);
+		$this->db->sql_freeresult($result);
+		
+		/*Award phpbb rank*/
+		$sql = "UPDATE phpbb_users SET user_rank = $rank_phpbb_id WHERE";
+		$sql .= $sql_users;
+		$sql = substr($sql, 0, strlen($sql)-3);
+		$result = $this->db->sql_query($sql);
+		$this->db->sql_freeresult($result);
+		
+		/*Get Officer group_id*/
+		$sql = "SELECT group_id, group_name FROM ".GROUPS_TABLE." WHERE group_name = '".$army_name." Officers'";
+		$result = $this->db->sql_query($sql);
+		$group_id = $this->db->sql_fetchfield('group_id');
+		$this->db->sql_freeresult($result);
+		
+		/*Strip officer group*/
+		include $this->root_path . 'includes/functions_user.php';
+		group_user_del($group_id, $user_id_ary = $user_ids);
+		
+		/*If officer rank, add to officer group*/
+		if($rank_is_officer == 1)
+		{
+			group_user_add($group_id, $user_id_ary = $user_ids);
+		}
+		
+		$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_RANK_SUCCESS']);
+		return;
+	}
+	
+	public function award_division()
+	{
+		$division_id = $this->request->variable('division_choice', 'none');
+		if($division_id == 'none')
+		{
+			$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_DIVISION_NONE']);
+			return;
+		}
+		
+		$user_ids = [];
+		$campaign_id = -1;
+		$army_name = '';
+		if(!$this->get_user_ids($user_ids, $campaign_id, $army_name))
+		{
+			$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_DIVISION_DATA']);
+			return;
+		}
+		
+		/*Get division_is_hc*/
+		$sql = "SELECT division_is_hc FROM abc_divisions WHERE division_id = $division_id";
+		$result = $this->db->sql_query($sql);
+		$division_is_hc = $this->db->sql_fetchfield('division_is_hc');
+		$this->db->sql_freeresult($result);
+		
+		/*Award abc division*/
+		$sql = "UPDATE abc_users SET division_id = $division_id WHERE";
+		$sql_users = "";
+		foreach($user_ids as $user_id)
+		{
+			$sql_users .= " user_id = $user_id  OR";
+		}
+		$sql .= $sql_users;
+		$sql = substr($sql, 0, strlen($sql)-3);
+		$result = $this->db->sql_query($sql);
+		$this->db->sql_freeresult($result);
+		
+		/*Get HC group_id*/
+		$sql = "SELECT group_id, group_name FROM ".GROUPS_TABLE." WHERE group_name = '".$army_name." HC'";
+		$result = $this->db->sql_query($sql);
+		$group_id = $this->db->sql_fetchfield('group_id');
+		$this->db->sql_freeresult($result);
+		
+		/*Strip HC group*/
+		include $this->root_path . 'includes/functions_user.php';
+		group_user_del($group_id, $user_id_ary = $user_ids);
+		
+		/*If hc division, add to hc group*/
+		if($division_is_hc == 1 && $army_name != $this->config['ta_name'])
+		{
+			group_user_add($group_id, $user_id_ary = $user_ids);
+		}
+		
+		$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_DIVISION_SUCCESS']);
+		return;
+	}
+	
+	public function get_user_ids(&$user_ids, &$campaign_id, &$army_name)
+	{
+		/*Get campaign_id*/
+		$sql = "SELECT MAX(campaign_id) FROM abc_campaigns";
+		$result = $this->db->sql_query($sql);
+		$campaign_id = $this->db->sql_fetchfield('MAX(campaign_id)');
+		$this->db->sql_freeresult($result);
+		
 		/*Get user army*/
 		$army = '';
 		$army_name = '';
@@ -318,88 +536,31 @@ class abc_army
 			}
 		}
 		
-		$set_to = $this->request->variable('army_mote', '');
-		if($set_to == '')
-		{
-			$this->template->assign_vars(array(
-				'ABC_ARMY_NAME'				=> $army_name,
-				'ABC_COMPLETE_ARMY_LIST'	=> $this->user->lang['ABC_ARMY_ERR_SET_GROUP'],
-			));
-			return;
-		}
+		/*Get army user data*/
+		$sql = "SELECT au.user_id, au.user_bf3_name
+				FROM abc_users AS au
+				LEFT JOIN abc_armies AS aa ON au.army_id = aa.army_id
+				WHERE aa.campaign_id = $campaign_id AND aa.army_name = '$army_name'";
+		$result = $this->db->sql_query($sql);
+		$rowset = $this->db->sql_fetchrowset();
+		$this->db->sql_freeresult($result);
 		
-		/**Promote/demote users**/
-		if( ($army == 'army1' || $army == 'armyb') && $set_to != 'none')
+		if($rowset)
 		{
-			/*Get user_id and username of army members*/
-			$sql = "SELECT ut.user_id, ut.username FROM ".USERS_TABLE." AS ut 
-						INNER JOIN ".USER_GROUP_TABLE." AS ugt ON ugt.user_id = ut.user_id
-						RIGHT JOIN ".GROUPS_TABLE." AS gt ON gt.group_id = ugt.group_id
-						WHERE gt.group_name = '$army_name'";
-			$result = $this->db->sql_query($sql);
-			$rowset = $this->db->sql_fetchrowset();
-			$this->db->sql_freeresult($result);
-			if(!$rowset)
-			{
-				$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_SQL_JOIN']);
-				return;
-			}
-			
-			$user_id = [];
 			for($i=0; $i<count($rowset); $i++)
 			{
-				$username = str_replace(" ", "_", $rowset[$i]['username']);
-				$user_selected = $this->request->variable($username, false);
-				if($user_selected)
+				$username = str_replace(" ", "_", $rowset[$i]['user_bf3_name']);
+				$do_things = $this->request->variable($username, false);
+				if($do_things)
 				{
-					$user_id[] = $rowset[$i]['user_id'];
-				}
-			}
-			
-			$user_id = array_unique($user_id);
-			if(count($user_id) > 0)
-			{
-				/*Get Group ids*/
-				$sql = "SELECT group_id, group_name FROM ".GROUPS_TABLE." WHERE group_name = '".$army_name." HC' OR group_name = '".$army_name." Officers'";
-				$result = $this->db->sql_query($sql);
-				$rowset = $this->db->sql_fetchrowset();
-				$this->db->sql_freeresult($result);
-				if(count($rowset) != 2)
-				{
-					$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_HC_OFF']);
-					return;
-				}
-				$HC_id = $officer_id = new \stdClass();
-				for($i=0; $i<count($rowset); $i++)
-				{
-					if($rowset[$i]['group_name'] == $army_name." HC")
-					{
-						$HC_id = $rowset[$i]['group_id'];
-					}
-					elseif($rowset[$i]['group_name'] == $army_name." Officers")
-					{
-						$officer_id = $rowset[$i]['group_id'];
-					}
-				}
-				
-				include $this->root_path . 'includes/functions_user.php';
-				/*Strip all groups*/
-				group_user_del($HC_id, $user_id_ary = $user_id);
-				group_user_del($officer_id, $user_id_ary = $user_id);
-				/*Assign new groups*/
-				if($set_to == 'set_HC')
-				{
-					group_user_add($HC_id, $user_id_ary = $user_id);
-					group_user_add($officer_id, $user_id_ary = $user_id);
-				}
-				elseif($set_to == 'set_officer')
-				{
-					group_user_add($officer_id, $user_id_ary = $user_id);
+					$user_ids[] = $rowset[$i]['user_id'];
 				}
 			}
 		}
-		
-		$this->army_list();
-		return;
+		else
+		{
+			return false;
+		}
+		return true;
 	}
 }

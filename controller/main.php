@@ -169,10 +169,22 @@ class main
 			$this->abc_draft->run_draft();		
 			return $this->helper->render('abc_draft_list.html', $name);
 		}
-		/*Set Army List*/
-		if($this->request->is_set_post('army_set'))
+		/*Award Medal*/
+		if($this->request->is_set_post('award_medal'))
 		{
-			$this->abc_army->set_group();
+			$this->abc_army->award_medal();
+			return $this->helper->render('abc_army.html', $name);
+		}
+		/*Award Rank*/
+		if($this->request->is_set_post('award_rank'))
+		{
+			$this->abc_army->award_rank();
+			return $this->helper->render('abc_army.html', $name);
+		}
+		/*Move Division*/
+		if($this->request->is_set_post('award_division'))
+		{
+			$this->abc_army->award_division();
 			return $this->helper->render('abc_army.html', $name);
 		}
 		/*Create Forum*/

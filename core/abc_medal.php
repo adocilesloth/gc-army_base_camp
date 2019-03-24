@@ -74,9 +74,18 @@ class abc_medal
 		$army_id = -1;
 		$medal_path = "";
 		$this->get_medal_path($medal_path, $army_id);
-			
+		//return;
 		/*Get existing medals*/
 		$sql = "SELECT medal_id, medal_name, medal_img, medal_ribbon, medal_description FROM abc_medals WHERE army_id = $army_id";
+		/*$this->template->assign_vars(array(
+			'ABC_LOGISTICS_TITLE'		=> $this->user->lang['ABC_MEDAL_TITLE'],
+			'ABC_LOGISTICS_EXPLAIN'		=> $this->user->lang['ABC_MEDAL_EXPLAIN'],
+			'ABC_LOGISTICS_NEW'			=> $this->user->lang['ABC_MEDAL_NEW'],
+			'ABC_LOGISTICS_CREATE'		=> $sql,
+			'ABC_LOGISTICS_EXIST'		=> $this->user->lang['ABC_MEDAL_EXIST'],
+			'ABC_LOGISTICS_EXISTING'	=> $sql,
+		));	
+		return;*/
 		$result = $this->db->sql_query($sql);
 		$rowset = $this->db->sql_fetchrowset();
 		$this->db->sql_freeresult($result);
@@ -396,19 +405,9 @@ class abc_medal
 		$campaign_id = $this->db->sql_fetchfield('MAX(campaign_id)');
 		$this->db->sql_freeresult($result);
 		
-		/*Get army*/
-		$army = '';
-		if($this->user->data['username'] == $this->config['army1_general'])
-		{
-			$army = $this->config['army1_name'];
-		}
-		elseif($this->user->data['username'] == $this->config['armyb_general'])
-		{
-			$army = $this->config['armyb_name'];
-		}
-		
-		/*Get army id*/
-		$sql = "SELECT army_id FROM abc_armies WHERE campaign_id = $campaign_id AND army_name = '$army'";
+		/*Get army_id*/
+		$user_id = $this->user->data['user_id'];
+		$sql = "SELECT army_id FROM abc_users WHERE user_id = $user_id and campaign_id = $campaign_id";
 		$result = $this->db->sql_query($sql);
 		$army_id = $this->db->sql_fetchfield('army_id');
 		$this->db->sql_freeresult($result);

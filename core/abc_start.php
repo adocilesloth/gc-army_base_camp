@@ -42,17 +42,27 @@ class abc_start
 	/*Start Page*/
 	public function start_page()
 	{
+		if(!function_exists('sql_abc_clean'))
+		{
+			include $this->root_path . '/ext/globalconflict/abc/include/abc_sql_clean.php';
+		}
 		$campaign_name = sql_abc_unclean($this->config['campaign_name']);
 		$campaign_divisions = sql_abc_unclean($this->config['campaign_divisions']);
+		
 		$army1_name = sql_abc_unclean($this->config['army1_name']);
+		$army1_tag = sql_abc_unclean($this->config['army1_tag']);
 		$army1_colour = sql_abc_unclean($this->config['army1_colour']);
 		$army1_general = sql_abc_unclean($this->config['army1_general']);
 		$army1_password = sql_abc_unclean($this->config['army1_password']);
+		
 		$armyb_name = sql_abc_unclean($this->config['armyb_name']);
+		$armyb_tag = sql_abc_unclean($this->config['armyb_tag']);
 		$armyb_colour = sql_abc_unclean($this->config['armyb_colour']);
 		$armyb_general = sql_abc_unclean($this->config['armyb_general']);
 		$armyb_password = sql_abc_unclean($this->config['armyb_password']);
+		
 		$ta_name = sql_abc_unclean($this->config['ta_name']);
+		$ta_tag = sql_abc_unclean($this->config['ta_tag']);
 		$ta_colour = sql_abc_unclean($this->config['ta_colour']);
 		$ta_general = sql_abc_unclean($this->config['ta_general']);
 		$ta_password = sql_abc_unclean($this->config['ta_password']);
@@ -61,14 +71,19 @@ class abc_start
 			'ABC_START_NAME'		=> $campaign_name,
 			'ABC_START_DIV'			=> $campaign_divisions,
 			'ABC_START_ARMY1'		=> $army1_name,
+			'ABC_START_TAG1'		=> $army1_tag,
 			'ABC_START_COL1'		=> $army1_colour,
 			'ABC_START_GEN1'		=> $army1_general,
 			'ABC_START_PW1'			=> $army1_password,
+			
 			'ABC_START_ARMYB'		=> $armyb_name,
+			'ABC_START_TAGB'		=> $armyb_tag,
 			'ABC_START_COLB'		=> $armyb_colour,
 			'ABC_START_GENB'		=> $armyb_general,
 			'ABC_START_PWB'			=> $armyb_password,
+			
 			'ABC_START_TA'			=> $ta_name,
+			'ABC_START_TAGTA'			=> $ta_tag,
 			'ABC_START_COLTA'		=> $ta_colour,
 			'ABC_START_GENTA'		=> $ta_general,
 			'ABC_START_PWTA'		=> $ta_password,
@@ -89,14 +104,19 @@ class abc_start
 		if($this->request->variable('campaign_name', '', true) == '' or
 			$this->request->variable('campaign_divisions', '', true) == '' or
 			$this->request->variable('army1_name', '', true) == '' or
+			$this->request->variable('army1_tag', '', true) == '' or
 			$this->request->variable('army1_colour', '') == '' or
 			$this->request->variable('army1_general', '', true) == '' or
 			$this->request->variable('army1_password', '', true) == '' or
+			
 			$this->request->variable('armyb_name', '', true) == '' or
+			$this->request->variable('armyb_tag', '', true) == '' or
 			$this->request->variable('armyb_colour', '') == '' or
 			$this->request->variable('armyb_general', '', true) == '' or
 			$this->request->variable('armyb_password', '', true) == '' or
+			
 			$this->request->variable('ta_name', '', true) == '' or
+			$this->request->variable('ta_tag', '', true) == '' or
 			$this->request->variable('ta_colour', '') == '' or
 			$this->request->variable('ta_general', '', true) == '' or
 			$this->request->variable('ta_password', '', true) == '')
@@ -136,16 +156,19 @@ class abc_start
 				$this->config->set('campaign_divisions', sql_abc_clean($this->request->variable('campaign_divisions', 'Infantry,Armour,Air', true)));
 				/*Army 1 Settings*/
 				$this->config->set('army1_name', sql_abc_clean($this->request->variable('army1_name', '', true)));
+				$this->config->set('army1_tag', sql_abc_clean($this->request->variable('army1_tag', '', true)));
 				$this->config->set('army1_colour', sql_abc_clean($this->request->variable('army1_colour', '084CA1')));
 				$this->config->set('army1_general', sql_abc_clean($this->request->variable('army1_general', '', true)));
 				$this->config->set('army1_password', sql_abc_clean($this->request->variable('army1_password', '', true)));
 				/*Army B Settings*/
 				$this->config->set('armyb_name', sql_abc_clean($this->request->variable('armyb_name', '', true)));
+				$this->config->set('armyb_tag', sql_abc_clean($this->request->variable('armyb_tag', '', true)));
 				$this->config->set('armyb_colour', sql_abc_clean($this->request->variable('armyb_colour', 'ED1C24')));
 				$this->config->set('armyb_general', sql_abc_clean($this->request->variable('armyb_general', '', true)));
 				$this->config->set('armyb_password', sql_abc_clean($this->request->variable('armyb_password', '', true)));
 				/*TA Settings*/
 				$this->config->set('ta_name', sql_abc_clean($this->request->variable('ta_name', 'Tournament Administrators', true)));
+				$this->config->set('ta_tag', sql_abc_clean($this->request->variable('ta_tag', 'TA', true)));
 				$this->config->set('ta_colour', sql_abc_clean($this->request->variable('ta_colour', '0099FF')));
 				$this->config->set('ta_general', sql_abc_clean($this->request->variable('ta_general', '', true)));
 				$this->config->set('ta_password', sql_abc_clean($this->request->variable('ta_password', '', true)));
@@ -230,11 +253,27 @@ class abc_start
 				$result = $this->db->sql_query($sql);
 				$this->db->sql_freeresult($result);
 				
+				/*Create folders for Medals/Ranks/Divisions*/
+				mkdir($this->root_path."ext/globalconflict/abc/images/medals/".$campaign_id);
+				mkdir($this->root_path."ext/globalconflict/abc/images/ranks/".$campaign_id);
+				mkdir($this->root_path."ext/globalconflict/abc/images/divisions/".$campaign_id);
+				
 				/*Update abc_armies and abc_users tables*/
+				/*Update abc_ranks and abc_divisions tables*/
 				/*This uses the old ABC database, some columns are nolonger used*/
 				$sql = "SELECT MAX(army_id) from abc_armies";
 				$result = $this->db->sql_query($sql);
 				$army_id = $this->db->sql_fetchfield('MAX(army_id)');
+				$this->db->sql_freeresult($result);
+				
+				$sql = "SELECT MAX(rank_id) from abc_ranks";
+				$result = $this->db->sql_query($sql);
+				$rank_id = $this->db->sql_fetchfield('MAX(rank_id)');
+				$this->db->sql_freeresult($result);
+				
+				$sql = "SELECT MAX(division_id) from abc_divisions";
+				$result = $this->db->sql_query($sql);
+				$division_id = $this->db->sql_fetchfield('MAX(division_id)');
 				$this->db->sql_freeresult($result);
 				
 				$armies = array('army1_', 'armyb_', 'ta_');
@@ -242,13 +281,13 @@ class abc_start
 				{
 					$army_id++;
 					$army_name = $this->config[$army.'name'];
+					$army_tag = $this->config[$army.'tag'];
 					$army_general_name = $this->config[$army.'general'];
 					$sql = "SELECT user_id FROM ".USERS_TABLE." WHERE username = '$army_general_name'";
 					$result = $this->db->sql_query($sql);
 					$army_general = $this->db->sql_fetchfield('user_id');
 					$this->db->sql_freeresult($result);
 					$army_colour = $this->config[$army.'colour'];
-					$army_tag = 'NA';
 					$army_join_pw = $this->config[$army.'password'];
 					$army_ts_pw = 'gcfun';
 					$army_is_neutral = 0;
@@ -257,14 +296,106 @@ class abc_start
 						$army_is_neutral = 1;
 					}
 					
+					/*Create Army*/
 					$sql = "INSERT INTO abc_armies VALUES ($army_id, $campaign_id, '$army_name', $army_general, '$army_colour', 
 							'NANA', '$army_tag', '$army_join_pw', '$army_ts_pw', $army_is_neutral, 0, 0, 0, $campaign_time_stamp)";
 					$result = $this->db->sql_query($sql);
 					$this->db->sql_freeresult($result);
 					
+					/*Create folders for Medals/Ranks/Divisions*/
+					mkdir($this->root_path."ext/globalconflict/abc/images/medals/".$campaign_id."/".$army_id);
+					mkdir($this->root_path."ext/globalconflict/abc/images/ranks/".$campaign_id."/".$army_id);
+					mkdir($this->root_path."ext/globalconflict/abc/images/divisions/".$campaign_id."/".$army_id);
+					
+					$rank_phpbb_id = -1;
+					if($army == 'army1_' or $army == 'armyb_')
+					{
+						/*Create General and New Recruit Ranks*/
+						$rank_names = array('New Recruit', 'General');
+						foreach($rank_names as $rank_name)
+						{
+							$rank_id++;
+							$rank_order = 99;
+							$rank_is_officer = 1;
+							if($rank_name == 'New Recruit')
+							{
+								$rank_order = 1;
+								$rank_is_officer = 0;
+							}
+							
+							/*rank_id in phpbb_ranks auto increments, so we need to make the rank THEN find rank_phpbb_id*/
+							$sql = "INSERT INTO phpbb_ranks (rank_title, rank_min, rank_special, rank_image) VALUES ('$army_id. $rank_name', 0, 1, '')";
+							$result = $this->db->sql_query($sql);
+							$this->db->sql_freeresult($result);
+							
+							$sql = "SELECT MAX(rank_id) FROM phpbb_ranks";
+							$result = $this->db->sql_query($sql);
+							$rank_phpbb_id = $this->db->sql_fetchfield('MAX(rank_id)');
+							$this->db->sql_freeresult($result);
+							
+							$sql = "INSERT INTO abc_ranks VALUES ($rank_id, $rank_phpbb_id, $army_id, '$rank_name', '', $rank_order, $rank_is_officer, '', '', $campaign_time_stamp)";
+							$result = $this->db->sql_query($sql);
+							$this->db->sql_freeresult($result);
+						}
+						/*Create HC and New Recruit Divisions*/
+						$division_names = array('New Recruits', 'HC');
+						foreach($division_names as $division_name)
+						{
+							$division_id++;
+							$division_is_default = 0;
+							$division_is_hc = 1;
+							if($division_name == 'New Recruits')
+							{
+								$division_is_default = 1;
+								$division_is_hc = 0;
+							}
+							$sql = "INSERT INTO abc_divisions VALUES ($division_id, $army_id, '$division_name', 0, $division_is_default, $division_is_hc, '', $campaign_time_stamp, '')";
+							$result = $this->db->sql_query($sql);
+							$this->db->sql_freeresult($result);
+						}
+					}
+					else /*if($army = 'ta_')*/
+					{
+						$rank_id++;
+						$rank_order = 1;
+						$rank_is_officer = 1;
+						
+						/*rank_id in phpbb_ranks auto increments, so we need to make the rank THEN find rank_phpbb_id*/
+						$sql = "INSERT INTO phpbb_ranks (rank_title, rank_min, rank_special, rank_image) VALUES ('$army_id. $army_name', 0, 1, '')";
+						$result = $this->db->sql_query($sql);
+						$this->db->sql_freeresult($result);
+						
+						$sql = "SELECT MAX(rank_id) FROM phpbb_ranks";
+						$result = $this->db->sql_query($sql);
+						$rank_phpbb_id = $this->db->sql_fetchfield('MAX(rank_id)');
+						$this->db->sql_freeresult($result);
+							
+						$sql = "INSERT INTO abc_ranks VALUES ($rank_id, $rank_phpbb_id, $army_id, '$army_name', '', $rank_order, $rank_is_officer, '', '', $campaign_time_stamp)";
+						$result = $this->db->sql_query($sql);
+						$this->db->sql_freeresult($result);
+						
+						$division_id++;
+						$division_is_default = 1;
+						$division_is_hc = 1;
+						$sql = "INSERT INTO abc_divisions VALUES ($division_id, $army_id, '$army_name', 0, $division_is_default, $division_is_hc, '', $campaign_time_stamp, '')";
+						$result = $this->db->sql_query($sql);
+						$this->db->sql_freeresult($result);
+					}
+					
 					$abc_user_id = 0;
-					$other_nonsense = "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0";
-					$sql = "INSERT INTO abc_users VALUES ($abc_user_id, $army_general, $campaign_id, $army_id, 0, 0, 'img', 0, '$army_general_name', '', '', '', '', $campaign_time_stamp, '', $other_nonsense)";
+					/*Want to store pre campaign rank to recover it later*/
+					/*store in user_soldierid in abc_users*/
+					$sql = "SELECT user_rank FROM phpbb_users WHERE user_id = $army_general";
+					$result = $this->db->sql_query($sql);
+					$user_soldierid = $this->db->sql_fetchfield('user_rank');
+					$this->db->sql_freeresult($result);
+					
+					$other_nonsense = "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0";
+					$sql = "INSERT INTO abc_users VALUES ($abc_user_id, $army_general, $campaign_id, $army_id, $division_id, $rank_id, 'img', 0, '$army_general_name', '', '', '', '', $campaign_time_stamp, '', $user_soldierid, $other_nonsense)";
+					$result = $this->db->sql_query($sql);
+					$this->db->sql_freeresult($result);
+					
+					$sql = "UPDATE phpbb_users SET user_rank = $rank_phpbb_id WHERE user_id = $army_general";
 					$result = $this->db->sql_query($sql);
 					$this->db->sql_freeresult($result);
 				}

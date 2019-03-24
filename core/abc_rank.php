@@ -63,9 +63,12 @@ class abc_rank
 		/*rank_short*/
 		$rank_create .= "<dl><dt><label for=\"rank_short\">".$this->user->lang['ABC_RANK_SHORT']."</label><br><span></span></dt>";
 		$rank_create .= "<dd><input type=\"text\" name=\"rank_short\" value=\"\" maxlength=\"14\" size=\"39\" /></dd></dl>";
+		/*rank tag*/
+		$rank_create .= "<dl><dt><label for=\"rank_tag\">".$this->user->lang['ABC_RANK_TAG']."</label><br><span></span></dt>";
+		$rank_create .= "<dd><input type=\"text\" name=\"rank_tag\" value=\"\" maxlength=\"3\" size=\"3\" /></dd></dl>";
 		/*rank_order*/
 		$rank_create .= "<dl><dt><label for=\"rank_order\">".$this->user->lang['ABC_RANK_ORDER']."</label><br><span>".$this->user->lang['ABC_RANK_ORDER_EXPL']."</span></dt>";
-		$rank_create .= "<dd><input type=\"text\" name=\"rank_order\" value=\"\" maxlength=\"2\" size=\"2\" /></dd></dl>";
+		$rank_create .= "<dd><input type=\"text\" name=\"rank_order\" value=\"\" maxlength=\"2\" size=\"3\" /></dd></dl>";
 		/*rank_image*/
 		$rank_create .= "<dl><dt><label for=\"rank_image\">".$this->user->lang['ABC_RANK_IMAGE']."</label></dt>";
 		$rank_create .= "<dd><input type=\"file\" name=\"rank_image\" id=\"rank_image\" class=\"inputbox autowidth\"/></dd></dl>";
@@ -78,9 +81,9 @@ class abc_rank
 		$army_id = -1;
 		$rank_path = "";
 		$this->get_rank_path($rank_path, $army_id);
-			
+		
 		/*Get existing ranks*/
-		$sql = "SELECT rank_id, rank_name, rank_short, rank_order, rank_is_officer, rank_img FROM abc_ranks WHERE army_id = $army_id ORDER BY rank_order DESC";
+		$sql = "SELECT rank_id, rank_name, rank_short, rank_order, rank_is_officer, rank_img, rank_tag FROM abc_ranks WHERE army_id = $army_id ORDER BY rank_order DESC";
 		$result = $this->db->sql_query($sql);
 		$rowset = $this->db->sql_fetchrowset();
 		$this->db->sql_freeresult($result);
@@ -104,6 +107,7 @@ class abc_rank
 			$rank_id = $rowset[$i]['rank_id'];
 			$rank_name = sql_abc_unclean($rowset[$i]['rank_name']);
 			$rank_short = sql_abc_unclean($rowset[$i]['rank_short']);
+			$rank_tag = sql_abc_unclean($rowset[$i]['rank_tag']);
 			$rank_order = $rowset[$i]['rank_order'];
 			$disabled = '';
 			if($rank_order == 1 || $rank_order == 99)
@@ -130,9 +134,12 @@ class abc_rank
 			/*rank_short*/
 			$rank_list .= "<dl><dt><label for=\"rank_short\">".$this->user->lang['ABC_RANK_SHORT']."</label><br><span></span></dt>";
 			$rank_list .= "<dd><input type=\"text\" name=\"rank_short_".$rank_id."\" value=\"$rank_short\" maxlength=\"14\" size=\"39\" /></dd></dl>";
+			/*rank tag*/
+			$rank_list .= "<dl><dt><label for=\"rank_tag\">".$this->user->lang['ABC_RANK_TAG']."</label><br><span></span></dt>";
+			$rank_list .= "<dd><input type=\"text\" name=\"rank_tag_".$rank_id."\" value=\"$rank_tag\" maxlength=\"3\" size=\"3\" /></dd></dl>";
 			/*rank_order*/
 			$rank_list .= "<dl><dt><label for=\"rank_order\">".$this->user->lang['ABC_RANK_ORDER']."</label><br><span>".$this->user->lang['ABC_RANK_ORDER_EXPL']."</span></dt>";
-			$rank_list .= "<dd><input type=\"text\" name=\"rank_order_".$rank_id."\" value=\"$rank_order\" maxlength=\"2\" size=\"2\" $disabled /></dd></dl>";
+			$rank_list .= "<dd><input type=\"text\" name=\"rank_order_".$rank_id."\" value=\"$rank_order\" maxlength=\"2\" size=\"3\" $disabled /></dd></dl>";
 			/*rank_image*/
 			$rank_list .= "<dl><dt><label for=\"rank_image_".$rank_id."\">".$this->user->lang['ABC_RANK_IMAGE']."</label></dt>";
 			if($rowset[$i]['rank_img'] != '')
@@ -221,6 +228,24 @@ class abc_rank
 			}
 			rename($rank_path.$file->get('realname'), $rank_image);
 		}
+			
+		$rank_name = sql_abc_clean($this->request->variable('rank_name', '', true));
+		$rank_short = sql_abc_clean($this->request->variable('rank_short', '', true));
+		$rank_tag = sql_abc_clean($this->request->variable('rank_tag', '', true));
+		$rank_is_officer = (int)$this->request->variable('rank_is_officer', false);
+		$rank_time_stamp = strtotime("now");
+		
+		/*Add rank to phpbb_ranks*/
+		/*rank_id in phpbb_ranks auto increments, so we need to make the rank THEN find rank_phpbb_id*/
+		$sql = "INSERT INTO phpbb_ranks (rank_title, rank_min, rank_special, rank_image) VALUES ('$army_id. $rank_name', 0, 1, '../../$rank_image')";
+		$result = $this->db->sql_query($sql);
+		$this->db->sql_freeresult($result);
+		
+		/*get rank_phpbb_id*/
+		$sql = "SELECT MAX(rank_id) FROM phpbb_ranks";
+		$result = $this->db->sql_query($sql);
+		$rank_phpbb_id = $this->db->sql_fetchfield('MAX(rank_id)');
+		$this->db->sql_freeresult($result);
 		
 		/*Get rank_id*/
 		$sql = "SELECT MAX(rank_id) FROM abc_ranks";
@@ -229,25 +254,8 @@ class abc_rank
 		$this->db->sql_freeresult($result);
 		$rank_id++;
 		
-		/*get rank_phpbb_id*/
-		$sql = "SELECT MAX(rank_id) FROM phpbb_ranks";
-		$result = $this->db->sql_query($sql);
-		$rank_phpbb_id = $this->db->sql_fetchfield('MAX(rank_id)');
-		$this->db->sql_freeresult($result);
-		$rank_phpbb_id++;
-		
-		$rank_name = sql_abc_clean($this->request->variable('rank_name', '', true));
-		$rank_short = sql_abc_clean($this->request->variable('rank_short', '', true));
-		$rank_is_officer = (int)$this->request->variable('rank_is_officer', false);
-		$rank_time_stamp = strtotime("now");
-		
 		/*Add rank to abc_ranks*/
-		$sql = "INSERT INTO abc_ranks VALUES ($rank_id, $rank_phpbb_id, $army_id, '$rank_name', '$rank_short', $rank_order, $rank_is_officer, '$rank_image', 'TAG', $rank_time_stamp)";
-		$result = $this->db->sql_query($sql);
-		$this->db->sql_freeresult($result);
-		
-		/*Add rank to phpbb_ranks*/
-		$sql = "INSERT INTO phpbb_ranks VALUES ($rank_phpbb_id, '$army_id. $rank_name', 0, 1, '../../$rank_image')";
+		$sql = "INSERT INTO abc_ranks VALUES ($rank_id, $rank_phpbb_id, $army_id, '$rank_name', '$rank_short', $rank_order, $rank_is_officer, '$rank_image', '$rank_tag', $rank_time_stamp)";
 		$result = $this->db->sql_query($sql);
 		$this->db->sql_freeresult($result);
 		
@@ -334,10 +342,13 @@ class abc_rank
 		
 		$rank_name = sql_abc_clean($this->request->variable('rank_name_'.$rank_id, '', true));
 		$rank_short = sql_abc_clean($this->request->variable('rank_short_'.$rank_id, '', true));
+		$rank_tag = sql_abc_clean($this->request->variable('rank_tag_'.$rank_id, '', true));
 		$rank_is_officer = (int)$this->request->variable('rank_is_officer_'.$rank_id, false);
 		
 		/*Update rank in abc_ranks*/
-		$sql = "UPDATE abc_ranks SET rank_name = '$rank_name', rank_short = '$rank_short', rank_order = $rank_order, rank_is_officer = $rank_is_officer, rank_img = '$rank_image' WHERE rank_id = $rank_id";
+		$sql = "UPDATE abc_ranks 
+				SET rank_name = '$rank_name', rank_short = '$rank_short', rank_order = $rank_order, rank_is_officer = $rank_is_officer, rank_img = '$rank_image', rank_tag = '$rank_tag' 
+				WHERE rank_id = $rank_id";
 		$result = $this->db->sql_query($sql);
 		$this->db->sql_freeresult($result);
 		
@@ -405,19 +416,9 @@ class abc_rank
 		$campaign_id = $this->db->sql_fetchfield('MAX(campaign_id)');
 		$this->db->sql_freeresult($result);
 		
-		/*Get army*/
-		$army = '';
-		if($this->user->data['username'] == $this->config['army1_general'])
-		{
-			$army = $this->config['army1_name'];
-		}
-		elseif($this->user->data['username'] == $this->config['armyb_general'])
-		{
-			$army = $this->config['armyb_name'];
-		}
-		
-		/*Get army id*/
-		$sql = "SELECT army_id FROM abc_armies WHERE campaign_id = $campaign_id AND army_name = '$army'";
+		/*Get army_id*/
+		$user_id = $this->user->data['user_id'];
+		$sql = "SELECT army_id FROM abc_users WHERE user_id = $user_id and campaign_id = $campaign_id";
 		$result = $this->db->sql_query($sql);
 		$army_id = $this->db->sql_fetchfield('army_id');
 		$this->db->sql_freeresult($result);

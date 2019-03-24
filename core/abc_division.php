@@ -60,6 +60,9 @@ class abc_division
 		/*Create new division*/
 		$division_create = "<dl><dt><label for=\"division_name\">".$this->user->lang['ABC_DIVISION_NAME']."</label><br><span></span></dt>";
 		$division_create .= "<dd><input type=\"text\" name=\"division_name\" value=\"\" maxlength=\"33\" size=\"39\" /></dd></dl>";
+		/*division tag*/
+		$division_create .= "<dl><dt><label for=\"division_tag\">".$this->user->lang['ABC_DIVISION_TAG']."</label><br><span></span></dt>";
+		$division_create .= "<dd><input type=\"text\" name=\"division_tag\" value=\"\" maxlength=\"3\" size=\"3\" /></dd></dl>";
 		/*division_image*/
 		$division_create .= "<dl><dt><label for=\"division_image\">".$this->user->lang['ABC_DIVISION_IMAGE']."</label></dt>";
 		$division_create .= "<dd><input type=\"file\" name=\"division_image\" id=\"division_image_".$division_id."\" class=\"inputbox autowidth\"/></dd></dl>";
@@ -70,7 +73,7 @@ class abc_division
 		$this->get_division_path($division_path, $army_id);
 			
 		/*Get existing divisions*/
-		$sql = "SELECT division_id, division_name, division_icon FROM abc_divisions WHERE army_id = $army_id ORDER BY division_id ASC";
+		$sql = "SELECT division_id, division_name, division_icon, division_tag FROM abc_divisions WHERE army_id = $army_id ORDER BY division_id ASC";
 		$result = $this->db->sql_query($sql);
 		$rowset = $this->db->sql_fetchrowset();
 		$this->db->sql_freeresult($result);
@@ -93,6 +96,7 @@ class abc_division
 		{
 			$division_id = $rowset[$i]['division_id'];
 			$division_name = sql_abc_unclean($rowset[$i]['division_name']);
+			$division_tag = sql_abc_unclean($rowset[$i]['division_tag']);
 			$division_image = "";
 			if($army_id < 40)
 			{
@@ -104,6 +108,9 @@ class abc_division
 			/*division_name*/
 			$division_list .= "<dl><dt><label for=\"division_name_".$division_id."\">".$this->user->lang['ABC_DIVISION_NAME']."</label><br><span></span></dt>";
 			$division_list .= "<dd><input type=\"text\" name=\"division_name_".$division_id."\" value=\"$division_name\" maxlength=\"33\" size=\"39\" /></dd></dl>";
+			/*division tag*/
+			$division_list .= "<dl><dt><label for=\"division_tag\">".$this->user->lang['ABC_DIVISION_TAG']."</label><br><span></span></dt>";
+			$division_list .= "<dd><input type=\"text\" name=\"division_tag_".$division_id."\" value=\"$division_tag\" maxlength=\"3\" size=\"3\" /></dd></dl>";
 			/*division_image*/
 			$division_list .= "<dl><dt><label for=\"division_image_".$division_id."\">".$this->user->lang['ABC_DIVISION_IMAGE']."</label></dt>";
 			if($rowset[$i]['division_icon'] != '')
@@ -185,10 +192,11 @@ class abc_division
 		$division_id++;
 		
 		$division_name = sql_abc_clean($this->request->variable('division_name', '', true));
+		$division_tag = sql_abc_clean($this->request->variable('division_tag', '', true));
 		$division_time_stamp = strtotime("now");
 		
 		/*Add division to abc_divisions*/
-		$sql = "INSERT INTO abc_divisions VALUES ($division_id, $army_id, '$division_name', 0, 0, 0, 'TAG', $division_time_stamp, '$division_image')";
+		$sql = "INSERT INTO abc_divisions VALUES ($division_id, $army_id, '$division_name', 0, 0, 0, '$division_tag', $division_time_stamp, '$division_image')";
 		$result = $this->db->sql_query($sql);
 		$this->db->sql_freeresult($result);
 		
@@ -253,9 +261,10 @@ class abc_division
 		}
 		
 		$division_name = sql_abc_clean($this->request->variable('division_name_'.$division_id, '', true));
+		$division_tag = sql_abc_clean($this->request->variable('division_tag_'.$division_id, '', true));
 		
 		/*Update division in abc_divisions*/
-		$sql = "UPDATE abc_divisions SET division_name = '$division_name', division_icon = '$division_image' WHERE division_id = $division_id";
+		$sql = "UPDATE abc_divisions SET division_name = '$division_name', division_icon = '$division_image', division_tag = '$division_tag' WHERE division_id = $division_id";
 		$result = $this->db->sql_query($sql);
 		$this->db->sql_freeresult($result);
 		
@@ -313,19 +322,9 @@ class abc_division
 		$campaign_id = $this->db->sql_fetchfield('MAX(campaign_id)');
 		$this->db->sql_freeresult($result);
 		
-		/*Get army*/
-		$army = '';
-		if($this->user->data['username'] == $this->config['army1_general'])
-		{
-			$army = $this->config['army1_name'];
-		}
-		elseif($this->user->data['username'] == $this->config['armyb_general'])
-		{
-			$army = $this->config['armyb_name'];
-		}
-		
-		/*Get army id*/
-		$sql = "SELECT army_id FROM abc_armies WHERE campaign_id = $campaign_id AND army_name = '$army'";
+		/*Get army_id*/
+		$user_id = $this->user->data['user_id'];
+		$sql = "SELECT army_id FROM abc_users WHERE user_id = $user_id and campaign_id = $campaign_id";
 		$result = $this->db->sql_query($sql);
 		$army_id = $this->db->sql_fetchfield('army_id');
 		$this->db->sql_freeresult($result);

@@ -163,7 +163,7 @@ class abc_forum
 		/*Check inputs*/
 		$campaign_archive = sql_abc_clean($this->request->variable('campaign_archive', '', true));
 		$campaign_hidden_archive = sql_abc_clean($this->request->variable('campaign_hidden_archive', '', true));
-		$archivist_string = sql_abc_clean($this->request->variable('archivist', '', true));
+		$archivist_string = $this->request->variable('archivist', '', true); /*This input includes a slash, so don't clean*/
 		if($campaign_archive == '' or $campaign_hidden_archive == '')
 		{
 			$this->template->assign_var('ACP_FINISHED_FAILED', true);

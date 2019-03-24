@@ -87,7 +87,15 @@ class abc_draft
 			$group_name = '';
 			$colour = '000000';
 			$user_time_stamp = strtotime("now");
-			$other_nonsense = "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0";
+			$other_nonsense = "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0";
+			
+			/*store in user_soldierid in abc_users*/
+			$username = $this->user->data['username'];
+			$sql = "SELECT user_rank FROM phpbb_users WHERE username = '$username'";
+			$result = $this->db->sql_query($sql);
+			$user_soldierid = $this->db->sql_fetchfield('user_rank');
+			$this->db->sql_freeresult($result);
+			
 			/*If a correct army password is entered*/
 			if($password == sql_abc_unclean($this->config['army1_password']) or
 				$password == sql_abc_unclean($this->config['armyb_password']) or
@@ -114,32 +122,44 @@ class abc_draft
 				$colour = $this->config[$army.'colour'];
 				
 				/*Add user to the requested group*/
-				$sql = "SELECT group_id FROM ". GROUPS_TABLE ." WHERE group_name = '".$group_name."'";
+				$sql = "SELECT group_id FROM ". GROUPS_TABLE ." WHERE group_name = '$group_name'";
 				$result = $this->db->sql_query($sql);
 				$group_id = $this->db->sql_fetchfield('group_id');
 				$this->db->sql_freeresult($result);
 				if(!$group_id)
 				{
-					$group_name = $this->user->lang['ABC_DRAFT_ERR_GID'];
+					$this->template->assign_vars(array(
+						'ABC_DRAFT_ARMY_JOIN'	=> $this->user->lang['ABC_DRAFT_ERR_GID'],
+					));
+					return;
 				}
 				
 				include $this->root_path . 'includes/functions_user.php';
 				$user_id = $this->user->data['user_id'];
-				$username = $this->user->data['username'];
 				group_user_add($group_id, $user_id_ary = array($user_id,));
 				group_user_attributes('default', $group_id, $user_id_ary = array($user_id,));
 				
-				/*Add user to abc_users*/
-				$sql = "SELECT campaign_id, army_id FROM abc_armies WHERE army_name = '$group_name' AND campaign_id = (SELECT MAX(campaign_id) FROM abc_armies);";
+				/*Add user to abc_users*/			
+				$sql = "SELECT ad.army_id, ad.division_id, ar.rank_id, ar.rank_phpbb_id, aa.campaign_id
+						FROM abc_divisions AS ad
+						JOIN abc_armies AS aa ON ad.army_id = aa.army_id
+						JOIN abc_ranks AS ar ON ad.army_id = ar.army_id
+						WHERE aa.campaign_id = (SELECT MAX(campaign_id) FROM abc_armies) AND ad.division_is_default = 1 AND ar.rank_order = 1 AND aa.army_name = '$group_name'";			
 				$result = $this->db->sql_query($sql);
 				$rowset = $this->db->sql_fetchrowset();
 				$this->db->sql_freeresult($result);
 				
 				$campaign_id = $rowset[0]['campaign_id'];
 				$army_id = $rowset[0]['army_id'];
+				$division_id = $rowset[0]['division_id'];
+				$rank_id = $rowset[0]['rank_id'];
 				
 				$abc_user_id = 0;	//Nolonger care about abc_user_id
-				$sql = "INSERT INTO abc_users VALUES ($abc_user_id, $user_id, $campaign_id, $army_id, 0, 0, 'img', 0, '$username', '', '', '', '', $user_time_stamp, '', $other_nonsense)";
+				$sql = "INSERT INTO abc_users VALUES ($abc_user_id, $user_id, $campaign_id, $army_id, $division_id, $rank_id, 'img', 0, '$username', '', '', '', '', $user_time_stamp, '', $user_soldierid, $other_nonsense)";
+				$this->template->assign_vars(array(
+					'ABC_DRAFT_ARMY_JOIN'	=> $sql,
+				));
+				return
 				$result = $this->db->sql_query($sql);
 				$this->db->sql_freeresult($result);
 			}
@@ -153,14 +173,13 @@ class abc_draft
 				$availability = sql_abc_clean($this->request->variable('draft_avail', '', true));
 				$notes = sql_abc_clean($this->request->variable('draft_notes', '', true));
 				
-				//$sql = "INSERT INTO abc_draft (user_id, username, division, availability, notes) VALUES ($user_id, '$username', '$division', '$availability', '$notes')";
 				$sql = "SELECT MAX(campaign_id) FROM abc_campaigns";
 				$result = $this->db->sql_query($sql);
 				$campaign_id = $this->db->sql_fetchfield('MAX(campaign_id)');
 				$this->db->sql_freeresult($result);
 				
 				$abc_user_id = 0;	//Nolonger care about abc_user_id
-				$sql = "INSERT INTO abc_users VALUES ($abc_user_id, $user_id, $campaign_id, 0, 0, 0, 'img', 1, '$username', '$availability', '$location', '', '$notes', $user_time_stamp, '$division', $other_nonsense)";
+				$sql = "INSERT INTO abc_users VALUES ($abc_user_id, $user_id, $campaign_id, 0, 0, 0, 'img', 1, '$username', '$availability', '$location', '', '$notes', $user_time_stamp, '$division', $user_soldierid, $other_nonsense)";
 				$result = $this->db->sql_query($sql);
 				$this->db->sql_freeresult($result);
 				
@@ -185,7 +204,6 @@ class abc_draft
 		$campaign_id = $this->db->sql_fetchfield('MAX(campaign_id)');
 		$this->db->sql_freeresult($result);
 		
-		//$sql = "DELETE FROM abc_draft WHERE user_id = $user_id";
 		$sql = "DELETE FROM abc_users WHERE user_id = $user_id AND campaign_id = $campaign_id";
 		$result = $this->db->sql_query($sql);
 		$this->db->sql_freeresult($result);
@@ -290,9 +308,13 @@ class abc_draft
 			$ta_army = $this->config['ta_name'];
 			$armies = array($army1, $armyb, $ta_army);
 			
-			/*Get army group ids*/
-			$group_ids = [];
-			$sql = "SELECT group_id, group_name FROM ". GROUPS_TABLE ." WHERE group_name = '$army1' OR group_name = '$armyb' OR group_name = '$ta_army'";
+			/*Get army group_id, default division and new recruit rank*/
+			$sql = "SELECT gt.group_id, gt.group_name, ad.army_id, ad.division_id, ar.rank_id, ar.rank_phpbb_id
+					FROM abc_divisions AS ad
+					JOIN abc_armies AS aa ON ad.army_id = aa.army_id
+					JOIN abc_ranks AS ar ON ad.army_id = ar.army_id
+					JOIN ".GROUPS_TABLE." AS gt on aa.army_name = gt.group_name
+					WHERE aa.campaign_id = $campaign_id AND ad.division_is_default = 1 AND ar.rank_order = 1";
 			$result = $this->db->sql_query($sql);
 			$group_rowset = $this->db->sql_fetchrowset();
 			$this->db->sql_freeresult($result);
@@ -304,19 +326,38 @@ class abc_draft
 				));
 				return;
 			}
+			
+			$group_ids = [];
+			$army_ids = [];
+			$division_ids = [];
+			$rank_ids = [];
+			$rank_phpbb_id = [];
+			
 			for($i=0; $i<3; $i++)
 			{
 				if($group_rowset[$i]['group_name'] == $army1)
 				{
 					$group_ids[$army1] = $group_rowset[$i]['group_id'];
+					$army_ids[$army1] = $group_rowset[$i]['army_id'];
+					$division_ids[$army1] = $group_rowset[$i]['division_id'];
+					$rank_ids[$army1] = $group_rowset[$i]['rank_id'];
+					$rank_phpbb_ids[$army1] = $group_rowset[$i]['rank_phpbb_id'];
 				}
 				elseif($group_rowset[$i]['group_name'] == $armyb)
 				{
 					$group_ids[$armyb] = $group_rowset[$i]['group_id'];
+					$army_ids[$armyb] = $group_rowset[$i]['army_id'];
+					$division_ids[$armyb] = $group_rowset[$i]['division_id'];
+					$rank_ids[$armyb] = $group_rowset[$i]['rank_id'];
+					$rank_phpbb_ids[$armyb] = $group_rowset[$i]['rank_phpbb_id'];
 				}
 				elseif($group_rowset[$i]['group_name'] == $ta_army)
 				{
 					$group_ids[$ta_army] = $group_rowset[$i]['group_id'];
+					$army_ids[$ta_army] = $group_rowset[$i]['army_id'];
+					$division_ids[$ta_army] = $group_rowset[$i]['division_id'];
+					$rank_ids[$ta_army] = $group_rowset[$i]['rank_id'];
+					$rank_phpbb_ids[$ta_army] = $group_rowset[$i]['rank_phpbb_id'];
 				}
 			}
 			
@@ -347,20 +388,30 @@ class abc_draft
 			include $this->root_path . 'includes/functions_user.php';
 			foreach($armies as $army)
 			{
-				$sql = "SELECT army_id FROM abc_armies WHERE campaign_id = $campaign_id AND army_name = '$army'";
-				$result = $this->db->sql_query($sql);
-				$army_id = $this->db->sql_fetchfield('army_id');
-				$this->db->sql_freeresult($result);
+				$army_id = $army_ids[$army];
+				$division_id = $division_ids[$army];
+				$rank_id = $rank_ids[$army];
+				$rank_phpbb_id = $rank_phpbb_ids[$army];
 				
 				if($drafted_to[$army])
 				{
+					/*Add to army group*/
 					group_user_add($group_ids[$army], $user_id_ary = $drafted_to[$army]);
 					group_user_attributes('default', $group_ids[$army], $user_id_ary = $drafted_to[$army]);
-					$sql = "UPDATE abc_users SET army_id = $army_id, user_is_signed_up = 0 WHERE";
+					/*Update abc_users*/
+					$sql = "UPDATE abc_users SET army_id = $army_id, division_id = $division_id, rank_id = $rank_id, user_is_signed_up = 0 WHERE";
+					$sql_users = "";
 					foreach($drafted_to[$army] as $user_id)
 					{
-						$sql .= " user_id = $user_id OR";
+						$sql_users .= " user_id = $user_id OR";
 					}
+					$sql .= $sql_users;
+					$sql = substr($sql, 0, strlen($sql)-3);
+					$result = $this->db->sql_query($sql);
+					$this->db->sql_freeresult($result);
+					/*Update phpbb_users*/
+					$sql = "UPDATE ".USERS_TABLE." SET user_rank = $rank_phpbb_id WHERE";
+					$sql .= $sql_users;
 					$sql = substr($sql, 0, strlen($sql)-3);
 					$result = $this->db->sql_query($sql);
 					$this->db->sql_freeresult($result);

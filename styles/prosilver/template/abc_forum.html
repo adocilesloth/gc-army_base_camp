@@ -1,36 +1,46 @@
 <!-- INCLUDE overall_header.html -->
 
 <form method="post" id="appform" enctype="multipart/form-data">
-	<div class="panel">
-		<div class="inner">
-			<fieldset class="fields2" id="attach-panel-basic">
-				<h2>{L_ABC_FORUM}</h2>
-				<p>{L_ABC_FORUM_EXPLAIN}</p>
-				
-				<dl>
-					<dt><label for="forum_name">{L_ABC_FORUM_NAME}</label><br>
-					<span>{L_ABC_FORUM_NAME_EXPL}</span></dt>
-					<dd><input type="text" name="forum_name" value="" /></dd>
-				</dl>
-				<dl>
-					<dt><label for="forum_officer">{L_ABC_FORUM_OFFICER}</label></dt>
-					<dd><input type="radio" class="radio" name="forum_officer" value="1" /> {L_YES} &nbsp;
-						<input type="radio" class="radio" name="forum_officer" value="0" checked="checked" /> {L_NO}</dd>
-				</dl>
-				{ABC_FORUMS_EXISTING}
-			</fieldset>
-			<fieldset class="submit-buttons">
-				<input type="submit" name="create_forum" id="create_forum" value="{L_ABC_FORUM_CREATE}" class="button1"/>
-				{S_FORM_TOKEN}
-			</fieldset>
+	<div class="abc">
+		<div class="abc_menu">
+			<div class="panel">
+				<div class="inner">
+					<fieldset class="submit-buttons">
+					{ABC_NAV_BUTTONS}
+					{S_FORM_TOKEN}
+					</fieldset>
+				</div>
+			</div>
+			<div class="panel">
+				<div class="inner">
+					{ACB_USER_INFO}
+				</div>
+			</div>
 		</div>
-	</div>
-	<div class="panel">
-		<div class="inner">
-			<fieldset class="submit-buttons">
-			{ABC_NAV_BUTTONS}
-			{S_FORM_TOKEN}
-			</fieldset>
+		
+		<div class="panel">
+			<div class="inner">
+				<fieldset class="fields2" id="attach-panel-basic">
+					<h2>{L_ABC_FORUM}</h2>
+					<p>{L_ABC_FORUM_EXPLAIN}</p>
+					
+					<dl>
+						<dt><label for="forum_name">{L_ABC_FORUM_NAME}</label><br>
+						<span>{L_ABC_FORUM_NAME_EXPL}</span></dt>
+						<dd><input type="text" name="forum_name" value="" /></dd>
+					</dl>
+					<dl>
+						<dt><label for="forum_officer">{L_ABC_FORUM_OFFICER}</label></dt>
+						<dd><input type="radio" class="radio" name="forum_officer" value="1" /> {L_YES} &nbsp;
+							<input type="radio" class="radio" name="forum_officer" value="0" checked="checked" /> {L_NO}</dd>
+					</dl>
+					{ABC_FORUMS_EXISTING}
+				</fieldset>
+				<fieldset class="submit-buttons">
+					<input type="submit" name="create_forum" id="create_forum" value="{L_ABC_FORUM_CREATE}" class="button1"/>
+					{S_FORM_TOKEN}
+				</fieldset>
+			</div>
 		</div>
 	</div>
 </form>

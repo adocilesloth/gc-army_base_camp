@@ -44,16 +44,19 @@ class release_0_1_0 extends \phpbb\db\migration\migration
 			array('config.add', array('campaign_divisions', 'Infantry,Armour,Air', true)),
 			/*Army 1 Settings*/
 			array('config.add', array('army1_name', '', true)),
+			array('config.add', array('army1_tag', '', true)),
 			array('config.add', array('army1_colour', '084CA1')),
 			array('config.add', array('army1_general', '', true)),
 			array('config.add', array('army1_password', '', true)),
 			/*Army B Settings*/
 			array('config.add', array('armyb_name', '', true)),
+			array('config.add', array('armyb_tag', '', true)),
 			array('config.add', array('armyb_colour', 'ED1C24')),
 			array('config.add', array('armyb_general', '', true)),
 			array('config.add', array('armyb_password', '', true)),
 			/*TA Settings*/
 			array('config.add', array('ta_name', 'Tournament Administrators', true)),
+			array('config.add', array('ta_tag', 'TA', true)),
 			array('config.add', array('ta_colour', '0099FF')),
 			array('config.add', array('ta_general', '', true)),
 			array('config.add', array('ta_password', '', true)),
