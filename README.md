@@ -40,7 +40,7 @@ Implimented
 
 * Army Divisions `./core/abc_division.php`
 
-* Army Ranks `./core/abc_rank.php'
+* Army Ranks `./core/abc_rank.php`
 
 * Army Management
 	* Award medal `./core/abc_army`
