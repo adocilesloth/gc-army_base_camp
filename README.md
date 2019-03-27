@@ -10,19 +10,10 @@ rewrite from scratch than try to update older code.
 
 To Do
 -----
-* Army Medals
-
-* Army Ranks (Squaddie/Officer/HC already implimented)
-
-* Army Divisions
-
 * Battleday Signup
 
 Partially Implimented
 ---------------------
-* Army Management
-	* Waiting on Medals, Ranks and Divisions
-	* Promote/demote army members `./core/abc_army`
 
 Implimented
 -----------
@@ -44,3 +35,14 @@ Implimented
 * Draft List `./core/abc_draft.php`
 
 * Forums `./core/abc_forum.php`
+
+* Army Medals `./core/abc_medal.php`
+
+* Army Divisions `./core/abc_division.php`
+
+* Army Ranks `./core/abc_rank.php'
+
+* Army Management
+	* Award medal `./core/abc_army`
+	* Assign division `./core/abc_army`
+	* Promote/demote army members `./core/abc_army`
