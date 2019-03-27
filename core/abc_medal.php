@@ -74,18 +74,9 @@ class abc_medal
 		$army_id = -1;
 		$medal_path = "";
 		$this->get_medal_path($medal_path, $army_id);
-		//return;
+		
 		/*Get existing medals*/
 		$sql = "SELECT medal_id, medal_name, medal_img, medal_ribbon, medal_description FROM abc_medals WHERE army_id = $army_id";
-		/*$this->template->assign_vars(array(
-			'ABC_LOGISTICS_TITLE'		=> $this->user->lang['ABC_MEDAL_TITLE'],
-			'ABC_LOGISTICS_EXPLAIN'		=> $this->user->lang['ABC_MEDAL_EXPLAIN'],
-			'ABC_LOGISTICS_NEW'			=> $this->user->lang['ABC_MEDAL_NEW'],
-			'ABC_LOGISTICS_CREATE'		=> $sql,
-			'ABC_LOGISTICS_EXIST'		=> $this->user->lang['ABC_MEDAL_EXIST'],
-			'ABC_LOGISTICS_EXISTING'	=> $sql,
-		));	
-		return;*/
 		$result = $this->db->sql_query($sql);
 		$rowset = $this->db->sql_fetchrowset();
 		$this->db->sql_freeresult($result);
@@ -97,35 +88,10 @@ class abc_medal
 				'ABC_LOGISTICS_NEW'			=> $this->user->lang['ABC_MEDAL_NEW'],
 				'ABC_LOGISTICS_CREATE'		=> $medal_create,
 				'ABC_LOGISTICS_EXIST'		=> $this->user->lang['ABC_MEDAL_EXIST'],
-				'ABC_LOGISTICS_EXISTING'	=> 'NONE',
+				'ABC_LOGISTICS_EXISTING'	=> $this->user->lang['ABC_NONE'],
 			));	
 			return;
 		}
-		
-		/*$medal_list = "<div class=\"abc_medals\">";
-		$medal_list .= "<div class=\"abc_medals_line\"><strong>".$this->user->lang['ABC_MEDAL_NAME_EXIST']."</strong></div>";
-		$medal_list .= "<div class=\"abc_medals_line\"><strong>".$this->user->lang['ABC_MEDAL_IMAGE_EXIST']."</strong></div>";
-		$medal_list .= "<div class=\"abc_medals_line\"><strong>".$this->user->lang['ABC_MEDAL_DESC_EXIST']."</strong></div>";
-		for($i=0; $i<count($rowset); $i++)
-		{
-			$medal_name = sql_abc_unclean($rowset[$i]['medal_name']);
-			$medal_desc = sql_abc_unclean($rowset[$i]['medal_description']);
-			$medal_image = "";
-			$medal_ribbon = "";
-			if($army_id < 40)
-			{
-				$medal_image .= $this->root_path."/abc/";
-				$medal_ribbon .= $this->root_path."/abc/";
-			}
-			$medal_image .= $rowset[$i]['medal_img'];
-			$medal_ribbon .= $rowset[$i]['medal_ribbon'];
-			
-			$medal_list .= "<div class=\"abc_medals_line\">$medal_name</div>";
-			$medal_list .= "<div class=\"abc_medals_line\"><img src=\"/$medal_image\" width=\"100\"><br>";
-			$medal_list .= "<img src=\"/$medal_ribbon\" width=\"100\"></div>";
-			$medal_list .= "<div class=\"abc_medals_line\">$medal_desc</div>";
-		}
-		$medal_list .= "</div>";*/
 		
 		/*Create existing medal list*/
 		$medal_list = "";

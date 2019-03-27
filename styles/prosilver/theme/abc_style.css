@@ -75,3 +75,24 @@ div.abc_medal_edit{
 	padding-bottom: 5px;
 	border-bottom: 1px solid #CCCCCC;
 }
+
+.abc_medals_history {
+	display: grid;
+	grid-template-columns: 100px 100px auto 100px;
+	grid-gap: 5px;
+}
+
+.abc_soldier_hist {
+	width: 95%;
+    margin: 10px auto;
+    padding: 9px;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    box-shadow: 0 0 6px #999;
+    overflow: hidden;
+}
+
+.abc_soldier_army {
+	display: grid;
+	grid-template-columns: 75px auto;
+}

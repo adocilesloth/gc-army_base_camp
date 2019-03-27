@@ -41,6 +41,12 @@ class main
 	/* @var \globalconflict\abc\core\abc_rank */
 	protected $abc_rank;
 	
+	/* @var \globalconflict\abc\core\abc_history */
+	protected $abc_history;
+	
+	/* @var \globalconflict\abc\core\abc_soldier */
+	protected $abc_soldier;
+	
 	protected $root_path;
 
 	public function __construct(
@@ -54,6 +60,8 @@ class main
 		\globalconflict\abc\core\abc_medal $abc_medal,
 		\globalconflict\abc\core\abc_division $abc_division,
 		\globalconflict\abc\core\abc_rank $abc_rank,
+		\globalconflict\abc\core\abc_history $abc_history,
+		\globalconflict\abc\core\abc_soldier $abc_soldier,
 		$root_path)
 	{
 		$this->helper		= $helper;
@@ -66,6 +74,8 @@ class main
 		$this->abc_medal	= $abc_medal;
 		$this->abc_division	= $abc_division;
 		$this->abc_rank		= $abc_rank;
+		$this->abc_history	= $abc_history;
+		$this->abc_soldier	= $abc_soldier;
 		$this->root_path	= $root_path;
 	}
 	
@@ -130,6 +140,18 @@ class main
 		{
 			$this->abc_rank->rank_list();
 			return $this->helper->render('abc_logistics.html', $name);
+		}
+		/*History*/
+		if($this->request->is_set_post('history'))
+		{
+			$this->abc_history->show_history();
+			return $this->helper->render('abc_history.html', $name);
+		}
+		/*Soldier*/
+		if($this->request->is_set_post('soldier'))
+		{
+			$this->abc_soldier->show_soldier();
+			return $this->helper->render('abc_soldier.html', $name);
 		}
 		
 		/*Start Campaign*/
@@ -246,6 +268,18 @@ class main
 		{
 			$this->abc_rank->delete_rank();
 			return $this->helper->render('abc_logistics.html', $name);
+		}
+		/*Select Army History*/
+		if($this->request->is_set_post('select_army_history'))
+		{
+			$this->abc_history->show_selected_history();
+			return $this->helper->render('abc_history.html', $name);
+		}
+		/*Search Soldier*/
+		if($this->request->is_set_post('soldier_search'))
+		{
+			$this->abc_soldier->show_selected_soldier();
+			return $this->helper->render('abc_soldier.html', $name);
 		}
 
 		return $this->helper->render('abc_home.html', $name);

@@ -315,11 +315,11 @@ class abc_start
 						foreach($rank_names as $rank_name)
 						{
 							$rank_id++;
-							$rank_order = 99;
+							$rank_order = 1;
 							$rank_is_officer = 1;
 							if($rank_name == 'New Recruit')
 							{
-								$rank_order = 1;
+								$rank_order = 99;
 								$rank_is_officer = 0;
 							}
 							

@@ -90,7 +90,10 @@ class main_listener implements EventSubscriberInterface
 		}
 		
 		$nav_buttons = '<h2>'.$this->user->lang['ABC_MENU'].'</h2>';
-		$nav_buttons .= '<input type="submit" name="submit" id="submit" value="'.$this->user->lang['ABC_HOME'].'" class="abc_button"/>';//class="button1"/>';			
+		$nav_buttons .= '<input type="submit" name="submit" id="submit" value="'.$this->user->lang['ABC_HOME'].'" class="abc_button"/>';//class="button1"/>';
+		
+		$nav_buttons .= '<br><input type="submit" name="history" id="history" value="'.$this->user->lang['ABC_HISTORY'].'" class="abc_button"/>';//class="button1"/>';
+		$nav_buttons .= '<br><input type="submit" name="soldier" id="soldier" value="'.$this->user->lang['ABC_SOLDIER'].'" class="abc_button"/>';//class="button1"/>';
 		
 		/*If user can enter draft*/
 		$draftable = false;

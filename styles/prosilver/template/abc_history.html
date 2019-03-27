@@ -1,0 +1,34 @@
+<!-- INCLUDE overall_header.html -->
+
+<form method="post" id="appform" enctype="multipart/form-data">
+	<div class="abc">
+		<div class="abc_menu">
+			<div class="panel">
+				<div class="inner">
+					<fieldset class="submit-buttons">
+					{ABC_NAV_BUTTONS}
+					{S_FORM_TOKEN}
+					</fieldset>
+				</div>
+			</div>
+			<div class="panel">
+				<div class="inner">
+					{ACB_USER_INFO}
+				</div>
+			</div>
+		</div>
+	
+		<div class="panel">
+			<div class="inner">
+				{ABC_HISTORY_SELECT}
+				<h2>{ABC_STRUCTURE_ARMY_NAME}</h2>			
+				{ABC_COMPLETE_ARMY_LIST}
+				<br>
+				<h2>{ABC_MEDALS_ARMY_NAME}</h2>
+				{ABC_COMPLETE_MEDAL_LIST}
+			</div>
+		</div>
+	</div>
+</form>
+
+<!-- INCLUDE overall_footer.html -->

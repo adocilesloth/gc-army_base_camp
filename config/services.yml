@@ -39,6 +39,24 @@ services:
             - '@user'
             - '@dbal.conn'
             - '%core.root_path%'
+    globalconflict.abc.abc_history:
+        class: globalconflict\abc\core\abc_history
+        arguments:
+            - '@config'
+            - '@template'
+            - '@user'
+            - '@request'
+            - '@dbal.conn'
+            - '%core.root_path%'
+    globalconflict.abc.abc_soldier:
+        class: globalconflict\abc\core\abc_soldier
+        arguments:
+            - '@config'
+            - '@template'
+            - '@user'
+            - '@request'
+            - '@dbal.conn'
+            - '%core.root_path%'
     globalconflict.abc.controller:
         class: globalconflict\abc\controller\main
         arguments:
@@ -52,6 +70,8 @@ services:
             - '@globalconflict.abc.abc_medal'
             - '@globalconflict.abc.abc_division'
             - '@globalconflict.abc.abc_rank'
+            - '@globalconflict.abc.abc_history'
+            - '@globalconflict.abc.abc_soldier'
             - '%core.root_path%'
     globalconflict.abc.listener:
         class: globalconflict\abc\event\main_listener

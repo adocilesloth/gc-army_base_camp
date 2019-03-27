@@ -38,6 +38,8 @@ $lang = array_merge($lang, array(
 	
 	//ABC Links
 	'ABC_MENU'			=> 'Menu',
+	'ABC_HISTORY'		=> 'GC History',
+	'ABC_SOLDIER'		=> 'Soldier History',
 	'ABC_START'			=> 'Start Campaign',
 	'ABC_FINISH'		=> 'End Campaign',
 	'ABC_DRAFT'			=> 'Player Draft',
@@ -48,6 +50,7 @@ $lang = array_merge($lang, array(
 	'ABC_MEDAL'			=> 'Medals',
 	'ABC_RANK'			=> 'Ranks',
 	'ABC_DIVISION'		=> 'Divisions',
+	'ABC_NONE'			=> 'None',
 	
 	//ABC User
 	'ABC_USER_NOCAMP'	=> 'There is currently no campaign running.<br>Please check back soon.',
@@ -227,10 +230,28 @@ $lang = array_merge($lang, array(
 	'ABC_RANK_NAME'			=> 'Rank Name:',
 	'ABC_RANK_SHORT'		=> 'Rank Abreviation:',
 	'ABC_RANK_ORDER'		=> 'Rank Order:',
-	'ABC_RANK_ORDER_EXPL'	=> 'The lower the order, the lower the rank.<br>1 is reserved for New Recruits and 99 for General.',
+	'ABC_RANK_ORDER_EXPL'	=> 'The lower the order, the higher the rank.<br>1 is reserved for General and 99 for New Recruits.',
 	'ABC_RANK_OFFICER'		=> 'Is Officer Rank:',
 	'ABC_RANK_IMAGE'		=> 'Rank Image:',
 	'ABC_RANK_TAG'			=> 'Rank Tag:',
 	'ABC_RANK_EDIT_THIS'	=> 'Edit This Rank:',
 	'ABC_RANK_NUMERIC'		=> 'Rank Order must be numeric and cannot be 1 or 99. Go back an try again.',
+	
+	//ABC History Page
+	'ABC_HISTORY_SELECT'	=> 'Select',
+	'ABC_HISTORY_STRUCTURE'	=> 'Army Structure: ',
+	'ABC_HISTORY_MEDALS'	=> 'Army Medals: ',
+	'ABC_HISTORY_NO_MEDALS'	=> 'No Medals Avaliable',
+	
+	//ABC Soldier Page
+	'ABC_SOLDIER_SELECT'	=> 'Search For Soldier: ',
+	'ABC_SOLDIER_SEARCH'	=> 'Search',
+	'ABC_SOLDIER_HISTORY'	=> 'Soldier History: ',
+	'ABC_SOLDIER_REASON' 	=> 'Reason For Award',
+	'ABC_SOLDIER_DATE'		=> 'Date of Award',
+	'ABC_SOLDIER_MISSING'	=> 'Not Found',
+	'ABC_SOLDIER_ARMY'		=> 'Army:',
+	'ABC_SOLDIER_DIVISION'	=> 'Division:',
+	'ABC_SOLDIER_RANK'		=> 'Rank:',
+	'ABC_SOLDIER_NO_MEDALS'	=> 'No Medals Awarded',
 ));

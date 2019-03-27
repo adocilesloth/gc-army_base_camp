@@ -119,7 +119,7 @@ class abc_army
 		$sql = "SELECT au.user_bf3_name, au.rank_id, ar.rank_order, ar.rank_short, ar.rank_img FROM abc_users AS au
 				JOIN abc_ranks AS ar ON ar.rank_id = au.rank_id
 				WHERE au.campaign_id = $campaign_id AND au.army_id = $army_id AND au.division_id = $division_id
-				ORDER BY ar.rank_order DESC";
+				ORDER BY ar.rank_order ASC";
 		$result = $this->db->sql_query($sql);
 		$rowset = $this->db->sql_fetchrowset();
 		$this->db->sql_freeresult($result);
@@ -136,7 +136,7 @@ class abc_army
 					$army_list .= "<img src=\"/$rank_img\" height=\"25\"> ";
 				}
 				$army_list .= "$rank_short $username";
-				if( ($user_is_officer && $user_rank_order > $rank_order) || $user_rank_order == 99 || $army == 'ta')
+				if( ($user_is_officer && $user_rank_order < $rank_order) || $user_rank_order == 1 || $army == 'ta')
 				{
 					$username = str_replace(" ", "_", $username);
 					$army_list .= " <input type=\"checkbox\" id=\"$username\" name=\"$username\">";
@@ -170,7 +170,7 @@ class abc_army
 				$sql = "SELECT au.user_bf3_name, au.rank_id, ar.rank_order, ar.rank_short, ar.rank_img FROM abc_users AS au
 						JOIN abc_ranks AS ar ON ar.rank_id = au.rank_id
 						WHERE au.campaign_id = $campaign_id AND au.army_id = $army_id AND au.division_id = $division_id
-						ORDER BY ar.rank_order DESC";
+						ORDER BY ar.rank_order ASC";
 				$result = $this->db->sql_query($sql);
 				$rowset = $this->db->sql_fetchrowset();
 				$this->db->sql_freeresult($result);
@@ -187,7 +187,7 @@ class abc_army
 							$army_list .= "<img src=\"/$rank_img\" height=\"25\"> ";
 						}
 						$army_list .= "$rank_short $username";
-						if( ($user_is_officer && $user_rank_order > $rank_order) || $user_rank_order == 99 || $army == 'ta')
+						if( ($user_is_officer && $user_rank_order < $rank_order) || $user_rank_order == 1 || $army == 'ta')
 						{
 							$username = str_replace(" ", "_", $username);
 							$army_list .= " <input type=\"checkbox\" id=\"$username\" name=\"$username\">";
@@ -225,7 +225,7 @@ class abc_army
 			$sql = "SELECT au.user_bf3_name, au.rank_id, ar.rank_order, ar.rank_short, ar.rank_img FROM abc_users AS au
 					JOIN abc_ranks AS ar ON ar.rank_id = au.rank_id
 					WHERE au.campaign_id = $campaign_id AND au.army_id = $army_id AND au.division_id = $division_id
-					ORDER BY ar.rank_order DESC";
+					ORDER BY ar.rank_order ASC";
 			$result = $this->db->sql_query($sql);
 			$rowset = $this->db->sql_fetchrowset();
 			$this->db->sql_freeresult($result);
@@ -242,7 +242,7 @@ class abc_army
 						$army_list .= "<img src=\"/$rank_img\" height=\"25\"> ";
 					}
 					$army_list .= "$rank_short $username";
-					if( ($user_is_officer && $user_rank_order > $rank_order) || $user_rank_order == 99)
+					if( ($user_is_officer && $user_rank_order < $rank_order) || $user_rank_order == 1)
 					{
 						$username = str_replace(" ", "_", $username);
 						$army_list .= " <input type=\"checkbox\" id=\"$username\" name=\"$username\">";
@@ -294,7 +294,7 @@ class abc_army
 				{
 					$rank_name = $rowset[$i]['rank_name'];
 					$rank_id = $rowset[$i]['rank_id'];
-					if($user_rank_order >= $rank_order || $user_rank_order == 99 || $army = 'ta')
+					if($user_rank_order <= $rank_order || $user_rank_order == 1 || $army = 'ta')
 					{
 						$army_list .= "<option value=\"$rank_id\">$rank_name</option>";
 					}

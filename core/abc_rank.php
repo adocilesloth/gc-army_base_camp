@@ -95,7 +95,7 @@ class abc_rank
 				'ABC_LOGISTICS_NEW'			=> $this->user->lang['ABC_RANK_NEW'],
 				'ABC_LOGISTICS_CREATE'		=> $rank_create,
 				'ABC_LOGISTICS_EXIST'		=> $this->user->lang['ABC_RANK_EXIST'],
-				'ABC_LOGISTICS_EXISTING'	=> 'NONE',
+				'ABC_LOGISTICS_EXISTING'	=> $this->user->lang['ABC_NONE'],
 			));
 			return;
 		}
@@ -188,7 +188,7 @@ class abc_rank
 		}
 		
 		$rank_order = sql_abc_clean($this->request->variable('rank_order', 'poop'));
-		if(!is_numeric($rank_order) || $rank_order < 2 || $rank_order == 99)
+		if(!is_numeric($rank_order) || $rank_order < 2 || $rank_order > 98)
 		{
 			$this->template->assign_vars(array(
 				'ABC_LOGISTICS_TITLE'		=> $this->user->lang['ABC_RANK_TITLE'],
@@ -289,7 +289,7 @@ class abc_rank
 		else
 		{
 			$rank_order = sql_abc_clean($this->request->variable('rank_order_'.$rank_id, 'poop'));
-			if(!is_numeric($rank_order) || $rank_order < 2 || $rank_order == 99)
+			if(!is_numeric($rank_order) || $rank_order < 2 || $rank_order > 98)
 			{
 				$this->template->assign_vars(array(
 					'ABC_LOGISTICS_TITLE'		=> $this->user->lang['ABC_RANK_TITLE'],

@@ -85,7 +85,7 @@ class abc_division
 				'ABC_LOGISTICS_NEW'			=> $this->user->lang['ABC_DIVISION_NEW'],
 				'ABC_LOGISTICS_CREATE'		=> $division_create,
 				'ABC_LOGISTICS_EXIST'		=> $this->user->lang['ABC_DIVISION_EXIST'],
-				'ABC_LOGISTICS_EXISTING'	=> 'NONE',
+				'ABC_LOGISTICS_EXISTING'	=> $this->user->lang['ABC_NONE'],
 			));
 			return;
 		}
