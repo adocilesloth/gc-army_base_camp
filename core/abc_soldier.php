@@ -133,6 +133,38 @@ class abc_soldier
 			
 			if(count($rowset)>0)
 			{
+				$abc_user_id = -1;
+				$ribbon_path = "";
+				if($campaign_id < 15)
+				{
+					$sql = "SELECT abc_user_id FROM abc_users WHERE user_id = $user_id AND campaign_id = $campaign_id";
+					$result = $this->db->sql_query($sql);
+					$abc_user_id = $this->db->sql_fetchfield('abc_user_id');
+					$this->db->sql_freeresult($result);
+					
+					if($campaign_id == 2) //For some reason, the sigs for $campaign_id == 2 are in medals
+					{
+						$ribbon_path .= "/abc/images/cache/medals/";
+					}
+					else
+					{
+						$ribbon_path .= "/abc/images/cache/sigs/";
+					}
+				}
+				else
+				{
+					$abc_user_id = $user_id;
+					$ribbon_path .= "/ext/globalconflict/abc/images/sigs/";
+				}
+				
+				$ribbon_path .= $campaign_id."/".$abc_user_id.".gif";
+				if(file_exists($this->root_path.$ribbon_path))
+				{
+					$soldier_list .= "<img src=\"/$this->root_path.$ribbon_path\"><br>";
+					$soldier_list .= "BBCode: <input type=\"text\" name=\"ribbons-path\" id=\"ribbons-path\" size=\"75\" value=\"[img]http://global-conflict.org".$ribbon_path."[/img]\" readonly=\"readonly\">";
+					$soldier_list .= "<br><br>";
+				}
+				
 				$soldier_list .= "<input type=\"button\" value=\"Show Medals\" class=\"button1\" onclick=\"show_medals($campaign_id)\">";
 				$soldier_list .= "<br><div class=\"abc_medals_history\" id=\"camp_$campaign_id\" style=\"display: none;\">";
 				$soldier_list .= "<div class=\"abc_medals_line\"><strong>".$this->user->lang['ABC_MEDAL_NAME_EXIST']."</strong></div>";

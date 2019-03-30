@@ -210,11 +210,11 @@ class main_listener implements EventSubscriberInterface
 		{
 			if(!$running)
 			{
-				$nav_buttons .= '<br><input type="submit" name="start" id="start" value="'.$this->user->lang['ABC_START'].'" class="abc_button"/>';//class="button1"/>';
+				$nav_buttons .= '<br><br><input type="submit" name="start" id="start" value="'.$this->user->lang['ABC_START'].'" class="abc_button"/>';//class="button1"/>';
 			}
 			else
 			{
-				$nav_buttons .= '<br><input type="submit" name="finish" id="finish" value="'.$this->user->lang['ABC_FINISH'].'" class="abc_button"/>';//class="button1"/>';
+				$nav_buttons .= '<br><br><input type="submit" name="finish" id="finish" value="'.$this->user->lang['ABC_FINISH'].'" class="abc_button"/>';//class="button1"/>';
 			}
 		}
 		

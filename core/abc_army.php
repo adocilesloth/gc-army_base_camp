@@ -103,11 +103,7 @@ class abc_army
 		/*HC Division*/
 		$army_list .= "<div></div>";
 		$army_list .= "<div class=\"abc_army_division\">";
-		$idx = 1;
-		if($army == 'ta')
-		{
-			$idx = 0;
-		}
+		$idx = 0;
 		if($divisions[$idx]['division_icon'] != '')
 		{
 			$division_image = $divisions[$idx]['division_icon'];
@@ -214,14 +210,15 @@ class abc_army
 		{
 			$army_list .= "<div></div>";
 			$army_list .= "<div class=\"abc_army_division\">";
-			if($divisions[0]['division_icon'] != '')
+			$idx = 1;
+			if($divisions[$idx]['division_icon'] != '')
 			{
-				$division_image = $divisions[0]['division_icon'];
+				$division_image = $divisions[$idx]['division_icon'];
 				$army_list .= "<div align=\"center\"><img src=\"/$division_image\" width=\"150\"></div><br>";
 			}
-			$division_name = $divisions[0]['division_name'];
+			$division_name = $divisions[$idx]['division_name'];
 			$army_list .= "<div class=\"abc_division_name\">$division_name</div><br>";
-			$division_id = $divisions[0]['division_id'];
+			$division_id = $divisions[$idx]['division_id'];
 			$sql = "SELECT au.user_bf3_name, au.rank_id, ar.rank_order, ar.rank_short, ar.rank_img FROM abc_users AS au
 					JOIN abc_ranks AS ar ON ar.rank_id = au.rank_id
 					WHERE au.campaign_id = $campaign_id AND au.army_id = $army_id AND au.division_id = $division_id
@@ -387,6 +384,8 @@ class abc_army
 			$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_MEDAL_USER']);
 			return;
 		}
+		
+		$this->generate_ribbon_signature($user_ids, $campaign_id);
 		
 		$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_MEDAL_SUCCESS']);
 		return;
@@ -562,5 +561,129 @@ class abc_army
 			return false;
 		}
 		return true;
+	}
+	
+	public function generate_ribbon_signature($user_ids=[], $campaign_id=-1)
+	{
+		if(count($user_ids) == 0 || $campaign_id < 0)
+		{
+			return;
+		}
+		
+		foreach($user_ids as $user_id)
+		{
+			$sql = "SELECT am.medal_ribbon FROM abc_medals AS am
+					JOIN abc_medal_awards as awm ON awm.medal_id = am.medal_id
+					WHERE awm.user_id = $user_id AND awm.campaign_id = $campaign_id
+					ORDER BY am.medal_id ASC";
+			$result = $this->db->sql_query($sql);
+			$rowset = $this->db->sql_fetchrowset();
+			$this->db->sql_freeresult($result);
+			
+			$medal_img_paths = [];
+			$medal_count = [];
+			for($i=0; $i<count($rowset); $i++)
+			{
+				$medal_img_paths[] = $rowset[$i]['medal_ribbon'];
+			}
+			$medal_count = array_count_values($medal_img_paths);
+			$medal_img_paths = array_unique($medal_img_paths);
+			
+			/*Create signature*/
+			/*Mainly from old abc functions.ribbons.php*/
+			$num_rows = ceil(count($medal_img_paths)/5);
+			$width = 189;
+			$height = $num_rows * 13 + ($num_rows - 1);
+			
+			//CREATE IMAGE & COLORS
+			$image = imagecreatetruecolor($width, $height);
+			imagesavealpha($image, true);
+			imagealphablending($image, true);
+			$white = imagecolorallocatealpha($image, 255, 255, 255, 127);
+			imagefill($image, 0, 0, $white);
+			imagecolortransparent($image, $white);
+			$shadow = imagecolorallocatealpha($image, 0, 0, 0, 40);
+			
+			$row = 0;
+			$medal = 0;
+			foreach($medal_img_paths as $medal_img_path)
+			{
+				$num_awarded = $medal_count[$medal_img_path];
+				$medal_img_attr = getimagesize($medal_img_path);
+				$medal_img = imagecreatefromstring(file_get_contents($medal_img_path));
+				imagealphablending($medal_img, true);
+				imagesavealpha($medal_img, true);  
+
+				$x = $medal * 38;
+				$y = $row * 14;
+				
+				//LAST ROW GETS CENTERED
+				if($row + 1 == $num_rows)
+				{
+					$num_lastrow = count($medal_img_paths) - ($num_rows - 1) * 5;
+					$width_lastrow = $num_lastrow * 37 + ($num_lastrow - 1) * 1;
+					$x_lastrow = (189 - $width_lastrow) / 2;
+					$x = $x_lastrow + $medal * 38;
+				}
+				
+				imagecopyresized($image, $medal_img, $x, $y, 0, 0, 37, 13, $medal_img_attr[0], $medal_img_attr[1]);
+				
+				//DECORATION FOR MORE THAN ONE AWARDS
+				if($num_awarded > 1)
+				{
+					//GET STAR COLOR
+					if($num_awarded > 7)
+					{
+						$deco_path = $this->root_path."/ext/globalconflict/abc/images/sigs/star_gold.png";
+						$deco_number = $num_awarded - 7;
+						if($deco_number > 3)
+						{
+							$deco_number = 3;
+						}
+					}
+					elseif($num_awarded > 4)
+					{
+						$deco_path = $this->root_path."/ext/globalconflict/abc/images/sigs/star_silver.png";
+						$deco_number = $num_awarded - 4;
+					}
+					else
+					{
+						$deco_path = $this->root_path."/ext/globalconflict/abc/images/sigs/star_bronze.png";
+						$deco_number = $num_awarded - 1;
+					}
+					$deco_img = imagecreatefrompng($deco_path);
+					imagealphablending($deco_img, true);
+					imagesavealpha($deco_img, true);
+
+					//CENTERING
+					$gap = 1;
+					$deco_width = 11 * $deco_number + $gap * ($deco_number - 1);
+					$deco_x = $x + ((37 - $deco_width) / 2);
+
+					//COPYING OF STARS
+					$deco_index = 0;
+					while($deco_index < $deco_number)
+					{
+						imagecopyresized($image, $deco_img, ($deco_x + $deco_index * (11 + $gap)), ($y + 1), 0, 0, 10, 11, 13, 13);
+						$deco_index++;
+					}      
+				}
+				
+				//SAVE IMAGE
+				imagegif($image, $this->root_path."/ext/globalconflict/abc/images/sigs/$campaign_id/$user_id.gif");
+				
+				if($medal == 4)
+				{
+					$medal = 0;
+					$row++;
+				}
+				else
+				{
+					$medal++;
+				}
+			}
+		}
+		
+		return;
 	}
 }

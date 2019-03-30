@@ -253,10 +253,11 @@ class abc_start
 				$result = $this->db->sql_query($sql);
 				$this->db->sql_freeresult($result);
 				
-				/*Create folders for Medals/Ranks/Divisions*/
+				/*Create folders for Medals/Ranks/Divisions/Sigs*/
 				mkdir($this->root_path."ext/globalconflict/abc/images/medals/".$campaign_id);
 				mkdir($this->root_path."ext/globalconflict/abc/images/ranks/".$campaign_id);
 				mkdir($this->root_path."ext/globalconflict/abc/images/divisions/".$campaign_id);
+				mkdir($this->root_path."ext/globalconflict/abc/images/sigs/".$campaign_id);
 				
 				/*Update abc_armies and abc_users tables*/
 				/*Update abc_ranks and abc_divisions tables*/
@@ -338,7 +339,7 @@ class abc_start
 							$this->db->sql_freeresult($result);
 						}
 						/*Create HC and New Recruit Divisions*/
-						$division_names = array('New Recruits', 'HC');
+						$division_names = array('HC', 'New Recruits');
 						foreach($division_names as $division_name)
 						{
 							$division_id++;
@@ -354,7 +355,7 @@ class abc_start
 							$this->db->sql_freeresult($result);
 						}
 					}
-					else /*if($army = 'ta_')*/
+					else /*if($army == 'ta_')*/
 					{
 						$rank_id++;
 						$rank_order = 1;
@@ -390,10 +391,21 @@ class abc_start
 					$user_soldierid = $this->db->sql_fetchfield('user_rank');
 					$this->db->sql_freeresult($result);
 					
+					/*If not ta, we need to roll back division_id to assign to correct division*/
+					if($army != 'ta_')
+					{
+						$division_id--;
+					}
+					
 					$other_nonsense = "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0";
 					$sql = "INSERT INTO abc_users VALUES ($abc_user_id, $army_general, $campaign_id, $army_id, $division_id, $rank_id, 'img', 0, '$army_general_name', '', '', '', '', $campaign_time_stamp, '', $user_soldierid, $other_nonsense)";
 					$result = $this->db->sql_query($sql);
 					$this->db->sql_freeresult($result);
+					
+					if($army != 'ta_')
+					{
+						$division_id++;
+					}
 					
 					$sql = "UPDATE phpbb_users SET user_rank = $rank_phpbb_id WHERE user_id = $army_general";
 					$result = $this->db->sql_query($sql);

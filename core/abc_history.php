@@ -126,15 +126,11 @@ class abc_history
 		/*HC Division*/
 		$army_list .= "<div></div>";
 		$army_list .= "<div class=\"abc_army_division\">";
-		$idx = 1;
-		if($army_id % 3 == 0 || $army_id < 40) //TA or legacy army
-		{
-			$idx = 0;
-		}
+		$idx = 0;
 		if($divisions[$idx]['division_icon'] != '')
 		{
 			$division_image = '';
-			if($army_id < 40)
+			if($army_id < 40)	//Legacy army
 			{
 				$division_image .= $this->root_path . "/abc/";
 			}
@@ -172,7 +168,7 @@ class abc_history
 			foreach($rowset as $row)
 			{
 				$rank_img = "";
-				if($army_id < 40)
+				if($army_id < 40)	//Legacy Army
 				{
 					$rank_img .= $this->root_path . "/abc/";
 				}
@@ -206,7 +202,7 @@ class abc_history
 				if($divisions[$idx]['division_icon'] != '')
 				{
 					$division_image = '';
-					if($army_id < 40)
+					if($army_id < 40)	//Legacy Army
 					{
 						$division_image .= $this->root_path . "/abc/";
 					}
@@ -278,11 +274,7 @@ class abc_history
 		/*New Recruits Division*/
 		if($army_id % 3 != 0) //not TA army
 		{
-			$idx = 0;
-			if($army_id < 40) //legacy army
-			{
-				$idx = 1;
-			}
+			$idx = 1;
 			$army_list .= "<div></div>";
 			$army_list .= "<div class=\"abc_army_division\">";
 			if($divisions[$idx]['division_icon'] != '')
