@@ -330,10 +330,15 @@ class abc_army
 		/*End army_list*/
 		$army_list .= "</div>";
 		
-		$this->template->assign_vars(array(
+		$abc_content = "<h2>$army_name ".$this->user->lang['ABC_ARMY_TITLE']."</h2>";
+		$abc_content .= "<p>".$this->user->lang['ABC_ARMY_EXPLAIN']."</p>";
+		$abc_content .= $army_list;
+		
+		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
+		/*$this->template->assign_vars(array(
 			'ABC_ARMY_NAME'				=> $army_name,
 			'ABC_COMPLETE_ARMY_LIST'	=> $army_list,
-		));
+		));*/
 		return;
 	}
 	
@@ -342,7 +347,10 @@ class abc_army
 		$medal_id = $this->request->variable('medal_choice', 'none');
 		if($medal_id == 'none')
 		{
-			$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_MEDAL_NONE']);
+			$abc_content = "<h2>$army_name ".$this->user->lang['ABC_ARMY_TITLE']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_ARMY_ERR_MEDAL_NONE']."</p>";
+		
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 			return;
 		}
 		
@@ -357,7 +365,10 @@ class abc_army
 		$army_name = '';
 		if(!$this->get_user_ids($user_ids, $campaign_id, $army_name))
 		{
-			$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_MEDAL_DATA']);
+			$abc_content = "<h2>$army_name ".$this->user->lang['ABC_ARMY_TITLE']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_ARMY_ERR_MEDAL_DATA']."</p>";
+		
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 			return;
 		}
 		
@@ -381,13 +392,19 @@ class abc_army
 		}
 		else
 		{
-			$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_MEDAL_USER']);
+			$abc_content = "<h2>$army_name ".$this->user->lang['ABC_ARMY_TITLE']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_ARMY_ERR_MEDAL_USER']."</p>";
+		
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 			return;
 		}
 		
 		$this->generate_ribbon_signature($user_ids, $campaign_id);
 		
-		$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_MEDAL_SUCCESS']);
+		$abc_content = "<h2>$army_name ".$this->user->lang['ABC_ARMY_TITLE']."</h2>";
+		$abc_content .= "<p>".$this->user->lang['ABC_ARMY_MEDAL_SUCCESS']."</p>";
+	
+		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 		return;
 	}
 	
@@ -396,7 +413,10 @@ class abc_army
 		$rank_id = $this->request->variable('rank_choice', 'none');
 		if($rank_id == 'none')
 		{
-			$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_RANK_NONE']);
+			$abc_content = "<h2>$army_name ".$this->user->lang['ABC_ARMY_TITLE']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_ARMY_ERR_RANK_NONE']."</p>";
+		
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 			return;
 		}
 		
@@ -405,7 +425,10 @@ class abc_army
 		$army_name = '';
 		if(!$this->get_user_ids($user_ids, $campaign_id, $army_name))
 		{
-			$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_RANK_DATA']);
+			$abc_content = "<h2>$army_name ".$this->user->lang['ABC_ARMY_TITLE']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_ARMY_ERR_RANK_DATA']."</p>";
+		
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 			return;
 		}
 		
@@ -453,7 +476,10 @@ class abc_army
 			group_user_add($group_id, $user_id_ary = $user_ids);
 		}
 		
-		$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_RANK_SUCCESS']);
+		$abc_content = "<h2>$army_name ".$this->user->lang['ABC_ARMY_TITLE']."</h2>";
+		$abc_content .= "<p>".$this->user->lang['ABC_ARMY_RANK_SUCCESS']."</p>";
+	
+		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 		return;
 	}
 	
@@ -462,7 +488,10 @@ class abc_army
 		$division_id = $this->request->variable('division_choice', 'none');
 		if($division_id == 'none')
 		{
-			$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_DIVISION_NONE']);
+			$abc_content = "<h2>$army_name ".$this->user->lang['ABC_ARMY_TITLE']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_ARMY_ERR_DIVISION_NONE']."</p>";
+
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 			return;
 		}
 		
@@ -471,7 +500,10 @@ class abc_army
 		$army_name = '';
 		if(!$this->get_user_ids($user_ids, $campaign_id, $army_name))
 		{
-			$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_ERR_DIVISION_DATA']);
+			$abc_content = "<h2>$army_name ".$this->user->lang['ABC_ARMY_TITLE']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_ARMY_ERR_DIVISION_DATA']."</p>";
+
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 			return;
 		}
 		
@@ -509,7 +541,10 @@ class abc_army
 			group_user_add($group_id, $user_id_ary = $user_ids);
 		}
 		
-		$this->template->assign_var('ABC_COMPLETE_ARMY_LIST', $this->user->lang['ABC_ARMY_DIVISION_SUCCESS']);
+		$abc_content = "<h2>$army_name ".$this->user->lang['ABC_ARMY_TITLE']."</h2>";
+		$abc_content .= "<p>".$this->user->lang['ABC_ARMY_DIVISION_SUCCESS']."</p>";
+
+		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 		return;
 	}
 	

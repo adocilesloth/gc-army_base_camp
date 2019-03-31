@@ -22,7 +22,7 @@ class release_0_5_0 extends \phpbb\db\migration\migration
 		$tatg = $this->config['ta_tag'];
 		$tacl = $this->config['ta_colour'];
 		
-		if($perm && divs && $a1cl && $abcl && $tanm && $tatg && $tacl)
+		if($perm && $divs && $a1cl && $abcl && $tanm && $tatg && $tacl)
 		{
 			return true;
 		}

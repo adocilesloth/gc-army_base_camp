@@ -104,13 +104,13 @@ class abc_history
 		
 		if($army_id == 32) //21CW army is broken
 		{
-			$this->template->assign_vars(array(
-				'ABC_HISTORY_SELECT'		=> $army_select,
-				'ABC_STRUCTURE_ARMY_NAME'	=> $this->user->lang['ABC_HISTORY_STRUCTURE'].$army_name,
-				'ABC_COMPLETE_ARMY_LIST'	=> $this->user->lang['ABC_NONE'],
-				'ABC_MEDALS_ARMY_NAME'		=> $this->user->lang['ABC_HISTORY_MEDALS'].$army_name,
-				'ABC_COMPLETE_MEDAL_LIST'	=> $this->user->lang['ABC_NONE'],
-			));
+			$abc_content = $army_select;
+			$abc_content .= "<h2>".$this->user->lang['ABC_HISTORY_STRUCTURE'].$army_name."</h2>";
+			$abc_content .= $this->user->lang['ABC_NONE']."<br>";
+			$abc_content .= "<h2>".$this->user->lang['ABC_HISTORY_MEDALS'].$army_name."</h2>";
+			$abc_content .= $this->user->lang['ABC_NONE'];
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 			return;
 		}
 		
@@ -388,13 +388,13 @@ class abc_history
 			$medal_list .= $this->user->lang['ABC_HISTORY_NO_MEDALS'];
 		}
 		
-		$this->template->assign_vars(array(
-			'ABC_HISTORY_SELECT'		=> $army_select,
-			'ABC_STRUCTURE_ARMY_NAME'	=> $this->user->lang['ABC_HISTORY_STRUCTURE'].$army_name,
-			'ABC_COMPLETE_ARMY_LIST'	=> $army_list,
-			'ABC_MEDALS_ARMY_NAME'		=> $this->user->lang['ABC_HISTORY_MEDALS'].$army_name,
-			'ABC_COMPLETE_MEDAL_LIST'	=> $medal_list,
-		));
+		$abc_content = $army_select;
+		$abc_content .= "<h2>".$this->user->lang['ABC_HISTORY_STRUCTURE'].$army_name."</h2>";
+		$abc_content .= $army_list."<br>";
+		$abc_content .= "<h2>".$this->user->lang['ABC_HISTORY_MEDALS'].$army_name."</h2>";
+		$abc_content .= $medal_list;
+		
+		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 		return;
 	}
 	

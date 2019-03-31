@@ -19,6 +19,9 @@ class abc_start
 	/** @var request_interface */
 	protected $request;
 	
+	/* @var \phpbb\user */
+	protected $user;
+	
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 	
@@ -29,14 +32,16 @@ class abc_start
 		\phpbb\config\config $config,
 		\phpbb\template\template $template,
 		\phpbb\request\request $request,
+		\phpbb\user $user,
 		\phpbb\db\driver\driver_interface $db,
 		$root_path)
 	{
-		$this->config = $config;
-		$this->template = $template;
-		$this->request = $request;
-		$this->db = $db;
-		$this->root_path = $root_path;
+		$this->config		= $config;
+		$this->template		= $template;
+		$this->request		= $request;
+		$this->user			= $user;
+		$this->db			= $db;
+		$this->root_path	= $root_path;
 	}
 
 	/*Start Page*/
@@ -66,29 +71,97 @@ class abc_start
 		$ta_colour = sql_abc_unclean($this->config['ta_colour']);
 		$ta_general = sql_abc_unclean($this->config['ta_general']);
 		$ta_password = sql_abc_unclean($this->config['ta_password']);
-	
-		$this->template->assign_vars(array(
-			'ABC_START_NAME'		=> $campaign_name,
-			'ABC_START_DIV'			=> $campaign_divisions,
-			'ABC_START_ARMY1'		=> $army1_name,
-			'ABC_START_TAG1'		=> $army1_tag,
-			'ABC_START_COL1'		=> $army1_colour,
-			'ABC_START_GEN1'		=> $army1_general,
-			'ABC_START_PW1'			=> $army1_password,
-			
-			'ABC_START_ARMYB'		=> $armyb_name,
-			'ABC_START_TAGB'		=> $armyb_tag,
-			'ABC_START_COLB'		=> $armyb_colour,
-			'ABC_START_GENB'		=> $armyb_general,
-			'ABC_START_PWB'			=> $armyb_password,
-			
-			'ABC_START_TA'			=> $ta_name,
-			'ABC_START_TAGTA'			=> $ta_tag,
-			'ABC_START_COLTA'		=> $ta_colour,
-			'ABC_START_GENTA'		=> $ta_general,
-			'ABC_START_PWTA'		=> $ta_password,
-		));
 		
+		/*Create abc_content*/
+		$abc_content = "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+		$abc_content .= "<h2>".$this->user->lang['ABC_START_TITLE']."</h2>";
+		$abc_content .= "<dl>";
+		$abc_content .= "<dt><label for=\"campaign_name\">".$this->user->lang['ABC_START_NAME']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"campaign_name\" value=\"$campaign_name\" /></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"campaign_divisions\">".$this->user->lang['ABC_START_DIV']."</label><br>";
+		$abc_content .= "<span>".$this->user->lang['ABC_START_DIV_EXPL']."</span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"campaign_divisions\" value=\"$campaign_divisions\" /></dd>";
+		$abc_content .= "</dl>";
+		
+		/*Army 1*/
+		$abc_content .= "<h2>".$this->user->lang['ABC_START_ARMY1_SEC']."</h2>";
+		$abc_content .= "<dl>";
+		$abc_content .= "<dt><label for=\"army1_name\">".$this->user->lang['ABC_START_ARMY1']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"army1_name\" value=\"$army1_name\" /></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"army1_colour\">".$this->user->lang['ABC_START_TAG1']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"army1_tag\" value=\"$army1_tag\" size=\"6\" maxlength=\"3\" /></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"army1_colour\">".$this->user->lang['ABC_START_COL1']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"army1_colour\" value=\"$army1_colour\" size=\"6\" maxlength=\"6\" /></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"army1_general\">".$this->user->lang['ABC_START_GEN1']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"army1_general\" value=\"$army1_general\" /></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"army1_password\">".$this->user->lang['ABC_START_PW1']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"army1_password\" value=\"$army1_password\" /></dd>";
+		$abc_content .= "</dl>";
+		
+		/*Army B*/
+		$abc_content .= "<h2>".$this->user->lang['ABC_START_ARMYB_SEC']."</h2>";
+		$abc_content .= "<dl>";
+		$abc_content .= "<dt><label for=\"armyb_name\">".$this->user->lang['ABC_START_ARMYB']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"armyb_name\" value=\"$armyb_name\" /></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"army1_colour\">".$this->user->lang['ABC_START_TAGB']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"armyb_tag\" value=\"$armyb_tag\" size=\"6\" maxlength=\"3\" /></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"armyb_colour\">".$this->user->lang['ABC_START_COLB']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"armyb_colour\" value=\"$armyb_colour\" size=\"6\" maxlength=\"6\" /></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"armyb_general\">".$this->user->lang['ABC_START_GENB']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"armyb_general\" value=\"$armyb_general\" /></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"armyb_password\">".$this->user->lang['ABC_START_PWB']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"armyb_password\" value=\"$armyb_password\" /></dd>";
+		$abc_content .= "</dl>";
+		
+		/*TA*/
+		$abc_content .= "<h2>".$this->user->lang['ABC_START_TA_SEC']."</h2>";
+		$abc_content .= "<dl>";
+		$abc_content .= "<dt><label for=\"ta_name\">".$this->user->lang['ABC_START_TA']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"ta_name\" value=\"$ta_name\" /></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"army1_colour\">".$this->user->lang['ABC_START_TAGTA']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"ta_tag\" value=\"$ta_tag\" size=\"6\" maxlength=\"3\" /></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"ta_colour\">".$this->user->lang['ABC_START_COLTA']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"ta_colour\" value=\"$ta_colour\" size=\"6\" maxlength=\"6\" /></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"ta_general\">".$this->user->lang['ABC_START_GENTA']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"ta_general\" value=\"$ta_general\" /></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"ta_password\">".$this->user->lang['ABC_START_PWTA']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"ta_password\" value=\"$ta_password\" /></dd>";
+		$abc_content .= "</dl></fieldset>";
+
+		$abc_content .= "<fieldset class=\"submit-buttons\">";
+		$abc_content .= "<input type=\"submit\" name=\"start_submit\" id=\"start_submit\" value=\"".$this->user->lang['ABC_START_CREATE']."\" class=\"button1\"/>";
+		$abc_content .= "</fieldset>";
+	
+		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 		return;
 	}
 	
@@ -121,8 +194,12 @@ class abc_start
 			$this->request->variable('ta_general', '', true) == '' or
 			$this->request->variable('ta_password', '', true) == '')
 		{
-			$this->template->assign_var('ACP_FAILED', true);
-			$this->template->assign_var('ACP_SUCCESS', false);
+			$abc_content = "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+			$abc_content .= "<h2>".$this->user->lang['ABC_START_FAILED']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_START_FAILED_EXP']."</p>";
+			$abc_content .= "</fieldset>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 			return false;
 		}
 		else
@@ -139,8 +216,12 @@ class abc_start
 			/*Reject nonexistant generals*/
 			if(count($rowset) != 3)
 			{
-				$this->template->assign_var('ACP_FAILED', true);
-				$this->template->assign_var('ACP_SUCCESS', false);
+				$abc_content = "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+				$abc_content .= "<h2>".$this->user->lang['ABC_START_FAILED']."</h2>";
+				$abc_content .= "<p>".$this->user->lang['ABC_START_FAILED_EXP']."</p>";
+				$abc_content .= "</fieldset>";
+				
+				$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 				return false;
 			}
 			/*Setup Campaign*/
@@ -358,11 +439,12 @@ class abc_start
 					else /*if($army == 'ta_')*/
 					{
 						$rank_id++;
-						$rank_order = 1;
+						$rank_order = 99;
 						$rank_is_officer = 1;
 						
+						$rank_img = $this->root_path."/abc/images/ranks/TA_rank.png";
 						/*rank_id in phpbb_ranks auto increments, so we need to make the rank THEN find rank_phpbb_id*/
-						$sql = "INSERT INTO phpbb_ranks (rank_title, rank_min, rank_special, rank_image) VALUES ('$army_id. $army_name', 0, 1, '')";
+						$sql = "INSERT INTO phpbb_ranks (rank_title, rank_min, rank_special, rank_image) VALUES ('$army_id. $army_name', 0, 1, '$rank_img')";
 						$result = $this->db->sql_query($sql);
 						$this->db->sql_freeresult($result);
 						
@@ -371,19 +453,25 @@ class abc_start
 						$rank_phpbb_id = $this->db->sql_fetchfield('MAX(rank_id)');
 						$this->db->sql_freeresult($result);
 							
-						$sql = "INSERT INTO abc_ranks VALUES ($rank_id, $rank_phpbb_id, $army_id, '$army_name', '', $rank_order, $rank_is_officer, '', '', $campaign_time_stamp)";
+						$sql = "INSERT INTO abc_ranks VALUES ($rank_id, $rank_phpbb_id, $army_id, '$army_name', '', $rank_order, $rank_is_officer, '$rank_img', '', $campaign_time_stamp)";
 						$result = $this->db->sql_query($sql);
 						$this->db->sql_freeresult($result);
 						
 						$division_id++;
 						$division_is_default = 1;
 						$division_is_hc = 1;
-						$sql = "INSERT INTO abc_divisions VALUES ($division_id, $army_id, '$army_name', 0, $division_is_default, $division_is_hc, '', $campaign_time_stamp, '')";
+						$divison_icon = $this->root_path."/abc/images/divisons/TA_rank.png";
+						$sql = "INSERT INTO abc_divisions VALUES ($division_id, $army_id, '$army_name', 0, $division_is_default, $division_is_hc, '', $campaign_time_stamp, '$divison_icon')";
 						$result = $this->db->sql_query($sql);
 						$this->db->sql_freeresult($result);
 					}
 					
-					$abc_user_id = 0;
+					$sql = "SELECT MAX(abc_user_id) FROM abc_users";
+					$result = $this->db->sql_query($sql);
+					$abc_user_id = $this->db->sql_fetchfield('MAX(abc_user_id)');
+					$this->db->sql_freeresult($result);
+					$abc_user_id++;
+					
 					/*Want to store pre campaign rank to recover it later*/
 					/*store in user_soldierid in abc_users*/
 					$sql = "SELECT user_rank FROM phpbb_users WHERE user_id = $army_general";
@@ -411,9 +499,6 @@ class abc_start
 					$result = $this->db->sql_query($sql);
 					$this->db->sql_freeresult($result);
 				}
-				
-				$this->template->assign_var('ACP_FAILED', false);
-				$this->template->assign_var('ACP_SUCCESS', true);
 			}
 		}
 		return true;

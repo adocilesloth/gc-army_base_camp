@@ -57,6 +57,13 @@ class abc_medal
 			include $this->root_path . '/ext/globalconflict/abc/include/abc_sql_clean.php';
 		}
 		
+		$abc_content = "<fieldset class=\"submit-buttons\">";
+		$abc_content .= " <input type=\"submit\" name=\"medal_list\" id=\"medal_list\" value=\"".$this->user->lang['ABC_MEDAL']."\" class=\"button1\"/>";
+		$abc_content .= " <input type=\"submit\" name=\"rank_list\" id=\"rank_list\" value=\"".$this->user->lang['ABC_RANK']."\" class=\"button1\"/>";
+		$abc_content .= " <input type=\"submit\" name=\"division_list\" id=\"division_list\" value=\"".$this->user->lang['ABC_DIVISION']."\" class=\"button1\"/>";
+		$abc_content .= "</fieldset></div></div>";
+		$abc_content .= "<div class=\"panel\"><div class=\"inner\">";
+		
 		/*Create new medal*/
 		$medal_create = "<dl><dt><label for=\"medal_name\">".$this->user->lang['ABC_MEDAL_NAME']."</label><br><span></span></dt>";
 		$medal_create .= "<dd><input type=\"text\" name=\"medal_name\" value=\"\" maxlength=\"44\" size=\"39\" /></dd></dl>";
@@ -81,15 +88,23 @@ class abc_medal
 		$rowset = $this->db->sql_fetchrowset();
 		$this->db->sql_freeresult($result);
 		if(!$rowset)
-		{
-			$this->template->assign_vars(array(
-				'ABC_LOGISTICS_TITLE'		=> $this->user->lang['ABC_MEDAL_TITLE'],
-				'ABC_LOGISTICS_EXPLAIN'		=> $this->user->lang['ABC_MEDAL_EXPLAIN'],
-				'ABC_LOGISTICS_NEW'			=> $this->user->lang['ABC_MEDAL_NEW'],
-				'ABC_LOGISTICS_CREATE'		=> $medal_create,
-				'ABC_LOGISTICS_EXIST'		=> $this->user->lang['ABC_MEDAL_EXIST'],
-				'ABC_LOGISTICS_EXISTING'	=> $this->user->lang['ABC_NONE'],
-			));	
+		{		
+			$abc_content .= "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+			$abc_content .= "<h2>".$this->user->lang['ABC_MEDAL_TITLE']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_MEDAL_EXPLAIN']."</p>";
+			$abc_content .= "</fieldset>";
+			
+			$abc_content .= "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+			$abc_content .= "<h2>".$this->user->lang['ABC_MEDAL_NEW']."</h2>";
+			$abc_content .= $medal_create;
+			$abc_content .= "</fieldset>";
+			
+			$abc_content .= "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+			$abc_content .= "<h2>".$this->user->lang['ABC_MEDAL_EXIST']."</h2>";
+			$abc_content .= $this->user->lang['ABC_NONE'];
+			$abc_content .= "</fieldset>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 			return;
 		}
 		
@@ -141,15 +156,23 @@ class abc_medal
 			
 			$medal_list .= "</div>";
 		}
-				
-		$this->template->assign_vars(array(
-			'ABC_LOGISTICS_TITLE'		=> $this->user->lang['ABC_MEDAL_TITLE'],
-			'ABC_LOGISTICS_EXPLAIN'		=> $this->user->lang['ABC_MEDAL_EXPLAIN'],
-			'ABC_LOGISTICS_NEW'			=> $this->user->lang['ABC_MEDAL_NEW'],
-			'ABC_LOGISTICS_CREATE'		=> $medal_create,
-			'ABC_LOGISTICS_EXIST'		=> $this->user->lang['ABC_MEDAL_EXIST'],
-			'ABC_LOGISTICS_EXISTING'	=> $medal_list,
-		));	
+		
+		$abc_content .= "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+		$abc_content .= "<h2>".$this->user->lang['ABC_MEDAL_TITLE']."</h2>";
+		$abc_content .= "<p>".$this->user->lang['ABC_MEDAL_EXPLAIN']."</p>";
+		$abc_content .= "</fieldset>";
+		
+		$abc_content .= "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+		$abc_content .= "<h2>".$this->user->lang['ABC_MEDAL_NEW']."</h2>";
+		$abc_content .= $medal_create;
+		$abc_content .= "</fieldset>";
+		
+		$abc_content .= "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+		$abc_content .= "<h2>".$this->user->lang['ABC_MEDAL_EXIST']."</h2>";
+		$abc_content .= $medal_list;
+		$abc_content .= "</fieldset>";
+		
+		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 		return;
 	}
 	

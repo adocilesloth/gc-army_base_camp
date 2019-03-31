@@ -57,6 +57,13 @@ class abc_division
 			include $this->root_path . '/ext/globalconflict/abc/include/abc_sql_clean.php';
 		}
 		
+		$abc_content = "<fieldset class=\"submit-buttons\">";
+		$abc_content .= " <input type=\"submit\" name=\"medal_list\" id=\"medal_list\" value=\"".$this->user->lang['ABC_MEDAL']."\" class=\"button1\"/>";
+		$abc_content .= " <input type=\"submit\" name=\"rank_list\" id=\"rank_list\" value=\"".$this->user->lang['ABC_RANK']."\" class=\"button1\"/>";
+		$abc_content .= " <input type=\"submit\" name=\"division_list\" id=\"division_list\" value=\"".$this->user->lang['ABC_DIVISION']."\" class=\"button1\"/>";
+		$abc_content .= "</fieldset></div></div>";
+		$abc_content .= "<div class=\"panel\"><div class=\"inner\">";
+		
 		/*Create new division*/
 		$division_create = "<dl><dt><label for=\"division_name\">".$this->user->lang['ABC_DIVISION_NAME']."</label><br><span></span></dt>";
 		$division_create .= "<dd><input type=\"text\" name=\"division_name\" value=\"\" maxlength=\"33\" size=\"39\" /></dd></dl>";
@@ -79,14 +86,22 @@ class abc_division
 		$this->db->sql_freeresult($result);
 		if(!$rowset)
 		{
-			$this->template->assign_vars(array(
-				'ABC_LOGISTICS_TITLE'		=> $this->user->lang['ABC_DIVISION_TITLE'],
-				'ABC_LOGISTICS_EXPLAIN'		=> $this->user->lang['ABC_DIVISION_EXPLAIN'],
-				'ABC_LOGISTICS_NEW'			=> $this->user->lang['ABC_DIVISION_NEW'],
-				'ABC_LOGISTICS_CREATE'		=> $division_create,
-				'ABC_LOGISTICS_EXIST'		=> $this->user->lang['ABC_DIVISION_EXIST'],
-				'ABC_LOGISTICS_EXISTING'	=> $this->user->lang['ABC_NONE'],
-			));
+			$abc_content .= "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+			$abc_content .= "<h2>".$this->user->lang['ABC_DIVISION_TITLE']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_DIVISION_EXPLAIN']."</p>";
+			$abc_content .= "</fieldset>";
+			
+			$abc_content .= "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+			$abc_content .= "<h2>".$this->user->lang['ABC_DIVISION_NEW']."</h2>";
+			$abc_content .= $division_create;
+			$abc_content .= "</fieldset>";
+			
+			$abc_content .= "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+			$abc_content .= "<h2>".$this->user->lang['ABC_DIVISION_EXIST']."</h2>";
+			$abc_content .= $this->user->lang['ABC_NONE'];
+			$abc_content .= "</fieldset>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 			return;
 		}
 		
@@ -136,15 +151,22 @@ class abc_division
 			$division_list .= "</div>";
 		}
 		
-		$this->template->assign_vars(array(
-			'ABC_LOGISTICS_TITLE'		=> $this->user->lang['ABC_DIVISION_TITLE'],
-			'ABC_LOGISTICS_EXPLAIN'		=> $this->user->lang['ABC_DIVISION_EXPLAIN'],
-			'ABC_LOGISTICS_NEW'			=> $this->user->lang['ABC_DIVISION_NEW'],
-			'ABC_LOGISTICS_CREATE'		=> $division_create,
-			'ABC_LOGISTICS_EXIST'		=> $this->user->lang['ABC_DIVISION_EXIST'],
-			'ABC_LOGISTICS_EXISTING'	=> $division_list,
-			
-		));	
+		$abc_content .= "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+		$abc_content .= "<h2>".$this->user->lang['ABC_DIVISION_TITLE']."</h2>";
+		$abc_content .= "<p>".$this->user->lang['ABC_DIVISION_EXPLAIN']."</p>";
+		$abc_content .= "</fieldset>";
+		
+		$abc_content .= "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+		$abc_content .= "<h2>".$this->user->lang['ABC_DIVISION_NEW']."</h2>";
+		$abc_content .= $division_create;
+		$abc_content .= "</fieldset>";
+		
+		$abc_content .= "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+		$abc_content .= "<h2>".$this->user->lang['ABC_DIVISION_EXIST']."</h2>";
+		$abc_content .= $division_list;
+		$abc_content .= "</fieldset>";
+		
+		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);	
 		return;
 	}
 	

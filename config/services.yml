@@ -9,6 +9,7 @@ services:
             - '@dbal.conn'
             - '@auth'
             - '%core.root_path%'
+            
     globalconflict.abc.abc_medal:
         class: globalconflict\abc\core\abc_medal
         arguments:
@@ -19,6 +20,7 @@ services:
             - '@user'
             - '@dbal.conn'
             - '%core.root_path%'
+            
     globalconflict.abc.abc_division:
         class: globalconflict\abc\core\abc_division
         arguments:
@@ -29,6 +31,7 @@ services:
             - '@user'
             - '@dbal.conn'
             - '%core.root_path%'
+            
     globalconflict.abc.abc_rank:
         class: globalconflict\abc\core\abc_rank
         arguments:
@@ -39,6 +42,7 @@ services:
             - '@user'
             - '@dbal.conn'
             - '%core.root_path%'
+            
     globalconflict.abc.abc_history:
         class: globalconflict\abc\core\abc_history
         arguments:
@@ -48,6 +52,7 @@ services:
             - '@request'
             - '@dbal.conn'
             - '%core.root_path%'
+            
     globalconflict.abc.abc_soldier:
         class: globalconflict\abc\core\abc_soldier
         arguments:
@@ -57,11 +62,34 @@ services:
             - '@request'
             - '@dbal.conn'
             - '%core.root_path%'
+            
+    globalconflict.abc.abc_battleday:
+        class: globalconflict\abc\core\abc_battleday
+        arguments:
+            - '@config'
+            - '@template'
+            - '@user'
+            - '@request'
+            - '@dbal.conn'
+            - '%core.root_path%'
+            
+    globalconflict.abc.abc_menu:
+        class: globalconflict\abc\core\abc_menu
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@template'
+            - '@user'
+            - '@dbal.conn'
+            - '@globalconflict.abc.permissions'
+            
     globalconflict.abc.controller:
         class: globalconflict\abc\controller\main
         arguments:
             - '@controller.helper'
+            - '@template'
             - '@request'
+            - '@user'
             - '@globalconflict.abc.abc_start'
             - '@globalconflict.abc.abc_finish'
             - '@globalconflict.abc.abc_draft'
@@ -72,42 +100,49 @@ services:
             - '@globalconflict.abc.abc_rank'
             - '@globalconflict.abc.abc_history'
             - '@globalconflict.abc.abc_soldier'
+            - '@globalconflict.abc.abc_battleday'
+            - '@globalconflict.abc.abc_menu'
             - '%core.root_path%'
+            
     globalconflict.abc.listener:
         class: globalconflict\abc\event\main_listener
         arguments:
-            - '@config'
             - '@controller.helper'
             - '@template'
             - '@user'
-            - '@dbal.conn'
-            - '@globalconflict.abc.permissions'
         tags:
             - { name: event.listener }
+            
     globalconflict.abc.permissions:
         class: globalconflict\abc\core\permissions
         arguments:
             - '@dbal.conn'
             - '@user'
+            
     globalconflict.abc.abc_forum:
         class: globalconflict\abc\core\abc_forum
         arguments:
             - '@dbal.conn'
+            
     globalconflict.abc.abc_start:
         class: globalconflict\abc\core\abc_start
         arguments:
             - '@config'
             - '@template'
             - '@request'
+            - '@user'
             - '@dbal.conn'
             - '%core.root_path%'
+            
     globalconflict.abc.abc_finish:
         class: globalconflict\abc\core\abc_finish
         arguments:
             - '@config'
             - '@template'
+            - '@user'
             - '@dbal.conn'
             - '%core.root_path%'
+            
     globalconflict.abc.abc_draft:
         class: globalconflict\abc\core\abc_draft
         arguments:
@@ -118,6 +153,7 @@ services:
             - '@dbal.conn'
             - '%core.root_path%'
             - '@globalconflict.abc.permissions'
+
     globalconflict.abc.abc_army:
         class: globalconflict\abc\core\abc_army
         arguments:

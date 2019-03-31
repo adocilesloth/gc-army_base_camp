@@ -10,7 +10,6 @@ rewrite from scratch than try to update older code.
 
 To Do
 -----
-* Battleday Signup
 
 Partially Implimented
 ---------------------
@@ -43,6 +42,8 @@ Implimented
 * Army Ranks `./core/abc_rank.php`
 
 * Army Management
-	* Award medal `./core/abc_army`
-	* Assign division `./core/abc_army`
-	* Promote/demote army members `./core/abc_army`
+	* Award medal `./core/abc_army.php`
+	* Assign division `./core/abc_army.php`
+	* Promote/demote army members `./core/abc_army.php`
+	
+* Battleday Signup `./core/abc_battleday.php`

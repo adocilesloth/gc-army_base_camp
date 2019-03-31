@@ -52,6 +52,51 @@ class abc_forum
 	
 	public function start_forum()
 	{
+		/*Default groups*/
+		/*These group_ids are not as expected, so pull them from the database*/
+		$sql = "SELECT group_id, group_name FROM ".GROUPS_TABLE." WHERE
+				group_name = 'REGISTERED' OR group_name = 'REGISTERED_COPPA' OR group_name = 'ADMINISTRATORS'";
+		$result = $this->db->sql_query($sql);
+		$rowset = $this->db->sql_fetchrowset();
+		$this->db->sql_freeresult($result);
+		if(count($rowset) != 3)
+		{
+			$abc_content = "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+			$abc_content .= "<h2>".$this->user->lang['ABC_START_SUCCESS']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_FORUM_FAILED'].$this->user->lang['ABC_FORUM_ERR_GRP']."</p>";
+			$abc_content .= "</fieldset>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
+			return false;
+		}
+		$registered_id = $reg_coppa_id = $admin_id = -1;
+		for($i=0; $i<count($rowset); $i++)
+		{
+			if($rowset[$i]['group_name'] == "REGISTERED")
+			{
+				$registered_id = $rowset[$i]['group_id'];
+			}
+			elseif($rowset[$i]['group_name'] == "REGISTERED_COPPA")
+			{
+				$reg_coppa_id = $rowset[$i]['group_id'];
+			}
+			elseif($rowset[$i]['group_name'] == "ADMINISTRATORS")
+			{
+				$admin_id = $rowset[$i]['group_id'];
+			}
+		}
+		if($registered_id < 1 || $reg_coppa_id < 1 || $admin_id < 1)
+		{
+			$abc_content = "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+			$abc_content .= "<h2>".$this->user->lang['ABC_START_SUCCESS']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_FORUM_FAILED'].$this->user->lang['ABC_FORUM_ERR_GID']."</p>";
+			$abc_content .= "</fieldset>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
+			return false;
+		}
+		
+		/*Army Groups*/
 		$army1 = $this->config['army1_name'];
 		$armyb = $this->config['armyb_name'];
 		$ta = $this->config['ta_name'];
@@ -61,11 +106,16 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(count($rowset) != 3)
 		{
-			$this->template->assign_var('ACP_FORUM_FAILED', $this->user->lang['ABC_FORUM_FAILED'].$this->user->lang['ABC_FORUM_ERR_GRP']);
+			$abc_content = "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+			$abc_content .= "<h2>".$this->user->lang['ABC_START_SUCCESS']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_FORUM_FAILED'].$this->user->lang['ABC_FORUM_ERR_GRP']."</p>";
+			$abc_content .= "</fieldset>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 			return false;
 		}
 		
-		$army1_id = $armyb_id = $ta_id = new \stdClass();
+		$army1_id = $armyb_id = $ta_id = -1;
 		for($i=0; $i<count($rowset); $i++)
 		{
 			if($rowset[$i]['group_name'] == $army1." HC")
@@ -83,37 +133,61 @@ class abc_forum
 		}
 		if($army1_id < 1 || $armyb_id < 1 || $ta_id < 1)
 		{
-			$this->template->assign_var('ACP_FORUM_FAILED', $this->user->lang['ABC_FORUM_FAILED'].$this->user->lang['ABC_FORUM_ERR_GID']);
+			$abc_content = "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+			$abc_content .= "<h2>".$this->user->lang['ABC_START_SUCCESS']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_FORUM_FAILED'].$this->user->lang['ABC_FORUM_ERR_GID']."</p>";
+			$abc_content .= "</fieldset>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 			return false;
 		}
 		
 		/*Permissions*/
-		$permissions = Array(
+		$permissions = array(
 			//Registered
-			Array('group_id' => 2, 'auth_option_id' => 0, 'auth_role_id' => 17, 'auth_setting' => 0 ), //READ ONLY
+			array('group_id' => $registered_id, 'auth_option_id' => 0, 'auth_role_id' => 17, 'auth_setting' => 0 ), //READ ONLY
 			//Registered_coppa
-			Array('group_id' => 3, 'auth_option_id' => 0, 'auth_role_id' => 17, 'auth_setting' => 0 ), //READ ONLY
+			array('group_id' => $reg_coppa_id, 'auth_option_id' => 0, 'auth_role_id' => 17, 'auth_setting' => 0 ), //READ ONLY
 			//Admin
-			Array('group_id' => 5, 'auth_option_id' => 0, 'auth_role_id' => 14, 'auth_setting' => 0 ), //FULL
-			Array('group_id' => 5, 'auth_option_id' => 0, 'auth_role_id' => 10, 'auth_setting' => 0 ), //MOD_FULL
+			array('group_id' => $admin_id, 'auth_option_id' => 0, 'auth_role_id' => 14, 'auth_setting' => 0 ), //FULL
+			array('group_id' => $admin_id, 'auth_option_id' => 0, 'auth_role_id' => 10, 'auth_setting' => 0 ), //MOD_FULL
 			//TAs are admins
-			Array('group_id' => $ta_id, 'auth_option_id' => 0, 'auth_role_id' => 14, 'auth_setting' => 0 ), //FULL
-			Array('group_id' => $ta_id, 'auth_option_id' => 0, 'auth_role_id' => 10, 'auth_setting' => 0 ), //MOD_FULL
-			);
+			array('group_id' => $ta_id, 'auth_option_id' => 0, 'auth_role_id' => 14, 'auth_setting' => 0 ), //FULL
+			array('group_id' => $ta_id, 'auth_option_id' => 0, 'auth_role_id' => 10, 'auth_setting' => 0 ) //MOD_FULL
+		);
+			
 		/*Category*/
 		$options = array('name' => $this->config['campaign_name'], 'parent_id' => 0, 'forum_type' => 0);
 		$cat_id = $this->create_forum($options, $forum_data = false, $permissions = $permissions);
+		
 		/*Campaign Rules, Results and Information*/
 		$options = array('name' => $this->user->lang['ABC_FORUM_CRRI'], 'parent_id' => $cat_id, 'forum_type' => 1);
 		$crri_id = $this->create_forum($options, $forum_data = false, $permissions = $permissions);
+		
 		/*TA*/
-		$permissions[0]['auth_role_id'] = 16;	//Remove access for Registered users
-		$permissions[1]['auth_role_id'] = 16;	//Remove access for Registered_coppa users
+		$permissions = array(
+			//Admin
+			array('group_id' => $admin_id, 'auth_option_id' => 0, 'auth_role_id' => 14, 'auth_setting' => 0 ), //FULL
+			array('group_id' => $admin_id, 'auth_option_id' => 0, 'auth_role_id' => 10, 'auth_setting' => 0 ), //MOD_FULL
+			//TAs are admins
+			array('group_id' => $ta_id, 'auth_option_id' => 0, 'auth_role_id' => 14, 'auth_setting' => 0 ), //FULL
+			array('group_id' => $ta_id, 'auth_option_id' => 0, 'auth_role_id' => 10, 'auth_setting' => 0 ) //MOD_FULL
+		);
 		$options = array('name' => $ta, 'parent_id' => $cat_id, 'forum_type' => 1);
 		$ta_f_id = $this->create_forum($options, $forum_data = false, $permissions = $permissions);
+		
 		/*TA + HC*/
-		$permissions[] = Array('group_id' => $army1_id, 'auth_option_id' => 0, 'auth_role_id' => 15, 'auth_setting' => 0 );	//Army1 HC STANDARD
-		$permissions[] = Array('group_id' => $armyb_id, 'auth_option_id' => 0, 'auth_role_id' => 15, 'auth_setting' => 0 );	//Armyb HC STANDARD
+		$permissions = array(
+			//Admin
+			array('group_id' => $admin_id, 'auth_option_id' => 0, 'auth_role_id' => 14, 'auth_setting' => 0 ), //FULL
+			array('group_id' => $admin_id, 'auth_option_id' => 0, 'auth_role_id' => 10, 'auth_setting' => 0 ), //MOD_FULL
+			//TAs are admins
+			array('group_id' => $ta_id, 'auth_option_id' => 0, 'auth_role_id' => 14, 'auth_setting' => 0 ), //FULL
+			array('group_id' => $ta_id, 'auth_option_id' => 0, 'auth_role_id' => 10, 'auth_setting' => 0 ), //MOD_FULL
+			//HCs
+			array('group_id' => $army1_id, 'auth_option_id' => 0, 'auth_role_id' => 15, 'auth_setting' => 0 ), //Army1 HC STANDARD
+			array('group_id' => $armyb_id, 'auth_option_id' => 0, 'auth_role_id' => 15, 'auth_setting' => 0 )  //Armyb HC STANDARD
+		);
 		$options = array('name' => $ta.' + HC', 'parent_id' => $cat_id, 'forum_type' => 1);
 		$tahc_id = $this->create_forum($options, $forum_data = false, $permissions = $permissions);
 		
@@ -124,7 +198,12 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(!$rowset)
 		{
-			$this->template->assign_var('ACP_FORUM_FAILED', $this->user->lang['ABC_FORUM_FAILED'].$this->user->lang['ABC_FORUM_ERR_CAT']);
+			$abc_content = "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+			$abc_content .= "<h2>".$this->user->lang['ABC_START_SUCCESS']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_FORUM_FAILED'].$this->user->lang['ABC_FORUM_ERR_CAT']."</p>";
+			$abc_content .= "</fieldset>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 			return false;
 		}
 		$num_cat = count($rowset);
@@ -147,10 +226,20 @@ class abc_forum
 		$moved = $forums_admin->move_forum_by($row, 'move_up', $num_cat-2);
 		if(!$moved)
 		{
-			$this->template->assign_var('ACP_FORUM_FAILED', $this->user->lang['ABC_FORUM_FAILED'].$this->user->lang['ABC_FORUM_ERR_MOV']);
+			$abc_content = "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+			$abc_content .= "<h2>".$this->user->lang['ABC_START_SUCCESS']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_FORUM_FAILED'].$this->user->lang['ABC_FORUM_ERR_MOV']."</p>";
+			$abc_content .= "</fieldset>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 			return false;
 		}
 		
+		$abc_content = "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+		$abc_content .= "<h2>".$this->user->lang['ABC_START_SUCCESS']."</h2>";
+		$abc_content .= "</fieldset>";
+		
+		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 		return true;
 	}
 	
@@ -166,7 +255,12 @@ class abc_forum
 		$archivist_string = $this->request->variable('archivist', '', true); /*This input includes a slash, so don't clean*/
 		if($campaign_archive == '' or $campaign_hidden_archive == '')
 		{
-			$this->template->assign_var('ACP_FINISHED_FAILED', true);
+			$abc_content = "<h2>".$this->user->lang['ABC_FINISH']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_FINISH_FAILED']."</p>";
+			$abc_content .= "<p>".$this->user->lang['ABC_FINISH_ERR_ARCH']."</p>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
+			//$this->template->assign_var('ACP_FINISHED_FAILED', true);
 			return false;
 		}
 		/*Check archives exist*/
@@ -176,8 +270,13 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(count($rowset) != 2)
 		{
-			$this->template->assign_var('ACP_FINISHED_FAILED', true);
-			$this->template->assign_var('APC_FINISH_UNABLE', $sql);
+			$abc_content = "<h2>".$this->user->lang['ABC_FINISH']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_FINISH_FAILED']."</p>";
+			$abc_content .= "<p>".$sql."</p>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
+			//$this->template->assign_var('ACP_FINISHED_FAILED', true);
+			//$this->template->assign_var('APC_FINISH_UNABLE', $sql);
 			return false;
 		}
 		
@@ -189,8 +288,8 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(!$camp_id)
 		{
-			$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_CMP'].
-																$this->user->lang['ABC_FORUM_ERR_NEY']."<br>$sql");
+			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_CMP'].
+			//													$this->user->lang['ABC_FORUM_ERR_NEY']."<br>$sql");
 			return true;
 		}
 		
@@ -201,8 +300,8 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(!$rowset)
 		{
-			$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_CAT'].
-																$this->user->lang['ABC_FORUM_ERR_NEY']."<br>$sql");
+			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_CAT'].
+			//													$this->user->lang['ABC_FORUM_ERR_NEY']."<br>$sql");
 			return true;
 		}
 		$num_cat = count($rowset);
@@ -221,8 +320,8 @@ class abc_forum
 		$moved = $forums_admin->move_forum_by($row, 'move_down', $num_cat-2);
 		if(!$moved)
 		{
-			$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_MOV'].
-																$this->user->lang['ABC_FORUM_ERR_NEY']);
+			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_MOV'].
+			//													$this->user->lang['ABC_FORUM_ERR_NEY']);
 			return true;
 		}
 		
@@ -237,8 +336,8 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(count($rowset) != 3)
 		{
-			$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_HID'].
-																$this->user->lang['ABC_FORUM_ERR_NEY']."<br>$sql");
+			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_HID'].
+			//													$this->user->lang['ABC_FORUM_ERR_NEY']."<br>$sql");
 			return true;
 		}
 		
@@ -264,8 +363,8 @@ class abc_forum
 		}
 		if($hidden_id < 1 || count($ta_data) == 0 || count($tahc_data) == 0)
 		{
-			$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_HDT'].
-																$this->user->lang['ABC_FORUM_ERR_NEY']);
+			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_HDT'].
+			//													$this->user->lang['ABC_FORUM_ERR_NEY']);
 			return true;
 		}
 		
@@ -297,8 +396,8 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(count($rowset) != 2)
 		{
-			$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_ACH'].
-																$this->user->lang['ABC_FORUM_ERR_NEY']."<br>$sql");
+			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_ACH'].
+			//													$this->user->lang['ABC_FORUM_ERR_NEY']."<br>$sql");
 			return true;
 		}
 		
@@ -320,8 +419,8 @@ class abc_forum
 		}
 		if($archive_id < 1 || count($campaign_data) == 0)
 		{
-			$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_ADT'].
-																$this->user->lang['ABC_FORUM_ERR_NEY']);
+			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_ADT'].
+			//													$this->user->lang['ABC_FORUM_ERR_NEY']);
 			return true;
 		}
 		
@@ -371,8 +470,8 @@ class abc_forum
 			$this->db->sql_freeresult($result);
 			if(count($rowset) != count($access))
 			{
-				$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_HAG'].
-																	$this->user->lang['ABC_FORUM_ERR_PER']."<br>$sql");
+				//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_HAG'].
+				//													$this->user->lang['ABC_FORUM_ERR_PER']."<br>$sql");
 				return true;
 			}
 		}
@@ -443,8 +542,8 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(count($rowset) != count($access))
 		{
-			$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_AKG'].
-																$this->user->lang['ABC_FORUM_ERR_PER']."<br>$sql");
+			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_AKG'].
+			//													$this->user->lang['ABC_FORUM_ERR_PER']."<br>$sql");
 			return true;
 		}
 		
@@ -476,8 +575,8 @@ class abc_forum
 		/*Insert new permissions*/
 		if(!$this->db->sql_multi_insert(ACL_GROUPS_TABLE, $permissions))
 		{
-			$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_AKP'].
-																$this->user->lang['ABC_FORUM_ERR_PER']);
+			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_AKP'].
+			//													$this->user->lang['ABC_FORUM_ERR_PER']);
 		}
 		
 		return true;
@@ -485,6 +584,19 @@ class abc_forum
 	
 	public function find_forums()
 	{
+		
+		$abc_content = "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+		$abc_content .= "<h2>".$this->user->lang['ABC_FORUM']."</h2>";
+		$abc_content .= "<p>".$this->user->lang['ABC_FORUM_EXPLAIN']."</p>";
+					
+		$abc_content .= "<dl><dt><label for=\"forum_name\">".$this->user->lang['ABC_FORUM_NAME']."</label><br>";
+		$abc_content .= "<span>".$this->user->lang['ABC_FORUM_NAME_EXPL']."</span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"forum_name\" value=\"\" /></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"forum_officer\">".$this->user->lang['ABC_FORUM_OFFICER']."</label></dt>";
+		$abc_content .= "<dd><input type=\"radio\" class=\"radio\" name=\"forum_officer\" value=\"1\" /> ".$this->user->lang['YES']." &nbsp;";
+		$abc_content .= "<input type=\"radio\" class=\"radio\" name=\"forum_officer\" value=\"0\" checked=\"checked\" /> ".$this->user->lang['NO']."</dd></dl>";
+					
 		/*Get army*/
 		$army = '';
 		if($this->user->data['username'] == $this->config['army1_general'])
@@ -503,7 +615,14 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(!$group_id)
 		{
-			$this->template->assign_var('ABC_FORUMS_EXISTING', 'group_id');
+			$abc_content .= "group_id";
+			$abc_content .= "</fieldset>";
+			$abc_content .= "<fieldset class=\"submit-buttons\">";
+			$abc_content .= "<input type=\"submit\" name=\"create_forum\" id=\"create_forum\" value=\"".$this->user->lang['ABC_FORUM_CREATE']."\" class=\"button1\"/>";
+			$abc_content .= "</fieldset>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
+			//$this->template->assign_var('ABC_FORUMS_EXISTING', 'group_id');
 			return;
 		}
 		/*Get forum_id where HC is FULL*/
@@ -513,7 +632,14 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(!$rowset)
 		{
-			$this->template->assign_var('ABC_FORUMS_EXISTING', '');
+			$abc_content .= "";
+			$abc_content .= "</fieldset>";
+			$abc_content .= "<fieldset class=\"submit-buttons\">";
+			$abc_content .= "<input type=\"submit\" name=\"create_forum\" id=\"create_forum\" value=\"".$this->user->lang['ABC_FORUM_CREATE']."\" class=\"button1\"/>";
+			$abc_content .= "</fieldset>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
+			//$this->template->assign_var('ABC_FORUMS_EXISTING', '');
 			return;
 		}
 		/*Get forum_name where HC is FULL*/
@@ -530,7 +656,14 @@ class abc_forum
 		
 		if(!$rowset)
 		{
-			$this->template->assign_var('ABC_FORUMS_EXISTING', '');
+			$abc_content .= "";
+			$abc_content .= "</fieldset>";
+			$abc_content .= "<fieldset class=\"submit-buttons\">";
+			$abc_content .= "<input type=\"submit\" name=\"create_forum\" id=\"create_forum\" value=\"".$this->user->lang['ABC_FORUM_CREATE']."\" class=\"button1\"/>";
+			$abc_content .= "</fieldset>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
+			//$this->template->assign_var('ABC_FORUMS_EXISTING', '');
 			return;
 		}
 		
@@ -555,7 +688,15 @@ class abc_forum
 			$html_string .= "</option>";
 		}
 		$html_string .= "</select></dd></dl>";
-		$this->template->assign_var('ABC_FORUMS_EXISTING', $html_string);
+		
+		$abc_content .= $html_string;
+		$abc_content .= "</fieldset>";
+		$abc_content .= "<fieldset class=\"submit-buttons\">";
+		$abc_content .= "<input type=\"submit\" name=\"create_forum\" id=\"create_forum\" value=\"".$this->user->lang['ABC_FORUM_CREATE']."\" class=\"button1\"/>";
+		$abc_content .= "</fieldset>";
+		
+		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
+		//$this->template->assign_var('ABC_FORUMS_EXISTING', $html_string);
 		
 		return;
 	}
@@ -609,9 +750,9 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(!$row)
 		{
-			$this->template->assign_var('ABC_FORUMS_EXISTING', $this->user->lang['ABC_FORUM_ERR_PAGE'].
-																$this->user->lang['ABC_FORUM_ERR_PARENT'].
-																"<br>$sql");
+			$this->template->assign_var('ABC_PAGE_CONTENT', $this->user->lang['ABC_FORUM_ERR_PAGE'].
+															$this->user->lang['ABC_FORUM_ERR_PARENT'].
+															"<br>$sql");
 			return;
 		}
 		$parent_id = $row['forum_id'];
@@ -682,9 +823,9 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(count($rowset) != count($admins))
 		{
-			$this->template->assign_var('ABC_FORUMS_EXISTING', $this->user->lang['ABC_FORUM_ERR_PAGE'].
-																$this->user->lang['ABC_FORUM_ERR_ADMIN'].
-																"<br>$sql");
+			$this->template->assign_var('ABC_PAGE_CONTENT', $this->user->lang['ABC_FORUM_ERR_PAGE'].
+															$this->user->lang['ABC_FORUM_ERR_ADMIN'].
+															"<br>$sql");
 			return;
 		}
 		
@@ -715,9 +856,9 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(count($rowset) != count($readers))
 		{
-			$this->template->assign_var('ABC_FORUMS_EXISTING', $this->user->lang['ABC_FORUM_ERR_PAGE'].
-																$this->user->lang['ABC_FORUM_ERR_STD'].
-																"<br>$sql");
+			$this->template->assign_var('ABC_PAGE_CONTENT', $this->user->lang['ABC_FORUM_ERR_PAGE'].
+															$this->user->lang['ABC_FORUM_ERR_STD'].
+															"<br>$sql");
 			return true;
 		}
 		for($i=0; $i<count($rowset); $i++)
@@ -744,10 +885,10 @@ class abc_forum
 			$this->db->sql_freeresult($result);
 			if(!$group_id)
 			{
-				$this->template->assign_var('ABC_FORUMS_EXISTING', $this->user->lang['ABC_FORUM_ERR_PAGE'].
-																	$this->user->lang['ABC_FORUM_ERR_HCG'].
-																	$HC_group.
-																	"!<br>$sql");
+				$this->template->assign_var('ABC_PAGE_CONTENT', $this->user->lang['ABC_FORUM_ERR_PAGE'].
+																$this->user->lang['ABC_FORUM_ERR_HCG'].
+																$HC_group.
+																"!<br>$sql");
 				return;
 			}
 			
@@ -793,9 +934,9 @@ class abc_forum
 					$moved = $forums_admin->move_forum_by($row, 'move_up', count($rowset));
 					if(!$moved)
 					{
-						$this->template->assign_var('ABC_FORUMS_EXISTING', $this->user->lang['ABC_FORUM_ERR_PAGE'].
-																			$this->user->lang['ABC_FORUM_ERR_MOVENEW'].
-																			"<br>$sql");
+						$this->template->assign_var('ABC_PAGE_CONTENT', $this->user->lang['ABC_FORUM_ERR_PAGE'].
+																		$this->user->lang['ABC_FORUM_ERR_MOVENEW'].
+																		"<br>$sql");
 						return;
 					}
 				}

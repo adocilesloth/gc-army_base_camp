@@ -62,10 +62,55 @@ class abc_draft
 			$draft_select .= '<option value="'.$c_div.'"'.$c_div_selected.'>'.$c_div.'</option>';
 		}
 		
-		$this->template->assign_vars(array(
-			'ABC_DRAFT_SELECT'	=> $draft_select,
-			'ACP_DRAFT_FUNNY'	=> false,
-		));
+		$abc_content = "<h2>".$this->user->lang['ABC_DRAFT_TITLE']."</h2>";
+		
+		/*Get if alread in draft*/
+		$sql = "SELECT user_id FROM abc_users WHERE user_is_signed_up = 1 AND campaign_id = (SELECT MAX(campaign_id) FROM abc_users) AND user_id = ";
+		$sql .= $this->user->data['user_id'];
+		$result = $this->db->sql_query($sql);
+		$user_id = $this->db->sql_fetchfield('user_id');
+		$this->db->sql_freeresult($result);
+		if($user_id)
+		{
+			$abc_content .= "<p>".$this->user->lang['ABC_DRAFT_IN_DRAFT']."</p>";
+			$abc_content .= "<fieldset class=\"submit-buttons\">";
+			$abc_content .= "<input type=\"submit\" name=\"draft_leave\" id=\"draft_leave\" value=\"".$this->user->lang['ABC_DRAFT_LEAVE']."\" class=\"button1\"/>";
+			$abc_content .= "</fieldset>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
+			return;
+		}
+		
+		$abc_content .= "<p>".$this->user->lang['ABC_DRAFT_EXPLAIN']."</p>";
+		$abc_content .= "<fieldset class=\"fields2\" id=\"attach-panel-basic\"><dl>";
+		$abc_content .= "<dt><label for=\"draft_division\">".$this->user->lang['ABC_DRAFT_CHOOSE']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><select name=\"draft_division\" id=\"draft_division\">".$draft_select."</select></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"draft_avail\">".$this->user->lang['ABC_DRAFT_AVAIL']."</label><br>";
+		$abc_content .= "<span>".$this->user->lang['ABC_DRAFT_AVAIL_EXP']."</span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"draft_avail\" value=\"\" maxlength=\"132\" /></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"draft_local\">".$this->user->lang['ABC_DRAFT_LOCAL']."</label><br>";
+		$abc_content .= "<span>".$this->user->lang['ABC_DRAFT_LOCAL_EXP']."</span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"draft_local\" value=\"\" maxlength=\"52\" /></dd>";
+		$abc_content .= "</dl><dl>";
+		$abc_content .= "<dt><label for=\"draft_notes\">".$this->user->lang['ABC_DRAFT_NOTES']."</label><br>";
+		$abc_content .= "<span>".$this->user->lang['ABC_DRAFT_NOTES_EXP']."</span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"draft_notes\" value=\"\" maxlength=\"255\" /></dd>";
+		$abc_content .= "</dl><br>";
+		$abc_content .= "<p>".$this->user->lang['ABC_DRAFT_PW_EXPLAIN'];
+		$abc_content .= $this->user->lang['ABC_DRAFT_PW_EXPL']."</p>";
+		$abc_content .= "<dl><dt><label for=\"draft_pw\">".$this->user->lang['ABC_DRAFT_PW']."</label><br>";
+		$abc_content .= "<span></span></dt>";
+		$abc_content .= "<dd><input type=\"text\" name=\"draft_pw\" value=\"\" /></dd>";
+		$abc_content .= "</dl></fieldset>";
+		
+		$abc_content .= "<fieldset class=\"submit-buttons\">";
+		$abc_content .= "<input type=\"submit\" name=\"draft_submit\" id=\"draft_submit\" value=\"".$this->user->lang['ABC_DRAFT_JOIN']."\" class=\"button1\"/>";
+		$abc_content .= "</fieldset>";
+		
+		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 		return;
 	}
 	
@@ -79,7 +124,10 @@ class abc_draft
 		$password = $this->request->variable('draft_pw', '', true);
 		if($password == "it" or $password == "it below")
 		{
-			$this->template->assign_var('ABC_DRAFT_FUNNY', true);
+			$abc_content = "<h2>".$this->user->lang['ABC_DRAFT_TITLE']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_DRAFT_FUNNY']."</p>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 		}
 		else
 		{
@@ -128,9 +176,10 @@ class abc_draft
 				$this->db->sql_freeresult($result);
 				if(!$group_id)
 				{
-					$this->template->assign_vars(array(
-						'ABC_DRAFT_ARMY_JOIN'	=> $this->user->lang['ABC_DRAFT_ERR_GID'],
-					));
+					$abc_content = "<h2>".$this->user->lang['ABC_DRAFT_TITLE']."</h2>";
+					$abc_content .= "<p>".$this->user->lang['ABC_DRAFT_ERR_GID']."</p>";
+					
+					$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 					return;
 				}
 				
@@ -144,7 +193,7 @@ class abc_draft
 						FROM abc_divisions AS ad
 						JOIN abc_armies AS aa ON ad.army_id = aa.army_id
 						JOIN abc_ranks AS ar ON ad.army_id = ar.army_id
-						WHERE aa.campaign_id = (SELECT MAX(campaign_id) FROM abc_armies) AND ad.division_is_default = 1 AND ar.rank_order = 1 AND aa.army_name = '$group_name'";			
+						WHERE aa.campaign_id = (SELECT MAX(campaign_id) FROM abc_armies) AND ad.division_is_default = 1 AND ar.rank_order = 99 AND aa.army_name = '$group_name'";			
 				$result = $this->db->sql_query($sql);
 				$rowset = $this->db->sql_fetchrowset();
 				$this->db->sql_freeresult($result);
@@ -154,12 +203,13 @@ class abc_draft
 				$division_id = $rowset[0]['division_id'];
 				$rank_id = $rowset[0]['rank_id'];
 				
-				$abc_user_id = 0;	//Nolonger care about abc_user_id
+				$sql = "SELECT MAX(abc_user_id) FROM abc_users";
+				$result = $this->db->sql_query($sql);
+				$abc_user_id = $this->db->sql_fetchfield('MAX(abc_user_id)');
+				$this->db->sql_freeresult($result);
+				$abc_user_id++;
+				
 				$sql = "INSERT INTO abc_users VALUES ($abc_user_id, $user_id, $campaign_id, $army_id, $division_id, $rank_id, 'img', 0, '$username', '', '', '', '', $user_time_stamp, '', $user_soldierid, $other_nonsense)";
-				$this->template->assign_vars(array(
-					'ABC_DRAFT_ARMY_JOIN'	=> $sql,
-				));
-				return
 				$result = $this->db->sql_query($sql);
 				$this->db->sql_freeresult($result);
 			}
@@ -178,7 +228,12 @@ class abc_draft
 				$campaign_id = $this->db->sql_fetchfield('MAX(campaign_id)');
 				$this->db->sql_freeresult($result);
 				
-				$abc_user_id = 0;	//Nolonger care about abc_user_id
+				$sql = "SELECT MAX(abc_user_id) FROM abc_users";
+				$result = $this->db->sql_query($sql);
+				$abc_user_id = $this->db->sql_fetchfield('MAX(abc_user_id)');
+				$this->db->sql_freeresult($result);
+				$abc_user_id++;
+				
 				$sql = "INSERT INTO abc_users VALUES ($abc_user_id, $user_id, $campaign_id, 0, 0, 0, 'img', 1, '$username', '$availability', '$location', '', '$notes', $user_time_stamp, '$division', $user_soldierid, $other_nonsense)";
 				$result = $this->db->sql_query($sql);
 				$this->db->sql_freeresult($result);
@@ -186,11 +241,10 @@ class abc_draft
 				$group_name = $division.' Player Draft';
 			}
 			
-			$this->template->assign_vars(array(
-				'ABC_DRAFT_ARMY_JOIN'	=> $group_name,
-				'ABC_DRAFT_ARMY_COLOUR'	=> $colour,
-				'ABC_DRAFT_UID'			=> $user_id,
-			));
+			$abc_content = "<h2>".$this->user->lang['ABC_DRAFT_TITLE']."</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_DRAFT_JOIN_ARMY']."<span style=\"color:#$colour; font-weight:bold\">$group_name</span>!</p>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 		}
 		return;
 	}
@@ -207,7 +261,11 @@ class abc_draft
 		$sql = "DELETE FROM abc_users WHERE user_id = $user_id AND campaign_id = $campaign_id";
 		$result = $this->db->sql_query($sql);
 		$this->db->sql_freeresult($result);
-		$this->template->assign_var('ABC_DRAFT_LEFT', true);
+		
+		$abc_content = "<h2>".$this->user->lang['ABC_DRAFT_TITLE']."</h2>";
+		$abc_content .= "<p>".$this->user->lang['ABC_DRAFT_LEFT']."<p>";
+		
+		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 		return;
 	}
 	
@@ -279,9 +337,12 @@ class abc_draft
 			}
 		}
 		
-		$this->template->assign_vars(array(
-			'ABC_COMPLETE_DRAFT_LIST'	=> $draft_list,
-		));
+		
+		$abc_content = "<h2>".$this->user->lang['ABC_DRAFT_LIST_TITLE']."</h2>";
+		$abc_content .= "<p>".$this->user->lang['ABC_DRAFT_LIST_EXPLAIN']."<p>";
+		$abc_content .= $draft_list;
+		
+		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 		return;
 	}
 	
@@ -293,7 +354,6 @@ class abc_draft
 		$campaign_id = $this->db->sql_fetchfield('MAX(campaign_id)');
 		$this->db->sql_freeresult($result);
 		
-		//$sql = "SELECT user_id, username FROM abc_users";
 		$sql = "SELECT user_id, user_bf3_name FROM abc_users WHERE campaign_id = $campaign_id AND user_is_signed_up = 1";
 		$result = $this->db->sql_query($sql);
 		$rowset = $this->db->sql_fetchrowset();
@@ -314,16 +374,18 @@ class abc_draft
 					JOIN abc_armies AS aa ON ad.army_id = aa.army_id
 					JOIN abc_ranks AS ar ON ad.army_id = ar.army_id
 					JOIN ".GROUPS_TABLE." AS gt on aa.army_name = gt.group_name
-					WHERE aa.campaign_id = $campaign_id AND ad.division_is_default = 1 AND ar.rank_order = 1";
+					WHERE aa.campaign_id = $campaign_id AND ad.division_is_default = 1 AND ar.rank_order = 99";
 			$result = $this->db->sql_query($sql);
 			$group_rowset = $this->db->sql_fetchrowset();
 			$this->db->sql_freeresult($result);
 			
 			if(count($group_rowset) != 3)
 			{
-				$this->template->assign_vars(array(
-					'ABC_COMPLETE_DRAFT_LIST'	=> $this->user->lang['ABC_DRAFT_ERR_WRONGNUM'],
-				));
+				$abc_content = "<h2>".$this->user->lang['ABC_DRAFT_LIST_TITLE']."</h2>";
+				$abc_content .= "<p>".$this->user->lang['ABC_DRAFT_LIST_EXPLAIN']."<p>";
+				$abc_content .= $this->user->lang['ABC_DRAFT_ERR_WRONGNUM'];
+				
+				$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 				return;
 			}
 			

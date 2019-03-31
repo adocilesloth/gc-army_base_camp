@@ -96,3 +96,85 @@ div.abc_medal_edit{
 	display: grid;
 	grid-template-columns: 75px auto;
 }
+
+.abc_signup {
+	display: grid;
+	grid-template-columns: 150px auto;
+}
+
+.abc_signup_name {
+	height: 50px;
+	line-height: 50px;
+	vertical-align: middle;
+	text-align: right;
+	padding-right: 1em;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.abc_signup_green {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	vertical-align: middle;
+	text-align: center;
+	background-color: #00FF00;
+	border-left: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.abc_signup_red {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	vertical-align: middle;
+	text-align: center;
+	background-color: #FF0000;
+	border-left: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.abc_signup_clear {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	vertical-align: middle;
+	text-align: center;
+	border-left: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.abc_signup_bar_army {
+	vertical-align: bottom !important;
+	width: 1.25em;
+	margin-top: auto;
+	display: inline-block;
+	text-align: right;
+	color: white;
+}
+
+.abc_signup_bar_blank {
+	width: 0.25em;
+	height: 100px;
+	display: inline-block;
+}
+
+.abc_signup_bar_label {
+	width: 2.75em;
+	display: inline-block;
+	text-align: center;
+}
+
+.abc_signup_previous {
+	width: 90px;
+	display:inline-block;
+	text-align: left;
+}
+
+.abc_signup_next {
+	width: 90px;
+	display:inline-block;
+	text-align: right;
+}

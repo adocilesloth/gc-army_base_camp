@@ -47,6 +47,8 @@ $lang = array_merge($lang, array(
 	'ABC_ARMY'			=> 'Army Home',
 	'ABC_FORUM'			=> 'Army Forums',
 	'ABC_LOGISTICS'		=> 'Army Logistics',
+	'ABC_BATTLE'		=> 'Battleday Logistics',
+	'ABC_BATTLE_SIGNUP'	=> 'Battleday Signup',
 	'ABC_MEDAL'			=> 'Medals',
 	'ABC_RANK'			=> 'Ranks',
 	'ABC_DIVISION'		=> 'Divisions',
@@ -100,6 +102,7 @@ $lang = array_merge($lang, array(
 	'ABC_FINISH_H_ARCH_EXPL'	=> 'Forum to archive Tournament Administrator and Tournament Administrator + HC forums to.',
 	'ABC_FINISH_ARCH_G'			=> 'Archivist Group:',
 	'ABC_FINISH_ARCH_G_EXPL'	=> 'Groups that can see the unhidden archives. Separate with commas (,). If there is only one group, put a comma (,) at the end.',
+	'ABC_FINISH_ERR_ARCH'		=> 'No archive forums entered',
 	
 	//ABC Draft Page
 	'ABC_DRAFT_TITLE'		=> 'Player Draft',
@@ -131,16 +134,16 @@ $lang = array_merge($lang, array(
 	'ABC_DRAFT_ERR_WRONGNUM'	=> 'Number of army groups is not 3',
 	
 	//ABC Army Page
-	'ABC_ARMY_TITLE'			=> 'Army Home',
-	'ABC_ARMY_EXPLAIN'			=> 'Here, the army can be managed. Awarding medals and promotions and moving divisions happens here.',
-	'ABC_ARMY_GENERAL'			=> 'General',
-	'ABC_ARMY_MEDAL'			=> 'Award Medal',
-	'ABC_ARMY_MEDAL_REASON'		=> 'Reason the medal was awarded',
-	'ABC_ARMY_MEDAL_SUCCESS'	=> '<h2>Medal(s) awarded successfully!</h2>',
-	'ABC_ARMY_RANK'				=> 'Award Rank',
-	'ABC_ARMY_RANK_SUCCESS'		=> '<h2>Rank(s) awarded successfully!</h2>',
-	'ABC_ARMY_DIVISION'			=> 'Move Division',
-	'ABC_ARMY_DIVISION_SUCCESS'		=> '<h2>Division(s) moved successfully!</h2>',
+	'ABC_ARMY_TITLE'				=> 'Army Home',
+	'ABC_ARMY_EXPLAIN'				=> 'Here, the army can be managed. Awarding medals and promotions and moving divisions happens here.',
+	'ABC_ARMY_GENERAL'				=> 'General',
+	'ABC_ARMY_MEDAL'				=> 'Award Medal',
+	'ABC_ARMY_MEDAL_REASON'			=> 'Reason the medal was awarded',
+	'ABC_ARMY_MEDAL_SUCCESS'		=> 'Medal(s) awarded successfully!',
+	'ABC_ARMY_RANK'					=> 'Award Rank',
+	'ABC_ARMY_RANK_SUCCESS'			=> 'Rank(s) awarded successfully!',
+	'ABC_ARMY_DIVISION'				=> 'Move Division',
+	'ABC_ARMY_DIVISION_SUCCESS'		=> 'Division(s) moved successfully!',
 	//ABC Army Errors
 	'ABC_ARMY_ERR_MEDAL_NONE'		=> 'Awarding Medal Failed: No medal selected.',
 	'ABC_ARMY_ERR_MEDAL_DATA'		=> 'Awarding Medal Failed: No army data.',
@@ -254,4 +257,28 @@ $lang = array_merge($lang, array(
 	'ABC_SOLDIER_DIVISION'	=> 'Division:',
 	'ABC_SOLDIER_RANK'		=> 'Rank:',
 	'ABC_SOLDIER_NO_MEDALS'	=> 'No Medals Awarded',
+	
+	//ABC Battleday
+	'ABC_BATTLE_TITLE'		=> 'Campaign Battledays',
+	'ABC_BATTLE_EXPLAIN'	=> 'Create and edit battledays here.',
+	'ABC_BATTLE_NEW'		=> 'New Battleday',
+	'ABC_BATTLE_EXIST'		=> 'Upcomming Battledays',
+	'ABC_BATTLE_NAME'		=> 'Battleday Name:',
+	'ABC_BATTLE_START'		=> 'Battleday Date:',
+	'ABC_BATTLE_START_EXPL'	=> 'In numbers as yyyy-mm-dd',
+	'ABC_BATTLE_START_TIME'	=> 'Battleday Start Time:',
+	'ABC_BATTLE_LENGTH'		=> 'Battleday Duration:',
+	'ABC_BATTLE_EDIT_THIS'	=> 'Edit This Battleday:',
+	'ABC_BATTLE_CREATE'		=> 'Create',
+	'ABC_BATTLE_EDIT'		=> 'Edit',
+	'ABC_BATTLE_DELETE'		=> 'Delete',
+	//ABC Battleday Signup
+	'ABC_BATTLEDAY_SELECT'		=> 'Select',
+	'ABC_BATTLEDAY_SIGNUP'		=> 'Sign Up: ',
+	'ABC_BATTLEDAY_SIGNUP_EXPL'	=> 'Check the boxes for expected attendance. If you cannot attend, leave boxes uncheckd and press Sign Up.',
+	'ABC_BATTLEDAY_SIGN'		=> 'Sign Up',
+	//ABC Battleday Histogram
+	'ABC_BATTLEDAY_PREV'	=> 'Previous',
+	'ABC_BATTLEDAY_NEXT'	=> 'Next',
+	
 ));

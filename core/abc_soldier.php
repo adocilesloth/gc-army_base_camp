@@ -203,11 +203,11 @@ class abc_soldier
 			$soldier_list .= "</div>";
 		}
 		
-		$this->template->assign_vars(array(
-			'ABC_SOLDIER_SELECT'		=> $soldier_select,
-			'ABC_SOLDIER_NAME'			=> $username,
-			'ABC_COMPLETE_SOLDIER_LIST'	=> $soldier_list,
-		));
+		$abc_content = $soldier_select;
+		$abc_content .= "<h2>".$username."</h2>";
+		$abc_content .= $soldier_list;
+		
+		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 		return;
 	}
 	
@@ -239,12 +239,11 @@ class abc_soldier
 			$soldier_select .= "<input type=\"text\" name=\"soldier_name\" value=\"\" maxlength=\"255\" size=\"20\" /> ";
 			$soldier_select .= "<input type=\"submit\" name=\"soldier_search\" id=\"soldier_search\" value=\"".$this->user->lang['ABC_SOLDIER_SEARCH']."\" class=\"button1\"/>";
 			$soldier_select .= "<br>";
-		
-			$this->template->assign_vars(array(
-				'ABC_SOLDIER_SELECT'		=> $soldier_select,
-				'ABC_SOLDIER_NAME'			=> $username." ".$this->user->lang['ABC_SOLDIER_MISSING'],
-				'ABC_COMPLETE_SOLDIER_LIST'	=> '',
-			));
+			
+			$abc_content = $soldier_select;
+			$abc_content .= "<h2>".$username." ".$this->user->lang['ABC_SOLDIER_MISSING']."</h2>";
+			
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
 		}
 		return;
 	}
