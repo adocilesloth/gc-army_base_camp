@@ -491,7 +491,12 @@ class abc_battleday
 			}
 		}
 		
-		$sign_up_id = 0; //Don't care about sign_up_id*/
+		$sql = "SELECT MAX(sign_up_id) FROM abc_battle_sign_ups";
+		$result = $this->db->sql_query($sql);
+		$sign_up_id = $this->db->sql_fetchfield('MAX(sign_up_id)');
+		$this->db->sql_freeresult($result);
+		$sign_up_id++;
+		
 		$user_id = $this->user->data['user_id'];
 		$sign_up_time_stamp = strtotime('now');
 		
