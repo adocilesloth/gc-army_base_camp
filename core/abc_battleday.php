@@ -115,6 +115,24 @@ class abc_battleday
 			$battle_start_date = date("Y-m-d", $battle_start);
 			$sbt_start_time = $this->utc_to_sbt($battle_start);
 			
+			/*Correct for SBT < -11*/
+			if($sbt_start_time < -11)
+			{
+				$sbt_start_time += 24;
+				$Ym = substr($battle_start_date, 0, 8);
+				$d = substr($battle_start_date, 8, 2);
+				$d = (int)$d;
+				$d--;
+				if($d < 10)
+				{
+					$battle_start_date = $Ym.'0'.$d;
+				}
+				else
+				{
+					$battle_start_date = $Ym.$d;
+				}
+			}
+			
 			$sbt_pm = '+';
 			if($sbt_start_time < 0)
 			{
@@ -190,9 +208,8 @@ class abc_battleday
 		
 		$battle_name = sql_abc_clean($this->request->variable('battle_name', '', true));
 		$battle_date = $this->request->variable('battle_start', '', false);
-		$battle_start_time = (int)$this->request->variable('battle_time', '', false);
+		$battle_start_time = (int)$this->request->variable('battle_start_time', '', false);
 		$battle_length = (int)$this->request->variable('battle_length', '', false);
-		
 		
 		$battle_start = $this->sbt_to_utc($battle_date, $battle_start_time);	
 		$battle_time_stamp = strtotime('now');
@@ -317,6 +334,24 @@ class abc_battleday
 		$battle_date = date('Y-m-d', $row['battle_start']);
 		$battle_start = $this->utc_to_sbt($row['battle_start']);
 		$battle_length = $row['battle_length'];
+		
+		/*Correct for SBT < -11*/
+		if($sbt < -11)
+		{
+			$sbt += 24;
+			$Ym = substr($the_battle_date, 0, 8);
+			$d = substr($the_battle_date, 8, 2);
+			$d = (int)$d;
+			$d--;
+			if($d < 10)
+			{
+				$the_battle_date = $Ym.'0'.$d;
+			}
+			else
+			{
+				$the_battle_date = $Ym.$d;
+			}
+		}
 		
 		$user_id = $this->user->data['user_id'];
 		/*Get army_id*/
@@ -552,7 +587,45 @@ class abc_battleday
 		date_default_timezone_set('UTC');
 		
 		$hour = $sbt_zero + $sbt;
-		$utc = strtotime($date.' '.$hour.':00:00');
+		
+		$zro = '';
+		if($hour < 10)
+		{
+			$zro = '0';
+		}
+		elseif($hour > 24)
+		{
+			$hour -= 24;
+			$year = substr($date, 0, 4);
+			$day = substr($date, 8, 2);
+			$day = (int)$day;
+			$day++;
+			if($month < 10)
+			{
+				if($day < 10)
+				{
+					$date = $year."-0".$month."-0".$day;
+				}
+				else
+				{
+					$date = $year."-0".$month."-".$day;
+				}
+			}
+			else
+			{
+				if($day < 10)
+				{
+					$date = $year."-".$month."-0".$day;
+				}
+				else
+				{
+					$date = $year."-".$month."-".$day;
+				}
+			}
+			
+		}
+		
+		$utc = strtotime($date.' '.$zro.$hour.':00:00');
 		
 		return $utc;
 	}

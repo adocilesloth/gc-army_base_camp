@@ -442,7 +442,7 @@ class abc_start
 						$rank_order = 99;
 						$rank_is_officer = 1;
 						
-						$rank_img = $this->root_path."/abc/images/ranks/TA_rank.png";
+						$rank_img = $this->root_path."/ext/globalconflict/abc/images/ranks/TA_rank.png";
 						/*rank_id in phpbb_ranks auto increments, so we need to make the rank THEN find rank_phpbb_id*/
 						$sql = "INSERT INTO phpbb_ranks (rank_title, rank_min, rank_special, rank_image) VALUES ('$army_id. $army_name', 0, 1, '$rank_img')";
 						$result = $this->db->sql_query($sql);
@@ -460,7 +460,7 @@ class abc_start
 						$division_id++;
 						$division_is_default = 1;
 						$division_is_hc = 1;
-						$divison_icon = $this->root_path."/abc/images/divisons/TA_rank.png";
+						$divison_icon = $this->root_path."/ext/globalconflict/abc/images/divisions/TA_divison.png";
 						$sql = "INSERT INTO abc_divisions VALUES ($division_id, $army_id, '$army_name', 0, $division_is_default, $division_is_hc, '', $campaign_time_stamp, '$divison_icon')";
 						$result = $this->db->sql_query($sql);
 						$this->db->sql_freeresult($result);
