@@ -276,6 +276,7 @@ $lang = array_merge($lang, array(
 	'ABC_BATTLEDAY_SELECT'		=> 'Select',
 	'ABC_BATTLEDAY_SIGNUP'		=> 'Sign Up: ',
 	'ABC_BATTLEDAY_SIGNUP_EXPL'	=> 'Check the boxes for expected attendance. If you cannot attend, leave boxes uncheckd and press Sign Up.',
+	'ABC_BATTLEDAY_SIGNUP_NONE'	=> 'No upcomming battledays.',
 	'ABC_BATTLEDAY_SIGN'		=> 'Sign Up',
 	//ABC Battleday Histogram
 	'ABC_BATTLEDAY_PREV'	=> 'Previous',

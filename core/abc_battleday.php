@@ -297,7 +297,14 @@ class abc_battleday
 		
 		if(!$rowset)
 		{
-			/*escape somehow*/
+			$abc_content = "<fieldset class=\"fields2\" id=\"attach-panel-basic\">";
+			$abc_content .= $battle_select;
+			$abc_content .= "<h2>$signup_title</h2>";
+			$abc_content .= "<p>".$this->user->lang['ABC_BATTLEDAY_SIGNUP_EXPL']."</p>";
+			$abc_content .= "<p>".$this->user->lang['ABC_BATTLEDAY_SIGNUP_NONE']."</p>";
+			$abc_content .= "</fieldset>";
+			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
+			return;
 		}
 		
 		/*Get battle_id*/
