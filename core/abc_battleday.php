@@ -103,7 +103,7 @@ class abc_battleday
 			return;
 		}
 		
-		/*Create existing medal list*/
+		/*Create existing battle list*/
 		$battle_list = "";
 		for($i=0; $i<count($rowset); $i++)
 		{

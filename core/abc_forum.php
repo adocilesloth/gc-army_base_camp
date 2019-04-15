@@ -260,7 +260,6 @@ class abc_forum
 			$abc_content .= "<p>".$this->user->lang['ABC_FINISH_ERR_ARCH']."</p>";
 			
 			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
-			//$this->template->assign_var('ACP_FINISHED_FAILED', true);
 			return false;
 		}
 		/*Check archives exist*/
@@ -275,8 +274,6 @@ class abc_forum
 			$abc_content .= "<p>".$sql."</p>";
 			
 			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
-			//$this->template->assign_var('ACP_FINISHED_FAILED', true);
-			//$this->template->assign_var('APC_FINISH_UNABLE', $sql);
 			return false;
 		}
 		
@@ -288,8 +285,6 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(!$camp_id)
 		{
-			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_CMP'].
-			//													$this->user->lang['ABC_FORUM_ERR_NEY']."<br>$sql");
 			return true;
 		}
 		
@@ -300,8 +295,6 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(!$rowset)
 		{
-			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_CAT'].
-			//													$this->user->lang['ABC_FORUM_ERR_NEY']."<br>$sql");
 			return true;
 		}
 		$num_cat = count($rowset);
@@ -320,8 +313,6 @@ class abc_forum
 		$moved = $forums_admin->move_forum_by($row, 'move_down', $num_cat-2);
 		if(!$moved)
 		{
-			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_MOV'].
-			//													$this->user->lang['ABC_FORUM_ERR_NEY']);
 			return true;
 		}
 		
@@ -336,8 +327,6 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(count($rowset) != 3)
 		{
-			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_HID'].
-			//													$this->user->lang['ABC_FORUM_ERR_NEY']."<br>$sql");
 			return true;
 		}
 		
@@ -363,8 +352,6 @@ class abc_forum
 		}
 		if($hidden_id < 1 || count($ta_data) == 0 || count($tahc_data) == 0)
 		{
-			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_HDT'].
-			//													$this->user->lang['ABC_FORUM_ERR_NEY']);
 			return true;
 		}
 		
@@ -396,8 +383,6 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(count($rowset) != 2)
 		{
-			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_ACH'].
-			//													$this->user->lang['ABC_FORUM_ERR_NEY']."<br>$sql");
 			return true;
 		}
 		
@@ -419,8 +404,6 @@ class abc_forum
 		}
 		if($archive_id < 1 || count($campaign_data) == 0)
 		{
-			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_ADT'].
-			//													$this->user->lang['ABC_FORUM_ERR_NEY']);
 			return true;
 		}
 		
@@ -470,8 +453,6 @@ class abc_forum
 			$this->db->sql_freeresult($result);
 			if(count($rowset) != count($access))
 			{
-				//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_HAG'].
-				//													$this->user->lang['ABC_FORUM_ERR_PER']."<br>$sql");
 				return true;
 			}
 		}
@@ -542,8 +523,6 @@ class abc_forum
 		$this->db->sql_freeresult($result);
 		if(count($rowset) != count($access))
 		{
-			//$this->template->assign_var('APC_FINISH_UNABLE', $this->user->lang['ABC_FORUM_ERR_ARK'].$this->user->lang['ABC_FORUM_ERR_AKG'].
-			//													$this->user->lang['ABC_FORUM_ERR_PER']."<br>$sql");
 			return true;
 		}
 		
@@ -622,7 +601,6 @@ class abc_forum
 			$abc_content .= "</fieldset>";
 			
 			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
-			//$this->template->assign_var('ABC_FORUMS_EXISTING', 'group_id');
 			return;
 		}
 		/*Get forum_id where HC is FULL*/
@@ -639,7 +617,6 @@ class abc_forum
 			$abc_content .= "</fieldset>";
 			
 			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
-			//$this->template->assign_var('ABC_FORUMS_EXISTING', '');
 			return;
 		}
 		/*Get forum_name where HC is FULL*/
@@ -663,7 +640,6 @@ class abc_forum
 			$abc_content .= "</fieldset>";
 			
 			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
-			//$this->template->assign_var('ABC_FORUMS_EXISTING', '');
 			return;
 		}
 		
@@ -696,7 +672,6 @@ class abc_forum
 		$abc_content .= "</fieldset>";
 		
 		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
-		//$this->template->assign_var('ABC_FORUMS_EXISTING', $html_string);
 		
 		return;
 	}

@@ -1,7 +1,7 @@
 <?php
 /**
 * Note: function taken from the phpBB project. Parts of this code rely on this function. Do not remove it.
-* Checks whatever or not a variable is OK for use in the Database
+* Checks whether or not a variable is OK for use in the Database
 * param mixed $value_ary An array of the form array(array('lang' => ..., 'value' => ..., 'column_type' =>))'
 * param mixed $error The error array
 */

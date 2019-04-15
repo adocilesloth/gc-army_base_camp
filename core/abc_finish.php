@@ -63,11 +63,6 @@ class abc_finish
 		$abc_content .= "</fieldset></fieldset>";
 		
 		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
-		/*$this->template->assign_vars(array(
-			'ABC_FINISH_ARCH'		=> 'The Archives',
-			'ABC_FINISH_H_ARCH'		=> 'Uncategorized Archives',
-			'ABC_FINISH_ARCH_G'		=> 'Archive / Historian,',
-		));*/
 		return;
 	}
 	
@@ -100,8 +95,6 @@ class abc_finish
 			$abc_content .= "<p>users</p>";
 			
 			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
-			//$this->template->assign_var('ACP_FINISHED_DONE', false);
-			//$this->template->assign_var('ACP_START', false);
 			return;
 		}
 		
@@ -140,8 +133,6 @@ class abc_finish
 			$abc_content .= "<p>group_id</p>";
 			
 			$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
-			//$this->template->assign_var('ACP_FINISHED_DONE', false);
-			//$this->template->assign_var('ACP_START', false);
 			return;
 		}
 		
@@ -190,14 +181,12 @@ class abc_finish
 		$this->config->set('ta_password', '');
 		
 		
-		$failed_reason = $this->template->
+		//$failed_reason = $this->template->
 		
 		$abc_content = "<h2>".$this->user->lang['ABC_FINISH']."</h2>";
 		$abc_content .= "<p>".$this->user->lang['ABC_FINISH_DONE']."</p>";
 		
 		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
-		//$this->template->assign_var('ACP_FINISHED_DONE', true);
-		//$this->template->assign_var('ACP_START', true);
 		return;
 	}
 }

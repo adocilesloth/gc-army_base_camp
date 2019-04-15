@@ -397,7 +397,6 @@ class abc_rank
 		}
 		
 		$rank_id = $rowset['rank_id'];
-		$rank_phpbb_id = $rowset['rank_phpbb_id'];
 		$rank_image = "";
 		if($army_id < 40)
 		{
@@ -419,10 +418,6 @@ class abc_rank
 		}
 		
 		$sql = "DELETE FROM abc_ranks WHERE rank_id = $rank_id";
-		$result = $this->db->sql_query($sql);
-		$this->db->sql_freeresult($result);
-		
-		$sql = "DELETE FROM phpbb_ranks WHERE rank_id = $rank_phpbb_id";
 		$result = $this->db->sql_query($sql);
 		$this->db->sql_freeresult($result);
 		

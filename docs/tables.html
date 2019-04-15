@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Tables - ABC Docs</title>
+</head>
+
+<body>
+	<h1>Army Base Camp Documentation</h1>
+	<div style="display: grid; grid-template-columns: 150px 500px; grid-gap: 5px;">
+		<div>
+			<h3>Content</h3>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="index.html">Home</a></li>
+				<li>Database Tables</li>
+			</ul>
+			<h3>Classes, Functions and Files</h3>
+			<h4>/</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="composer.html">composer.json</a></li>
+				<li><a href="ext.html">ext.php</a></li>
+			</ul>
+			<h4>acp</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="main_info.html">main_info.php</a></li>
+				<li><a href="main_module.html">main_module.php</a></li>
+			</ul>
+			<h4>adm</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="apc_body.html">abc_apc_body.html</a></li>
+			</ul>
+			<h4>config</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="routing.html">routing.yml</a></li>
+				<li><a href="services.html">services.yml</a></li>
+			</ul>
+			<h4>controller</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="main.html">main.php</a></li>
+			</ul>
+			<h4>core</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="army.html">abc_army.php</a></li>
+				<li><a href="battleday.html">abc_battleday.php</a></li>
+				<li><a href="division.html">abc_division.php</a></li>
+				<li><a href="draft.html">abc_draft.php</a></li>
+				<li><a href="finish.html">abc_finish.php</a></li>
+				<li><a href="forum.html">abc_forum.php</a></li>
+				<li><a href="history.html">abc_history.php</a></li>
+				<li><a href="medal.html">abc_medal.php</a></li>
+				<li><a href="menu.html">abc_menu.php</a></li>
+				<li><a href="rank.html">abc_rank.php</a></li>
+				<li><a href="soldier.html">abc_soldier.php</a></li>
+				<li><a href="start.html">abc_start.php</a></li>
+				<li><a href="permissions.html">permissions.php</a></li>
+			</ul>
+			<h4>event</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="main_listener.html">main_listener.php</a></li>
+			</ul>
+			<h4>include</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="forum_inc.html">abc_forum_inc.php</a></li>
+				<li><a href="sql_clean.html">abc_sql_clean.php</a></li>
+			</ul>
+			<h4>language</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="common.html">en/common.php</a></li>
+			</ul>
+			<h4>migrations</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="release.html">release_X_Y_Z.php</a></li>
+			</ul>
+			<h4>styles</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="html.html">abc_page.html</a></li>
+				<li><a href="js.html">abc_script.js</a></li>
+				<li><a href="css.html">abc_style.css</a></li>
+				<li><a href="overall.html">overall_header_na...</a></li>
+			</ul>
+		</div>
+		<div>
+			<h2>Database Tables</h2>
+			A number of tables are used within ABC. These control things like who is in what army,
+			what the armies are called and so on. This version of ABC uses the tables from ABC2 to 
+			maintain the history. However, their usage is slightly different and is unintuitive at 
+			times.<br><br>
+			
+			<h3>Tables</h3>
+			<ul>
+				<li><a href="#abc_armies">abc_armies</a></li>
+				<li><a href="#abc_battles">abc_battles</a></li>
+				<li><a href="#abc_battle_sign_ups">abc_battle_sign_ups</a></li>
+				<li><a href="#abc_campaigns">abc_campaigns</a></li>
+				<li><a href="#abc_divisions">abc_divisions</a></li>
+				<li><a href="#abc_medals">abc_medals</a></li>
+				<li><a href="#abc_medal_awards">abc_medal_awards</a></li>
+				<li><a href="#abc_ranks">abc_ranks</a></li>
+				<li><a href="#abc_users">abc_users</a></li>
+			</ul>
+			
+			<div id="abc_armies">
+				<h3>abc_armies</h3>
+				This table holds the information for the armies.<br><br>
+				<div style="display: grid; grid-template-columns: auto auto 250px; grid-gap: 5px;">
+					<div><b>Column name</b></div><div><b>Data Type</b></div><div><b>Comments</b></div>
+					<div>army_id</div><div>int(2)</div><div>Unique id of the army. Incremented by the code, not the database. Army is considered legacy if army_id < 40</div>
+					<div>campaign_id</div><div>int(2)</div><div>id of the campaign the army belongs to. Campaign is considered legacy if campaign_id < 15</div>
+					<div>army_name</div><div>varchar(33)</div><div>Name of the army</div>
+					<div>army_general</div><div>int(4)</div><div>phpBB user_id of the general (abc_user_id for legacy armies)</div>
+					<div>army_colour</div><div>varchar(6)</div><div>Army colour in HEX without the #</div>
+					<div>army_tag_structure</div><div>varchar(4)</div><div>Unused</div>
+					<div>army_tag</div><div>varchar(3)</div><div>Tag for the army. Tag structure is &lt;army&gt;&lt;division&gt;&lt;rank&gt;</div>
+					<div>army_join_pw</div><div>varchar(32)</div><div>Pasword to directly join an army and bypass the player draft</div>
+					<div>army_ts_pw</div><div>varchar(5)</div><div>Unused</div>
+					<div>army_is_neutral</div><div>int(1)</div><div>If army is neutral/Torunament Administrator. 1=True, 0=False</div>
+					<div>army_hc_forum_group</div><div>int(3)</div><div>phpBB group_id for the High Command forum group</div>
+					<div>army_officer_forum_group</div><div>int(3)</div><div>phpBB group_id for the Officer forum group</div>
+					<div>army_soldiers_forum_group</div><div>int(3)</div><div>phpBB group_id for the Squaddie forum group</div>
+					<div>army_time_stamp</div><div>int(10)</div><div>Timestamp of when the army was created</div>
+				</div>
+			</div>
+			
+			<div id="abc_battles">
+				<h3>abc_battles</h3>
+				This table holds the information upcomming, and previous, battledays.<br><br>
+				<div style="display: grid; grid-template-columns: auto auto 250px; grid-gap: 5px">
+					<div><b>Column name</b></div><div><b>Data Type</b></div><div><b>Comments</b></div>
+					<div>battle_id</div><div>int(3)</div><div>Unique id of the battle. Incrimented by the code, not the database.</div>
+					<div>campaign_id</div><div>int(2)</div><div>id of the campaign the battle belongs to. Campaign is considered legacy if campaign_id < 15</div>
+					<div>battle_name</div><div>varchar(34)</div><div>Name of the battelday</div>
+					<div>battle_start</div><div>varchar(34)</div><div>Timestamp for the start time of the battleday</div>
+					<div>battle_length</div><div>int(1)</div><div>Length of the battleday in hours</div>
+					<div>battle_is_bfi</div><div>int(1)</div><div>Unused</div>
+					<div>battle_time_stamp</div><div>int(10)</div><div>Timestamp of when the battle was created</div>
+				</div>
+			</div>
+			
+			<div id="abc_battle_sign_ups">
+				<h3>abc_battle_sign_ups</h3>
+				This table holds the information for users that have signed up to the battledays.<br><br>
+				<div style="display: grid; grid-template-columns: auto auto 250px; grid-gap: 5px">
+					<div><b>Column name</b></div><div><b>Data Type</b></div><div><b>Comments</b></div>
+					<div>sign_up_id</div><div>int(4)</div><div>Unique id of the sign up. Incrimented by the code, not the database.</div>
+					<div>battle_id</div><div>int(3)</div><div>battle_id that the user has signed up for</div>
+					<div>user_id</div><div>int(5)</div><div> phpBB user_id of the user that has signed up. For legacy campaigns, this is abc_user_id.</div>
+					<div>sign_up_hours</div><div>int(3)</div><div>Hours the user has signed up for. Is stored as 2<sup>h1</sup> + 2<sup>h2</sup> + ... + 2<sup>hn</sup> where hn is the hour they have signed up to. For example, if they have signed up for hours 1 and 2, this value would be 2<sup>1</sup> + 2<sup>2</sup> = 6</div>
+					<div>battle_time_stamp</div><div>int(10)</div><div>Timestamp of when the battle sign up was created</div>
+				</div>
+			</div>
+			
+			<div id="abc_campaigns">
+				<h3>abc_campaigns</h3>
+				This table holds the information for past and current campaigns.<br><br>
+				<div style="display: grid; grid-template-columns: auto auto 250px; grid-gap: 5px">
+					<div><b>Column name</b></div><div><b>Data Type</b></div><div><b>Comments</b></div>
+					<div>campaign_id</div><div>int(2)</div><div>Unique id of the campaign. Incrimented by the code, not the database.</div>
+					<div>campaign_state</div><div>int(1)</div><div>Unused</div>
+					<div>campaign_name</div><div>varchar(27)</div><div>Name of the campaign</div>
+					<div>campaign_coin_choice</div><div>int(1)</div><div>Unused</div>
+					<div>campaign_coin_result</div><div>int(1)</div><div>Unused</div>
+					<div>campaign_draft_date</div><div>int(10)</div><div>Unused</div>
+					<div>campaign_draft_round</div><div>int(1)</div><div>Unused</div>
+					<div>campaign_draftees_per_round</div><div>int(1)</div><div>Unused</div>
+					<div>campaign_is_group_draft</div><div>int(1)</div><div>Unused</div>
+					<div>campaign_time_stamp</div><div>int(10)</div><div>Timestamp of when the campaign was created</div>
+				</div>
+			</div>
+			
+			<div id="abc_divisions">
+				<h3>abc_divisions</h3>
+				This table holds the information for army divisions.<br><br>
+				<div style="display: grid; grid-template-columns: auto auto 250px; grid-gap: 5px">
+					<div><b>Column name</b></div><div><b>Data Type</b></div><div><b>Comments</b></div>
+					<div>division_id</div><div>int(3)</div><div>Unique id of the division. Incrimented by the code, not the database.</div>
+					<div>army_id</div><div>int(2)</div><div>id of the army the division belongs to. Army is considered legacy if army_id < 40</div>
+					<div>division_name</div><div>varchar(33)</div><div>Name of the division</div>
+					<div>division_commander</div><div>int(1)</div><div>Unused</div>
+					<div>division_is_default</div><div>int(1)</div><div>If new recruits are auto assigned to this division. 1=True, 0=False</div>
+					<div>division_is_hc</div><div>int(1)</div><div>If division is the High Command Division. 1=True, 0=False</div>
+					<div>division_tag</div><div>varchar(3)</div><div>Tag for the division. Tag structure is &lt;army&gt;&lt;division&gt;&lt;rank&gt;</div>
+					<div>division_time_stamp</div><div>int(10)</div><div>Timestamp of when the division was created</div>
+					<div>division_icon</div><div>varchar(80)</div><div>Path to the division icon.</div>
+				</div>
+			</div>
+			
+			<div id="abc_medals">
+				<h3>abc_medals</h3>
+				This table holds the information for army medals.<br><br>
+				<div style="display: grid; grid-template-columns: auto auto 250px; grid-gap: 5px">
+					<div><b>Column name</b></div><div><b>Data Type</b></div><div><b>Comments</b></div>
+					<div>medal_id</div><div>int(3)</div><div>Unique id of the medal. Incrimented by the code, not the database.</div>
+					<div>army_id</div><div>int(2)</div><div>id of the army the medal belongs to. Army is considered legacy if army_id < 40</div>
+					<div>medal_name</div><div>varchar(44)</div><div>Name of the medal</div>
+					<div>medal_img</div><div>varchar(87)</div><div>Path to the medal image</div>
+					<div>medal_ribbon</div><div>varchar(86)</div><div>Path to the medal ribbon</div>
+					<div>medal_time_stamp</div><div>int(10)</div><div>Timestamp of when the medal was created</div>
+					<div>medal_description</div><div>varchar(242)</div><div>Description of the medal</div>
+				</div>
+			</div>
+			
+			<div id="abc_medal_awards">
+				<h3>abc_medal_awards</h3>
+				This table holds the information for awarded medals.<br><br>
+				<div style="display: grid; grid-template-columns: auto auto 250px; grid-gap: 5px">
+					<div><b>Column name</b></div><div><b>Data Type</b></div><div><b>Comments</b></div>
+					<div>award_id</div><div>int(4)</div><div>Unique id of the award. Incrimented by the code, not the database.</div>
+					<div>campaign_id</div><div>int(2)</div><div>id of the campaign the award belongs to. Campaign is considered legacy if campaign_id < 15</div>
+					<div>user_id</div><div>int(4)</div><div>phpBB user_id of the awardee. Is abc_user_id if campaign is legacy</div>
+					<div>medal_id</div><div>int(3)</div><div>medal_id of the awarded medal</div>
+					<div>award_time_stamp</div><div>int(10)</div><div>Time stamp of when the medal was awarded</div>
+					<div>award_reason</div><div>varchar(309)</div><div>Reason why the medal was awarded</div>
+				</div>
+			</div>
+			
+			<div id="abc_ranks">
+				<h3>abc_ranks</h3>
+				This table holds the information for army ranks.<br><br>
+				<div style="display: grid; grid-template-columns: auto auto 250px; grid-gap: 5px">
+					<div><b>Column name</b></div><div><b>Data Type</b></div><div><b>Comments</b></div>
+					<div>rank_id</div><div>int(3)</div><div>Unique id of the rank. Incrimented by the code, not the database.</div>
+					<div>rank_phpbb_id</div><div>int(3)</div><div>phpBB rank_id of the forum rank associated with the ABC rank</div>
+					<div>army_id</div><div>int(2)</div><div>id of the army the rank belongs to. Army is considered legacy if army_id < 40</div>
+					<div>rank_name</div><div>varchar(31)</div><div>Name of the rank</div>
+					<div>rank_short</div><div>varchar(14)</div><div>Shortened form of the rank name</div>
+					<div>rank_order</div><div>int(2)</div><div>Order of the rank. The lower the value the higher the rank. 1 is General, 99 is New Recruit.</div>
+					<div>rank_is_officer</div><div>int(1)</div><div>If the rank is an officer rank. 1=True, 0=False</div>
+					<div>rank_img</div><div>varchar(131)</div><div>Path to the rank icon</div>
+					<div>rank_tag</div><div>varchar(3)</div><div>Tag for the rank. Tag structure is &lt;army&gt;&lt;division&gt;&lt;rank&gt;</div>
+					<div>rank_time_stamp</div><div>int(10)</div><div>Time stamp of when the rank was created</div>
+				</div>
+			</div>
+			
+			<div id="abc_users">
+				<h3>abc_users</h3>
+				This table holds the information for users in the player draft or assigned to an army.
+				A number of columns here are not used as their name implies: <strong>BE CAREFUL!</strong>
+				Frankly, this table is bloated with unused columns that have never been used. They are 
+				left as someone at somepoint wanted them.<br><br>
+				<div style="display: grid; grid-template-columns: auto auto 250px; grid-gap: 5px">
+					<div><b>Column name</b></div><div><b>Data Type</b></div><div><b>Comments</b></div>
+					<div>abc_user_id</div><div>int(4)</div><div>Unique id of the entry. Incrimented by the code, not the database.</div>
+					<div>user_id</div><div>int(5)</div><div>phpBB user_id of the user</div>
+					<div>campaign_id</div><div>int(2)</div><div>id of the campaign the user is part of. Campaign is considered legacy if campaign_id < 15</div>
+					<div>army_id</div><div>int(2)</div><div>id of the army the user has been assigned to. Value is zero if unassigned</div>
+					<div>division_id</div><div>int(3)</div><div>id of the division the user has been assigned to. Value is zero if unassigned</div>
+					<div>rank_id</div><div>int(3)</div><div>if of the rank the user has been assigned to. Value is zero if unassigned</div>
+					<div>user_medals_sig</div><div>varchar(3)</div><div>Unused</div>
+					<div>user_id_signed_up</div><div>int(1)</div><div>If user is in the player draft. 1=True, 0=False</div>
+					<div>user_bf3_name</div><div>varchar(73)</div><div>phpBB username. Stored to avoid many JOINs to phpBB tables</div>
+					<div>user_availability</div><div>varchar(132)</div><div>Avalibility the user entered when entering the draft</div>
+					<div>user_location</div><div>varchar(52)</div><div>Location the user entered when entering the draft</div>
+					<div>user_vehicles</div><div>varchar(211)</div><div>Unused. Used in Legacy campaigns</div>
+					<div>user_other_notes</div><div>varchar(1664)</div><div>Other notes the user entered when entering the draft</div>
+					<div>Role</div><div>varchar(8)</div><div>Draft (Infantry/Armour/Air/etc.) the user signed up for</div>
+					<div>user_soldierid</div><div>int(1)</div><div>phpBB rank_id the user was when signing up</div>
+					<div>user_skill_assault</div><div>int(1)</div><div>Unused</div>
+					<div>user_skill_engineer</div><div>int(1)</div><div>Unused</div>
+					<div>user_skill_support</div><div>int(1)</div><div>Unused</div>
+					<div>user_skill_rcon</div><div>int(1)</div><div>Unused</div>
+					<div>user_skill_mbt</div><div>int(1)</div><div>Unused</div>
+					<div>user_skill_ifv</div><div>int(1)</div><div>Unused</div>
+					<div>user_skill_boat</div><div>int(1)</div><div>Unused</div>
+					<div>user_skill_maa</div><div>int(1)</div><div>Unused</div>
+					<div>user_skill_heli</div><div>int(1)</div><div>Unused</div>
+					<div>user_skill_jet</div><div>int(1)</div><div>Unused</div>
+					<div>user_attendance_bd</div><div>int(1)</div><div>Unused</div>
+					<div>user_attendance_eubo</div><div>int(1)</div><div>Unused</div>
+					<div>user_attendance_nabo</div><div>int(1)</div><div>Unused</div>
+					<div>user_email_assigned</div><div>int(1)</div><div>Unused</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</body>
+
+</html>

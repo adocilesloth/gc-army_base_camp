@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>abc_soldier - ABC Docs</title>
+</head>
+
+<body>
+	<h1>Army Base Camp Documentation</h1>
+	<div style="display: grid; grid-template-columns: 150px 500px; grid-gap: 5px;">
+		<div>
+			<h3>Content</h3>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="index.html">Home</a></li>
+				<li><a href="tables.html">Database Tables</a></li>
+			</ul>
+			<h3>Classes, Functions and Files</h3>
+			<h4>/</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="composer.html">composer.json</a></li>
+				<li><a href="ext.html">ext.php</a></li>
+			</ul>
+			<h4>acp</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="main_info.html">main_info.php</a></li>
+				<li><a href="main_module.html">main_module.php</a></li>
+			</ul>
+			<h4>adm</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="apc_body.html">abc_apc_body.html</a></li>
+			</ul>
+			<h4>config</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="routing.html">routing.yml</a></li>
+				<li><a href="services.html">services.yml</a></li>
+			</ul>
+			<h4>controller</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="main.html">main.php</a></li>
+			</ul>
+			<h4>core</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="army.html">abc_army.php</a></li>
+				<li><a href="battleday.html">abc_battleday.php</a></li>
+				<li><a href="division.html">abc_division.php</a></li>
+				<li><a href="draft.html">abc_draft.php</a></li>
+				<li><a href="finish.html">abc_finish.php</a></li>
+				<li><a href="forum.html">abc_forum.php</a></li>
+				<li><a href="history.html">abc_history.php</a></li>
+				<li><a href="medal.html">abc_medal.php</a></li>
+				<li><a href="menu.html">abc_menu.php</a></li>
+				<li><a href="rank.html">abc_rank.php</a></li>
+				<li><a>abc_soldier.php</a></li>
+				<li><a href="start.html">abc_start.php</a></li>
+				<li><a href="permissions.html">permissions.php</a></li>
+			</ul>
+			<h4>event</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="main_listener.html">main_listener.php</a></li>
+			</ul>
+			<h4>include</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="forum_inc.html">abc_forum_inc.php</a></li>
+				<li><a href="sql_clean.html">abc_sql_clean.php</a></li>
+			</ul>
+			<h4>language</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="common.html">en/common.php</a></li>
+			</ul>
+			<h4>migrations</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="release.html">release_X_Y_Z.php</a></li>
+			</ul>
+			<h4>styles</h4>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="html.html">abc_page.html</a></li>
+				<li><a href="js.html">abc_script.js</a></li>
+				<li><a href="css.html">abc_style.css</a></li>
+				<li><a href="overall.html">overall_header_navigation_prepend.html</a></li>
+			</ul>
+		</div>
+		<div>
+			<h2>abc_soldier</h2>
+			Class that shows the soldier history of GC users.
+			<br><br>
+			
+			<h3>Functions</h3>
+			<ul>
+				<li><a href="#show_soldier">show_soldier</a></li>
+				<li><a href="#show_selected_soldier">show_selected_soldier</a></li>
+			</ul>
+			
+			<div id="show_soldier">
+				<h3>show_soldier</h3>
+				Generates the html content for an soldier's history. This is the previous armies and 
+				awards from previous campaigns, including legacy campaigns. If no argument is passed, the 
+				user's hsitory, is shown.
+				<br>
+				<br>
+				Arguments:
+				<ul style="list-style: none;">
+					<li>user_id - user_id of user to show (int, optional)</li>
+				</ul>
+				Calls:
+				<ul style="list-style: none;">
+					<li><a href="sql_clean.html#sql_abc_unclean">include/abc_sql_clean-&gt;sql_abc_unclean</a></li>
+				</ul>
+				Called by:
+				<ul style="list-style: none;">
+					<li><a href="#show_selected_soldier">core/abc_soldier-&gt;show_selected_soldier</a></li>
+					<li><a href="main.html#handle">controller/main-&gt;handle<a></li>
+				</ul>
+			</div>
+			
+			<div id="show_selected_soldier">
+				<h3>show_selected_soldier</h3>
+				Controller function to select a specific army to show based on user input.
+				<br>
+				<br>
+				Calls:
+				<ul style="list-style: none;">
+					<li><a href="#show_soldier">core/abc_soldier-&gt;show_soldier</a></li>
+					<li><a href="sql_clean.html#sql_abc_clean">include/abc_sql_clean-&gt;sql_abc_clean</a></li>
+				</ul>
+				Called by:
+				<ul style="list-style: none;">
+					<li><a href="main.html#handle">controller/main-&gt;handle<a></li>
+				</ul>
+			</div>
+			
+		</div>
+	</div>
+</body>
+
+</html>
