@@ -78,11 +78,11 @@ class abc_start
 		$abc_content .= "<dl>";
 		$abc_content .= "<dt><label for=\"campaign_name\">".$this->user->lang['ABC_START_NAME']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"campaign_name\" value=\"$campaign_name\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"campaign_name\" value=\"$campaign_name\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"campaign_divisions\">".$this->user->lang['ABC_START_DIV']."</label><br>";
 		$abc_content .= "<span>".$this->user->lang['ABC_START_DIV_EXPL']."</span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"campaign_divisions\" value=\"$campaign_divisions\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"campaign_divisions\" value=\"$campaign_divisions\" /></dd>";
 		$abc_content .= "</dl>";
 		
 		/*Army 1*/
@@ -90,23 +90,23 @@ class abc_start
 		$abc_content .= "<dl>";
 		$abc_content .= "<dt><label for=\"army1_name\">".$this->user->lang['ABC_START_ARMY1']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"army1_name\" value=\"$army1_name\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"army1_name\" value=\"$army1_name\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"army1_colour\">".$this->user->lang['ABC_START_TAG1']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"army1_tag\" value=\"$army1_tag\" size=\"6\" maxlength=\"3\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"army1_tag\" value=\"$army1_tag\" size=\"6\" maxlength=\"3\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"army1_colour\">".$this->user->lang['ABC_START_COL1']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"army1_colour\" value=\"$army1_colour\" size=\"6\" maxlength=\"6\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"army1_colour\" value=\"$army1_colour\" size=\"6\" maxlength=\"6\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"army1_general\">".$this->user->lang['ABC_START_GEN1']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"army1_general\" value=\"$army1_general\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"army1_general\" value=\"$army1_general\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"army1_password\">".$this->user->lang['ABC_START_PW1']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"army1_password\" value=\"$army1_password\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"army1_password\" value=\"$army1_password\" /></dd>";
 		$abc_content .= "</dl>";
 		
 		/*Army B*/
@@ -114,23 +114,23 @@ class abc_start
 		$abc_content .= "<dl>";
 		$abc_content .= "<dt><label for=\"armyb_name\">".$this->user->lang['ABC_START_ARMYB']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"armyb_name\" value=\"$armyb_name\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"armyb_name\" value=\"$armyb_name\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"army1_colour\">".$this->user->lang['ABC_START_TAGB']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"armyb_tag\" value=\"$armyb_tag\" size=\"6\" maxlength=\"3\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"armyb_tag\" value=\"$armyb_tag\" size=\"6\" maxlength=\"3\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"armyb_colour\">".$this->user->lang['ABC_START_COLB']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"armyb_colour\" value=\"$armyb_colour\" size=\"6\" maxlength=\"6\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"armyb_colour\" value=\"$armyb_colour\" size=\"6\" maxlength=\"6\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"armyb_general\">".$this->user->lang['ABC_START_GENB']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"armyb_general\" value=\"$armyb_general\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"armyb_general\" value=\"$armyb_general\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"armyb_password\">".$this->user->lang['ABC_START_PWB']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"armyb_password\" value=\"$armyb_password\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"armyb_password\" value=\"$armyb_password\" /></dd>";
 		$abc_content .= "</dl>";
 		
 		/*TA*/
@@ -138,23 +138,23 @@ class abc_start
 		$abc_content .= "<dl>";
 		$abc_content .= "<dt><label for=\"ta_name\">".$this->user->lang['ABC_START_TA']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"ta_name\" value=\"$ta_name\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"ta_name\" value=\"$ta_name\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"army1_colour\">".$this->user->lang['ABC_START_TAGTA']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"ta_tag\" value=\"$ta_tag\" size=\"6\" maxlength=\"3\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"ta_tag\" value=\"$ta_tag\" size=\"6\" maxlength=\"3\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"ta_colour\">".$this->user->lang['ABC_START_COLTA']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"ta_colour\" value=\"$ta_colour\" size=\"6\" maxlength=\"6\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"ta_colour\" value=\"$ta_colour\" size=\"6\" maxlength=\"6\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"ta_general\">".$this->user->lang['ABC_START_GENTA']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"ta_general\" value=\"$ta_general\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"ta_general\" value=\"$ta_general\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"ta_password\">".$this->user->lang['ABC_START_PWTA']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"ta_password\" value=\"$ta_password\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"ta_password\" value=\"$ta_password\" /></dd>";
 		$abc_content .= "</dl></fieldset>";
 
 		$abc_content .= "<fieldset class=\"submit-buttons\">";

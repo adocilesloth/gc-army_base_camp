@@ -66,16 +66,16 @@ class abc_rank
 		
 		/*Create new rank*/
 		$rank_create = "<dl><dt><label for=\"rank_name\">".$this->user->lang['ABC_RANK_NAME']."</label><br><span></span></dt>";
-		$rank_create .= "<dd><input type=\"text\" name=\"rank_name\" value=\"\" maxlength=\"31\" size=\"39\" /></dd></dl>";
+		$rank_create .= "<dd><input type=\"text\" class=\"inputbox\" name=\"rank_name\" value=\"\" maxlength=\"31\" size=\"39\" /></dd></dl>";
 		/*rank_short*/
 		$rank_create .= "<dl><dt><label for=\"rank_short\">".$this->user->lang['ABC_RANK_SHORT']."</label><br><span></span></dt>";
-		$rank_create .= "<dd><input type=\"text\" name=\"rank_short\" value=\"\" maxlength=\"14\" size=\"39\" /></dd></dl>";
+		$rank_create .= "<dd><input type=\"text\" class=\"inputbox\" name=\"rank_short\" value=\"\" maxlength=\"14\" size=\"39\" /></dd></dl>";
 		/*rank tag*/
 		$rank_create .= "<dl><dt><label for=\"rank_tag\">".$this->user->lang['ABC_RANK_TAG']."</label><br><span></span></dt>";
-		$rank_create .= "<dd><input type=\"text\" name=\"rank_tag\" value=\"\" maxlength=\"3\" size=\"3\" /></dd></dl>";
+		$rank_create .= "<dd><input type=\"text\" class=\"inputbox\" name=\"rank_tag\" value=\"\" maxlength=\"3\" size=\"3\" /></dd></dl>";
 		/*rank_order*/
 		$rank_create .= "<dl><dt><label for=\"rank_order\">".$this->user->lang['ABC_RANK_ORDER']."</label><br><span>".$this->user->lang['ABC_RANK_ORDER_EXPL']."</span></dt>";
-		$rank_create .= "<dd><input type=\"text\" name=\"rank_order\" value=\"\" maxlength=\"2\" size=\"3\" /></dd></dl>";
+		$rank_create .= "<dd><input type=\"text\" class=\"inputbox\" name=\"rank_order\" value=\"\" maxlength=\"2\" size=\"3\" /></dd></dl>";
 		/*rank_image*/
 		$rank_create .= "<dl><dt><label for=\"rank_image\">".$this->user->lang['ABC_RANK_IMAGE']."</label></dt>";
 		$rank_create .= "<dd><input type=\"file\" name=\"rank_image\" id=\"rank_image\" class=\"inputbox autowidth\"/></dd></dl>";
@@ -145,16 +145,16 @@ class abc_rank
 			$rank_list .= "<div class=\"abc_medal_edit\">";
 			/*rank_name*/
 			$rank_list .= "<dl><dt><label for=\"rank_name_".$rank_id."\">".$this->user->lang['ABC_RANK_NAME']."</label><br><span></span></dt>";
-			$rank_list .= "<dd><input type=\"text\" name=\"rank_name_".$rank_id."\" value=\"$rank_name\" maxlength=\"31\" size=\"39\" /></dd></dl>";
+			$rank_list .= "<dd><input type=\"text\" class=\"inputbox\" name=\"rank_name_".$rank_id."\" value=\"$rank_name\" maxlength=\"31\" size=\"39\" /></dd></dl>";
 			/*rank_short*/
 			$rank_list .= "<dl><dt><label for=\"rank_short\">".$this->user->lang['ABC_RANK_SHORT']."</label><br><span></span></dt>";
-			$rank_list .= "<dd><input type=\"text\" name=\"rank_short_".$rank_id."\" value=\"$rank_short\" maxlength=\"14\" size=\"39\" /></dd></dl>";
+			$rank_list .= "<dd><input type=\"text\" class=\"inputbox\" name=\"rank_short_".$rank_id."\" value=\"$rank_short\" maxlength=\"14\" size=\"39\" /></dd></dl>";
 			/*rank tag*/
 			$rank_list .= "<dl><dt><label for=\"rank_tag\">".$this->user->lang['ABC_RANK_TAG']."</label><br><span></span></dt>";
-			$rank_list .= "<dd><input type=\"text\" name=\"rank_tag_".$rank_id."\" value=\"$rank_tag\" maxlength=\"3\" size=\"3\" /></dd></dl>";
+			$rank_list .= "<dd><input type=\"text\" class=\"inputbox\" name=\"rank_tag_".$rank_id."\" value=\"$rank_tag\" maxlength=\"3\" size=\"3\" /></dd></dl>";
 			/*rank_order*/
 			$rank_list .= "<dl><dt><label for=\"rank_order\">".$this->user->lang['ABC_RANK_ORDER']."</label><br><span>".$this->user->lang['ABC_RANK_ORDER_EXPL']."</span></dt>";
-			$rank_list .= "<dd><input type=\"text\" name=\"rank_order_".$rank_id."\" value=\"$rank_order\" maxlength=\"2\" size=\"3\" $disabled /></dd></dl>";
+			$rank_list .= "<dd><input type=\"text\" class=\"inputbox\" name=\"rank_order_".$rank_id."\" value=\"$rank_order\" maxlength=\"2\" size=\"3\" $disabled /></dd></dl>";
 			/*rank_image*/
 			$rank_list .= "<dl><dt><label for=\"rank_image_".$rank_id."\">".$this->user->lang['ABC_RANK_IMAGE']."</label></dt>";
 			if($rowset[$i]['rank_img'] != '')

@@ -570,7 +570,7 @@ class abc_forum
 					
 		$abc_content .= "<dl><dt><label for=\"forum_name\">".$this->user->lang['ABC_FORUM_NAME']."</label><br>";
 		$abc_content .= "<span>".$this->user->lang['ABC_FORUM_NAME_EXPL']."</span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"forum_name\" value=\"\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"forum_name\" value=\"\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"forum_officer\">".$this->user->lang['ABC_FORUM_OFFICER']."</label></dt>";
 		$abc_content .= "<dd><input type=\"radio\" class=\"radio\" name=\"forum_officer\" value=\"1\" /> ".$this->user->lang['YES']." &nbsp;";

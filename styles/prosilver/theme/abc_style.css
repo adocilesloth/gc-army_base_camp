@@ -12,6 +12,10 @@ div.abc_menu {
 	grid-gap: 5px;
 }
 
+input.inputbox {
+	width: unset;
+}
+
 .abc_button {
 	background: none!important;
 	border: none; 

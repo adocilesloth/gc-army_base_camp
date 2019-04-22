@@ -66,10 +66,10 @@ class abc_division
 		
 		/*Create new division*/
 		$division_create = "<dl><dt><label for=\"division_name\">".$this->user->lang['ABC_DIVISION_NAME']."</label><br><span></span></dt>";
-		$division_create .= "<dd><input type=\"text\" name=\"division_name\" value=\"\" maxlength=\"33\" size=\"39\" /></dd></dl>";
+		$division_create .= "<dd><input type=\"text\" class=\"inputbox\" name=\"division_name\" value=\"\" maxlength=\"33\" size=\"39\" /></dd></dl>";
 		/*division tag*/
 		$division_create .= "<dl><dt><label for=\"division_tag\">".$this->user->lang['ABC_DIVISION_TAG']."</label><br><span></span></dt>";
-		$division_create .= "<dd><input type=\"text\" name=\"division_tag\" value=\"\" maxlength=\"3\" size=\"3\" /></dd></dl>";
+		$division_create .= "<dd><input type=\"text\" class=\"inputbox\" name=\"division_tag\" value=\"\" maxlength=\"3\" size=\"3\" /></dd></dl>";
 		/*division_image*/
 		$division_create .= "<dl><dt><label for=\"division_image\">".$this->user->lang['ABC_DIVISION_IMAGE']."</label></dt>";
 		$division_create .= "<dd><input type=\"file\" name=\"division_image\" id=\"division_image_".$division_id."\" class=\"inputbox autowidth\"/></dd></dl>";
@@ -122,10 +122,10 @@ class abc_division
 			$division_list .= "<div class=\"abc_medal_edit\">";
 			/*division_name*/
 			$division_list .= "<dl><dt><label for=\"division_name_".$division_id."\">".$this->user->lang['ABC_DIVISION_NAME']."</label><br><span></span></dt>";
-			$division_list .= "<dd><input type=\"text\" name=\"division_name_".$division_id."\" value=\"$division_name\" maxlength=\"33\" size=\"39\" /></dd></dl>";
+			$division_list .= "<dd><input type=\"text\" class=\"inputbox\" name=\"division_name_".$division_id."\" value=\"$division_name\" maxlength=\"33\" size=\"39\" /></dd></dl>";
 			/*division tag*/
 			$division_list .= "<dl><dt><label for=\"division_tag\">".$this->user->lang['ABC_DIVISION_TAG']."</label><br><span></span></dt>";
-			$division_list .= "<dd><input type=\"text\" name=\"division_tag_".$division_id."\" value=\"$division_tag\" maxlength=\"3\" size=\"3\" /></dd></dl>";
+			$division_list .= "<dd><input type=\"text\" class=\"inputbox\" name=\"division_tag_".$division_id."\" value=\"$division_tag\" maxlength=\"3\" size=\"3\" /></dd></dl>";
 			/*division_image*/
 			$division_list .= "<dl><dt><label for=\"division_image_".$division_id."\">".$this->user->lang['ABC_DIVISION_IMAGE']."</label></dt>";
 			if($rowset[$i]['division_icon'] != '')

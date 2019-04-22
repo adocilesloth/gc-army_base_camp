@@ -273,7 +273,7 @@ class abc_army
 				$army_list .= "</select> ";
 				$army_list .= "<input type=\"submit\" name=\"award_medal\" id=\"award_medal\" value=\"".$this->user->lang['ABC_ARMY_MEDAL']."\" class=\"button1\"/>";
 				$army_list .= "<br>";
-				$army_list .= "<textarea class=\"abc_description\" name=\"medal_reason\" cols=\"40\" rows=\"5\" maxlength=\"309\" placeholder=\"".$this->user->lang['ABC_ARMY_MEDAL_REASON']."\"></textarea>";
+				$army_list .= "<textarea class=\"inputbox abc_description\" name=\"medal_reason\" cols=\"40\" rows=\"5\" maxlength=\"309\" placeholder=\"".$this->user->lang['ABC_ARMY_MEDAL_REASON']."\"></textarea>";
 			}
 			$army_list .= "</div>";	
 			
@@ -335,10 +335,6 @@ class abc_army
 		$abc_content .= $army_list;
 		
 		$this->template->assign_var('ABC_PAGE_CONTENT', $abc_content);
-		/*$this->template->assign_vars(array(
-			'ABC_ARMY_NAME'				=> $army_name,
-			'ABC_COMPLETE_ARMY_LIST'	=> $army_list,
-		));*/
 		return;
 	}
 	

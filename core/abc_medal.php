@@ -66,10 +66,10 @@ class abc_medal
 		
 		/*Create new medal*/
 		$medal_create = "<dl><dt><label for=\"medal_name\">".$this->user->lang['ABC_MEDAL_NAME']."</label><br><span></span></dt>";
-		$medal_create .= "<dd><input type=\"text\" name=\"medal_name\" value=\"\" maxlength=\"44\" size=\"39\" /></dd></dl>";
+		$medal_create .= "<dd><input type=\"text\" class=\"inputbox\" name=\"medal_name\" value=\"\" maxlength=\"44\" size=\"39\" /></dd></dl>";
 		/*medal_description*/
 		$medal_create .= "<dl><dt><label for=\"medal_desc\">".$this->user->lang['ABC_MEDAL_DESC']."</label><br><span></span></dt>";
-		$medal_create .= "<dd><textarea class=\"abc_description\" name=\"medal_desc\" cols=\"40\" rows=\"5\" maxlength=\"242\"></textarea></dd></dl>";
+		$medal_create .= "<dd><textarea class=\"inputbox abc_description\" name=\"medal_desc\" cols=\"40\" rows=\"5\" maxlength=\"242\"></textarea></dd></dl>";
 		/*medal_image*/
 		$medal_create .= "<dl><dt><label for=\"medal_image\">".$this->user->lang['ABC_MEDAL_IMAGE']."</label></dt>";
 		$medal_create .= "<dd><input type=\"file\" name=\"medal_image\" id=\"medal_image_".$medal_id."\" class=\"inputbox autowidth\"/></dd></dl>";
@@ -128,10 +128,10 @@ class abc_medal
 			$medal_list .= "<div class=\"abc_medal_edit\">";
 			/*medal_name*/
 			$medal_list .= "<dl><dt><label for=\"medal_name_".$medal_id."\">".$this->user->lang['ABC_MEDAL_NAME']."</label><br><span></span></dt>";
-			$medal_list .= "<dd><input type=\"text\" name=\"medal_name_".$medal_id."\" value=\"$medal_name\" maxlength=\"44\" size=\"39\" /></dd></dl>";
+			$medal_list .= "<dd><input type=\"text\" class=\"inputbox\" name=\"medal_name_".$medal_id."\" value=\"$medal_name\" maxlength=\"44\" size=\"39\" /></dd></dl>";
 			/*medal_description*/
 			$medal_list .= "<dl><dt><label for=\"medal_desc_".$medal_id."\">".$this->user->lang['ABC_MEDAL_DESC']."</label><br><span></span></dt>";
-			$medal_list .= "<dd><textarea class=\"abc_description\" name=\"medal_desc_".$medal_id."\" cols=\"40\" rows=\"5\" maxlength=\"242\">$medal_desc</textarea></dd></dl>";
+			$medal_list .= "<dd><textarea class=\"inputbox abc_description\" name=\"medal_desc_".$medal_id."\" cols=\"40\" rows=\"5\" maxlength=\"242\">$medal_desc</textarea></dd></dl>";
 			/*medal_image*/
 			$medal_list .= "<dl><dt><label for=\"medal_image_".$medal_id."\">".$this->user->lang['ABC_MEDAL_IMAGE']."</label></dt>";
 			if($rowset[$i]['medal_img'] != '')

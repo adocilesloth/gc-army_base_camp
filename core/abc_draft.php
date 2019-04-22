@@ -89,21 +89,21 @@ class abc_draft
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"draft_avail\">".$this->user->lang['ABC_DRAFT_AVAIL']."</label><br>";
 		$abc_content .= "<span>".$this->user->lang['ABC_DRAFT_AVAIL_EXP']."</span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"draft_avail\" value=\"\" maxlength=\"132\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"draft_avail\" value=\"\" maxlength=\"132\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"draft_local\">".$this->user->lang['ABC_DRAFT_LOCAL']."</label><br>";
 		$abc_content .= "<span>".$this->user->lang['ABC_DRAFT_LOCAL_EXP']."</span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"draft_local\" value=\"\" maxlength=\"52\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"draft_local\" value=\"\" maxlength=\"52\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"draft_notes\">".$this->user->lang['ABC_DRAFT_NOTES']."</label><br>";
 		$abc_content .= "<span>".$this->user->lang['ABC_DRAFT_NOTES_EXP']."</span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"draft_notes\" value=\"\" maxlength=\"255\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"draft_notes\" value=\"\" maxlength=\"255\" /></dd>";
 		$abc_content .= "</dl><br>";
 		$abc_content .= "<p>".$this->user->lang['ABC_DRAFT_PW_EXPLAIN'];
 		$abc_content .= $this->user->lang['ABC_DRAFT_PW_EXPL']."</p>";
 		$abc_content .= "<dl><dt><label for=\"draft_pw\">".$this->user->lang['ABC_DRAFT_PW']."</label><br>";
 		$abc_content .= "<span></span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"draft_pw\" value=\"\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"draft_pw\" value=\"\" /></dd>";
 		$abc_content .= "</dl></fieldset>";
 		
 		$abc_content .= "<fieldset class=\"submit-buttons\">";

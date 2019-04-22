@@ -56,17 +56,17 @@ class abc_battleday
 		
 		/*Create new battleday*/
 		$battle_create = "<dl><dt><label for=\"battle_name\">".$this->user->lang['ABC_BATTLE_NAME']."</label><br><span></span></dt>";
-		$battle_create .= "<dd><input type=\"text\" name=\"battle_name\" value=\"\" maxlength=\"34\" size=\"39\" /></dd></dl>";
+		$battle_create .= "<dd><input type=\"text\" class=\"inputbox\" name=\"battle_name\" value=\"\" maxlength=\"34\" size=\"39\" /></dd></dl>";
 		/*battle_start*/
 		$battle_create .= "<dl><dt><label for=\"battle_start\">".$this->user->lang['ABC_BATTLE_START']."</label><br>";
 		$battle_create .= "<span>".$this->user->lang['ABC_BATTLE_START_EXPL']."</span></dt>";
-		$battle_create .= "<dd><input type=\"text\" name=\"battle_start\" value=\"\" maxlength=\"10\" size=\"10\" /></dd></dl>";
+		$battle_create .= "<dd><input type=\"text\" class=\"inputbox\" name=\"battle_start\" value=\"\" maxlength=\"10\" size=\"10\" /></dd></dl>";
 		/*battle_start_time*/
 		$battle_create .= "<dl><dt><label for=\"battle_start_time\">".$this->user->lang['ABC_BATTLE_START_TIME']."</label><br><span></span></dt>";
-		$battle_create .= "<dd>SBT <input type=\"text\" name=\"battle_start_time\" value=\"\" maxlength=\"3\" size=\"3\" /></dd></dl>";
+		$battle_create .= "<dd>SBT <input type=\"text\" class=\"inputbox\" name=\"battle_start_time\" value=\"\" maxlength=\"3\" size=\"3\" /></dd></dl>";
 		/*battle_length*/
 		$battle_create .= "<dl><dt><label for=\"battle_length\">".$this->user->lang['ABC_BATTLE_LENGTH']."</label><br><span></span></dt>";
-		$battle_create .= "<dd><input type=\"text\" name=\"battle_length\" value=\"\" maxlength=\"3\" size=\"3\" /> hours</dd></dl>";
+		$battle_create .= "<dd><input type=\"text\" class=\"inputbox\" name=\"battle_length\" value=\"\" maxlength=\"3\" size=\"3\" /> hours</dd></dl>";
 		
 		$battle_create .= "<dl><input type=\"submit\" name=\"create_battle\" id=\"create_battle\" value=\"".$this->user->lang['ABC_BATTLE_CREATE']."\" class=\"button1\"/></dl>";
 		
@@ -133,26 +133,20 @@ class abc_battleday
 				}
 			}
 			
-			$sbt_pm = '+';
-			if($sbt_start_time < 0)
-			{
-				$sbt_pm = '';
-			}
-			
 			$battle_list .= "<div class=\"abc_medal_edit\">";
 			/*battle_name*/
 			$battle_list .= "<dl><dt><label for=\"battle_name_$battle_id\">".$this->user->lang['ABC_BATTLE_NAME']."</label><br><span></span></dt>";
-			$battle_list .= "<dd><input type=\"text\" name=\"battle_name_$battle_id\" value=\"$battle_name\" maxlength=\"34\" size=\"39\" /></dd></dl>";
+			$battle_list .= "<dd><input type=\"text\" class=\"inputbox\" name=\"battle_name_$battle_id\" value=\"$battle_name\" maxlength=\"34\" size=\"39\" /></dd></dl>";
 			/*battle_start*/
 			$battle_list .= "<dl><dt><label for=\"battle_start_$battle_id\">".$this->user->lang['ABC_BATTLE_START']."</label><br>";
 			$battle_list .= "<span>".$this->user->lang['ABC_BATTLE_START_EXPL']."</span></dt>";
-			$battle_list .= "<dd><input type=\"text\" name=\"battle_start_$battle_id\" value=\"$battle_start_date\" maxlength=\"10\" size=\"10\" /></dd></dl>";
+			$battle_list .= "<dd><input type=\"text\" class=\"inputbox\" name=\"battle_start_$battle_id\" value=\"$battle_start_date\" maxlength=\"10\" size=\"10\" /></dd></dl>";
 			/*battle_start_time*/
 			$battle_list .= "<dl><dt><label for=\"battle_start_time_$battle_id\">".$this->user->lang['ABC_BATTLE_START_TIME']."</label><br><span></span></dt>";
-			$battle_list .= "<dd>SBT <input type=\"text\" name=\"battle_start_time_$battle_id\" value=\"$sbt_pm$sbt_start_time\" maxlength=\"3\" size=\"6\" /></dd></dl>";			
+			$battle_list .= "<dd>SBT <input type=\"text\" class=\"inputbox\" name=\"battle_start_time_$battle_id\" value=\"$sbt_start_time\" maxlength=\"3\" size=\"6\" /></dd></dl>";			
 			/*battle_length*/
 			$battle_list .= "<dl><dt><label for=\"battle_length_$battle_id\">".$this->user->lang['ABC_BATTLE_LENGTH']."</label><br><span></span></dt>";
-			$battle_list .= "<dd><input type=\"text\" name=\"battle_length_$battle_id\" value=\"$battle_length\" maxlength=\"3\" size=\"6\" /> hours</dd></dl>";
+			$battle_list .= "<dd><input type=\"text\" class=\"inputbox\" name=\"battle_length_$battle_id\" value=\"$battle_length\" maxlength=\"3\" size=\"6\" /> hours</dd></dl>";
 
 			/*Edit this medal radio button*/
 			$battle_list .= "<dl><dt><label for=\"".$battle_id."\">".$this->user->lang['ABC_BATTLE_EDIT_THIS']."</label></dt>";

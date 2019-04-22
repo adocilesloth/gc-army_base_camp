@@ -48,7 +48,7 @@ class abc_soldier
 	public function show_soldier($user_id = -1)
 	{
 		$soldier_select = $this->user->lang['ABC_SOLDIER_SELECT'];
-		$soldier_select .= "<input type=\"text\" name=\"soldier_name\" value=\"\" maxlength=\"255\" size=\"20\" /> ";
+		$soldier_select .= "<input type=\"text\" name=\"soldier_name\" value=\"\" maxlength=\"255\" size=\"20\" class=\"inputbox\" /> ";
 		$soldier_select .= "<input type=\"submit\" name=\"soldier_search\" id=\"soldier_search\" value=\"".$this->user->lang['ABC_SOLDIER_SEARCH']."\" class=\"button1\"/>";
 		$soldier_select .= "<br>";
 		
@@ -161,7 +161,7 @@ class abc_soldier
 				if(file_exists($this->root_path.$ribbon_path))
 				{
 					$soldier_list .= "<img src=\"/$this->root_path.$ribbon_path\"><br>";
-					$soldier_list .= "BBCode: <input type=\"text\" name=\"ribbons-path\" id=\"ribbons-path\" size=\"75\" value=\"[img]http://global-conflict.org".$ribbon_path."[/img]\" readonly=\"readonly\">";
+					$soldier_list .= "BBCode: <input type=\"text\" class=\"inputbox\" name=\"ribbons-path\" id=\"ribbons-path\" size=\"75\" value=\"[img]http://global-conflict.org".$ribbon_path."[/img]\" readonly=\"readonly\">";
 					$soldier_list .= "<br><br>";
 				}
 				

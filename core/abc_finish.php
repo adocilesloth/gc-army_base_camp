@@ -48,15 +48,15 @@ class abc_finish
 					
 		$abc_content .= "<dl><dt><label for=\"campaign_archive\">".$this->user->lang['ABC_FINISH_ARCH']."</label><br>";
 		$abc_content .= "<span>".$this->user->lang['ABC_FINISH_ARCH_EXPL']."</span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"campaign_archive\" value=\"The Archives\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"campaign_archive\" value=\"The Archives\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"campaign_hidden_archive\">".$this->user->lang['ABC_FINISH_H_ARCH']."</label><br>";
 		$abc_content .= "<span>".$this->user->lang['ABC_FINISH_H_ARCH_EXPL']."</span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"campaign_hidden_archive\" value=\"Uncategorized Archives\" /></dd>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"campaign_hidden_archive\" value=\"Uncategorized Archives\" /></dd>";
 		$abc_content .= "</dl><dl>";
 		$abc_content .= "<dt><label for=\"archivist\">".$this->user->lang['ABC_FINISH_ARCH_G']."</label><br>";
 		$abc_content .= "<span>".$this->user->lang['ABC_FINISH_ARCH_G_EXPL']."</span></dt>";
-		$abc_content .= "<dd><input type=\"text\" name=\"archivist\" value=\"Archive / Historian,\" /></dd></dl>";
+		$abc_content .= "<dd><input type=\"text\" class=\"inputbox\" name=\"archivist\" value=\"Archive / Historian,\" /></dd></dl>";
 					
 		$abc_content .= "<fieldset class=\"submit-buttons\">";
 		$abc_content .= "<input type=\"submit\" name=\"finish_submit\" id=\"finish_submit\" value=\"".$this->user->lang['ABC_FINISH']."\" class=\"button1\"/>";
