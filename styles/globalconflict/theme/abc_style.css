@@ -1,0 +1,185 @@
+div.abc {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 200px minmax(200px, auto);
+	grid-gap: 5px;
+}
+
+div.abc_menu {
+	width: 100%
+	display: grid;
+	grid-template-rows: minmax(min-content, max-content) minmax(min-content, max-content);
+	grid-gap: 5px;
+}
+
+input.inputbox {
+	width: unset;
+}
+
+.abc_button {
+	background: none!important;
+	border: none; 
+	padding: 0!important;
+	font: inherit;
+	/*optional*/
+	color:#E5E1E0;
+	cursor:pointer;
+}
+
+.abc_button:hover{
+	color: #084CA1;
+	text-decoration: underline;
+}
+
+.abc_army {
+	width: 100%;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.abc_army_division {
+	width: 200px;
+    min-height: 130px;
+    margin: 10px auto;
+    padding: 9px;
+    overflow: hidden;
+	background-color: #081A2B;
+}
+
+.abc_division_name {
+	width: 100%;
+	height: 20px;
+	line-height: 16px;
+	margin-bottom: 10px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #E5E1E0;
+	text-align: center;
+	border-bottom: 1px solid #084CA1;
+}
+
+textarea.abc_description {
+	width: 42ch;
+}
+
+div.abc_medal_edit{
+	padding-bottom: 0.8em;
+	margin-bottom: 0.8em;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.abc_medals {
+	display: grid;
+	grid-template-columns: 100px 100px auto;
+	grid-gap: 5px;
+}
+
+.abc_medals_line {
+	padding-bottom: 5px;
+	border-bottom: 1px solid #084CA1;
+}
+
+.abc_medals_history {
+	display: grid;
+	grid-template-columns: 100px 100px auto 100px;
+	grid-gap: 5px;
+}
+
+.abc_soldier_hist {
+	width: 95%;
+    margin: 10px auto;
+    padding: 9px;
+    overflow: hidden;
+	background-color: #081A2B;
+}
+
+.abc_soldier_army {
+	display: grid;
+	grid-template-columns: 75px auto;
+}
+
+.abc_signup {
+	display: grid;
+	grid-template-columns: 150px auto;
+}
+
+.abc_signup_name {
+	height: 50px;
+	line-height: 50px;
+	vertical-align: middle;
+	text-align: right;
+	padding-right: 1em;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.abc_signup_green {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	vertical-align: middle;
+	text-align: center;
+	background-color: #00FF00;
+	border-left: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.abc_signup_red {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	vertical-align: middle;
+	text-align: center;
+	background-color: #FF0000;
+	border-left: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.abc_signup_clear {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	vertical-align: middle;
+	text-align: center;
+	border-left: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.abc_signup_bar_army {
+	vertical-align: bottom !important;
+	width: 1.25em;
+	margin-top: auto;
+	display: inline-block;
+	text-align: center;
+	color: white;
+}
+
+.abc_signup_bar_blank {
+	width: 0.25em;
+	height: 100px;
+	display: inline-block;
+}
+
+.abc_signup_bar_label {
+	width: 2.75em;
+	display: inline-block;
+	text-align: center;
+}
+
+.abc_signup_previous {
+	width: 90px;
+	display:inline-block;
+	text-align: left;
+}
+
+.abc_signup_next {
+	width: 90px;
+	display:inline-block;
+	text-align: right;
+}
+
+div.abc h2 {
+	color: #E5E1E0;
+}
