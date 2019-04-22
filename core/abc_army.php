@@ -438,7 +438,7 @@ class abc_army
 		$rank_is_officer = $row['rank_is_officer'];
 		
 		/*Award abc rank*/
-		$sql = "UPDATE abc_users SET rank_id = $rank_id WHERE";
+		$sql = "UPDATE abc_users SET rank_id = $rank_id WHERE campaign_id = $campaign_id AND (";
 		$sql_users = "";
 		foreach($user_ids as $user_id)
 		{
@@ -446,11 +446,12 @@ class abc_army
 		}
 		$sql .= $sql_users;
 		$sql = substr($sql, 0, strlen($sql)-3);
+		$sql .= " )";
 		$result = $this->db->sql_query($sql);
 		$this->db->sql_freeresult($result);
 		
 		/*Award phpbb rank*/
-		$sql = "UPDATE phpbb_users SET user_rank = $rank_phpbb_id WHERE";
+		$sql = "UPDATE ".USERS_TABLE." SET user_rank = $rank_phpbb_id WHERE";
 		$sql .= $sql_users;
 		$sql = substr($sql, 0, strlen($sql)-3);
 		$result = $this->db->sql_query($sql);
@@ -510,7 +511,7 @@ class abc_army
 		$this->db->sql_freeresult($result);
 		
 		/*Award abc division*/
-		$sql = "UPDATE abc_users SET division_id = $division_id WHERE";
+		$sql = "UPDATE abc_users SET division_id = $division_id WHERE campaign_id = $campaign_id AND (";
 		$sql_users = "";
 		foreach($user_ids as $user_id)
 		{
@@ -518,6 +519,7 @@ class abc_army
 		}
 		$sql .= $sql_users;
 		$sql = substr($sql, 0, strlen($sql)-3);
+		$sql .= " )";
 		$result = $this->db->sql_query($sql);
 		$this->db->sql_freeresult($result);
 		

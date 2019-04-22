@@ -406,7 +406,7 @@ class abc_start
 							}
 							
 							/*rank_id in phpbb_ranks auto increments, so we need to make the rank THEN find rank_phpbb_id*/
-							$sql = "INSERT INTO phpbb_ranks (rank_title, rank_min, rank_special, rank_image) VALUES ('$army_id. $rank_name', 0, 1, '')";
+							$sql = "INSERT INTO ".RANKS_TABLE." (rank_title, rank_min, rank_special, rank_image) VALUES ('$army_id. $rank_name', 0, 1, '')";
 							$result = $this->db->sql_query($sql);
 							$this->db->sql_freeresult($result);
 							
@@ -444,11 +444,11 @@ class abc_start
 						
 						$rank_img = $this->root_path."/ext/globalconflict/abc/images/ranks/TA_rank.png";
 						/*rank_id in phpbb_ranks auto increments, so we need to make the rank THEN find rank_phpbb_id*/
-						$sql = "INSERT INTO phpbb_ranks (rank_title, rank_min, rank_special, rank_image) VALUES ('$army_id. $army_name', 0, 1, '$rank_img')";
+						$sql = "INSERT INTO ".RANKS_TABLE." (rank_title, rank_min, rank_special, rank_image) VALUES ('$army_id. $army_name', 0, 1, '$rank_img')";
 						$result = $this->db->sql_query($sql);
 						$this->db->sql_freeresult($result);
 						
-						$sql = "SELECT MAX(rank_id) FROM phpbb_ranks";
+						$sql = "SELECT MAX(rank_id) FROM ".RANKS_TABLE;
 						$result = $this->db->sql_query($sql);
 						$rank_phpbb_id = $this->db->sql_fetchfield('MAX(rank_id)');
 						$this->db->sql_freeresult($result);
@@ -474,7 +474,7 @@ class abc_start
 					
 					/*Want to store pre campaign rank to recover it later*/
 					/*store in user_soldierid in abc_users*/
-					$sql = "SELECT user_rank FROM phpbb_users WHERE user_id = $army_general";
+					$sql = "SELECT user_rank FROM ".USERS_TABLE." WHERE user_id = $army_general";
 					$result = $this->db->sql_query($sql);
 					$user_soldierid = $this->db->sql_fetchfield('user_rank');
 					$this->db->sql_freeresult($result);
@@ -495,7 +495,7 @@ class abc_start
 						$division_id++;
 					}
 					
-					$sql = "UPDATE phpbb_users SET user_rank = $rank_phpbb_id WHERE user_id = $army_general";
+					$sql = "UPDATE ".USERS_TABLE." SET user_rank = $rank_phpbb_id WHERE user_id = $army_general";
 					$result = $this->db->sql_query($sql);
 					$this->db->sql_freeresult($result);
 				}

@@ -236,7 +236,7 @@ class abc_soldier
 		else
 		{
 			$soldier_select = $this->user->lang['ABC_SOLDIER_SELECT'];
-			$soldier_select .= "<input type=\"text\" name=\"soldier_name\" value=\"\" maxlength=\"255\" size=\"20\" /> ";
+			$soldier_select .= "<input type=\"text\" name=\"soldier_name\" value=\"\" maxlength=\"255\" size=\"20\" class=\"inputbox\" /> ";
 			$soldier_select .= "<input type=\"submit\" name=\"soldier_search\" id=\"soldier_search\" value=\"".$this->user->lang['ABC_SOLDIER_SEARCH']."\" class=\"button1\"/>";
 			$soldier_select .= "<br>";
 			
