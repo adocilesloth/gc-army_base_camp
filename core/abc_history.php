@@ -121,7 +121,7 @@ class abc_history
 		$this->db->sql_freeresult($result);
 		
 		/*Build Army list*/
-		$army_list .= "<div class=\"abc_army\">";
+		$army_list = "<div class=\"abc_army\">";
 		
 		/*HC Division*/
 		$army_list .= "<div></div>";
