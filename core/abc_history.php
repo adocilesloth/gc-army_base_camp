@@ -145,7 +145,7 @@ class abc_history
 		if($army_id < 40)
 		{
 			$user_string = 'username';
-			$sql .= "SELECT ut.username, au.rank_id, ar.rank_short, ar.rank_img FROM abc_users AS au
+			$sql .= "SELECT ut.username, au.rank_id, ar.rank_order, ar.rank_short, ar.rank_img FROM abc_users AS au
 					JOIN abc_ranks AS ar ON ar.rank_id = au.rank_id
 					JOIN ".USERS_TABLE." AS ut ON au.user_id = ut.user_id
 					WHERE au.army_id = $army_id AND au.division_id = $division_id 
@@ -218,7 +218,7 @@ class abc_history
 				if($army_id < 40)
 				{
 					$user_string = 'username';
-					$sql .= "SELECT ut.username, au.rank_id, ar.rank_short, ar.rank_img FROM abc_users AS au
+					$sql .= "SELECT ut.username, au.rank_id, ar.rank_order, ar.rank_short, ar.rank_img FROM abc_users AS au
 							JOIN abc_ranks AS ar ON ar.rank_id = au.rank_id
 							JOIN ".USERS_TABLE." AS ut ON au.user_id = ut.user_id
 							WHERE au.army_id = $army_id AND au.division_id = $division_id 
@@ -295,7 +295,7 @@ class abc_history
 			if($army_id < 40)
 			{
 				$user_string = 'username';
-				$sql .= "SELECT ut.username, au.rank_id, ar.rank_short, ar.rank_img FROM abc_users AS au
+				$sql .= "SELECT ut.username, au.rank_id, ar.rank_order, ar.rank_short, ar.rank_img FROM abc_users AS au
 						JOIN abc_ranks AS ar ON ar.rank_id = au.rank_id
 						JOIN ".USERS_TABLE." AS ut ON au.user_id = ut.user_id
 						WHERE au.army_id = $army_id AND au.division_id = $division_id 
