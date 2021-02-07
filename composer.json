@@ -3,8 +3,8 @@
 	"type": "phpbb-extension",
 	"description": "Army Base Camp for Global Conflict",
 	"homepage": "https://github.com/adocilesloth/gc-army_base_camp",
-	"version": "1.0.0",
-	"time": "2019-02-07",
+	"version": "1.0.1",
+	"time": "2021-02-07",
 	"license": "GPL-2.0",
 	"authors": [{
 			"name": "Will Pearson",

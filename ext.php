@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - Army Base Camp
-* @copyright (c) 2019 Will Pearson
+* @copyright (c) 2021 Will Pearson
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
